@@ -178,8 +178,8 @@ export default function Player({
       {embeddable ? (
         <div className="aspect-video w-full overflow-hidden rounded-lg bg-black" ref={mountRef} />
       ) : (
-        <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-lg border border-stone-300 bg-white p-6 text-center">
-          <p className="text-sm text-stone-700">
+        <div className="watch-embed-fallback">
+          <p>
             The video owner does not allow embedding. Watch it on YouTube, then return here to mark
             it complete.
           </p>
@@ -187,7 +187,7 @@ export default function Player({
             href={`https://www.youtube.com/watch?v=${youtubeId}`}
             target="_blank"
             rel="noreferrer"
-            className="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-700"
+            className="watch-youtube-button"
           >
             Watch on YouTube
           </a>
@@ -196,11 +196,11 @@ export default function Player({
 
       <div className="mt-3 flex flex-wrap items-center gap-3">
         {status === "completed" ? (
-          <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">Complete ✓</span>
+          <span className="watch-complete-badge">Complete ✓</span>
         ) : (
           <button
             onClick={markComplete}
-            className="rounded-md border border-stone-300 bg-white px-3 py-1.5 text-sm hover:bg-stone-100"
+            className="watch-mark-complete"
           >
             Mark as complete
           </button>
@@ -208,7 +208,7 @@ export default function Player({
         {nextHref && (
           <Link
             href={nextHref}
-            className="rounded-md bg-stone-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-stone-700"
+            className="watch-next-button"
           >
             Next video →
           </Link>
