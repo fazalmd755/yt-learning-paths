@@ -1,0 +1,34 @@
+import { redirect } from "next/navigation";
+import ProfileSettingsForms from "@/components/ProfileSettingsForms";
+import { createClient } from "@/lib/supabase/server";
+
+export default async function SettingsPage() {
+  const supabase = await createClient();
+  const { data: { user }, error: userError } = await supabase.auth.getUser();
+  if (userError || !user) redirect("/login");
+
+  const { data: profile, error } = await supabase
+    .from("profiles")
+    .select("daily_goal_minutes, reminder_enabled")
+    .eq("id", user.id)
+    .maybeSingle();
+  if (error) throw new Error(`Could not load profile settings: ${error.message}`);
+
+  const displayName = typeof user.user_metadata?.display_name === "string" ? user.user_metadata.display_name : "";
+
+  return (
+    <main className="settings-page-shell">
+      <header className="settings-page-heading">
+        <div className="eyebrow"><span className="eyebrow-dot" /> MAKE WATCHIFY YOURS</div>
+        <h1>Profile settings</h1>
+        <p>Manage your account details, learning goals and security.</p>
+      </header>
+      <ProfileSettingsForms
+        email={user.email ?? ""}
+        displayName={displayName}
+        dailyGoalMinutes={profile?.daily_goal_minutes ?? 15}
+        reminderEnabled={profile?.reminder_enabled ?? true}
+      />
+    </main>
+  );
+}
