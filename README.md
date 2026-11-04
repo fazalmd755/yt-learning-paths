@@ -14,7 +14,7 @@ Turn YouTube playlists and videos into structured courses with progress tracking
    - Create a Supabase project.
    - Run the complete `supabase/schema.sql` script in the SQL Editor. This creates the profile trigger required when a new user signs up.
    - If you already have the original database, run `supabase/product-features.sql` once to add private study tasks, timestamped lesson notes, syllabus progress, exam dates, and custom learning paths. Do not rerun the original schema on an existing database.
-   - In Authentication → Providers, make sure Email is enabled.
+   - In Authentication → Providers, enable Email.
    - In Authentication → URL Configuration, set the local Site URL to `http://localhost:3000` and add `http://localhost:3000/auth/callback` to the redirect URL allowlist. Add your production domain and its `/auth/callback` URL when deploying.
    - Email confirmation is controlled by your Supabase Auth settings. When enabled, new users must open the confirmation link before logging in. Configure SMTP for reliable delivery; the built-in email service has sending limits.
 3. **YouTube API key:** Enable YouTube Data API v3 in Google Cloud Console and create an API key.

@@ -14,7 +14,8 @@ export default async function SettingsPage() {
     .maybeSingle();
   if (error) throw new Error(`Could not load profile settings: ${error.message}`);
 
-  const displayName = typeof user.user_metadata?.display_name === "string" ? user.user_metadata.display_name : "";
+  const displayName = [user.user_metadata?.display_name, user.user_metadata?.full_name, user.user_metadata?.name]
+    .find((value): value is string => typeof value === "string") ?? "";
 
   return (
     <main className="settings-page-shell">

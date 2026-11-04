@@ -46,6 +46,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       remindersEnabled: profile?.reminder_enabled ?? true,
     };
   }
+  const displayName = user
+    ? [user.user_metadata?.display_name, user.user_metadata?.full_name, user.user_metadata?.name]
+        .find((value): value is string => typeof value === "string") ?? ""
+    : "";
 
   return (
     <html lang="en">
@@ -64,7 +68,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               {user && headerData ? (
                 <SiteHeader
                   email={user.email ?? ""}
-                  displayName={typeof user.user_metadata?.display_name === "string" ? user.user_metadata.display_name : ""}
+                  displayName={displayName}
                   streak={headerData.streak}
                   goalMinutes={headerData.goalMinutes}
                   todayMinutes={headerData.todayMinutes}

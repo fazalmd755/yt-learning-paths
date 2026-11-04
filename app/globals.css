@@ -346,7 +346,6 @@ a { color: inherit; text-decoration: none; }
 .auth-divider::before { position: absolute; right: 0; left: 0; height: 1px; background: #eceee8; content: ""; }
 .auth-divider span { position: relative; background: var(--background); padding: 0 10px; }
 .auth-google { justify-content: center; gap: 9px; border-color: #e2e6dd; background: white; color: #344134; }
-.google-g { color: #4778df; font-size: 13px; font-weight: 800; }
 .auth-footnote { margin: 16px 0 0; color: #929a8f; font-size: 9px; text-align: center; }
 .auth-footnote a { color: #536d23; font-weight: 750; }
 .auth-footnote a:hover { text-decoration: underline; }

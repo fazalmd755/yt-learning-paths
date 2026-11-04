@@ -99,14 +99,3 @@ export async function resendSignupConfirmation(formData: FormData) {
     `/signup?message=${encodeURIComponent("If this address has a pending signup, a new confirmation email is on its way.")}`
   );
 }
-
-export async function loginWithGoogle() {
-  const supabase = await createClient();
-  const origin = await siteOrigin();
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo: `${origin}/auth/callback` },
-  });
-  if (error || !data.url) fail(error?.message ?? "Could not start Google sign-in.");
-  redirect(data.url);
-}

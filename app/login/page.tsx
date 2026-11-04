@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { login, loginWithGoogle } from "./actions";
+import { login } from "./actions";
 
 export default async function LoginPage({
   searchParams,
@@ -31,10 +31,6 @@ export default async function LoginPage({
           </form>
 
           <Link href="/signup" className="auth-signup-link">New here? <strong>Create an account</strong> <span aria-hidden="true">↗</span></Link>
-          <div className="auth-divider"><span>OR</span></div>
-          <form action={loginWithGoogle}>
-            <button className="auth-google"><span className="google-g">G</span> Continue with Google</button>
-          </form>
           <p className="auth-footnote">Create an account to save your learning paths and progress.</p>
         </div>
       </section>
