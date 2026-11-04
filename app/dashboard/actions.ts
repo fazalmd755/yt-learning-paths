@@ -1,5 +1,6 @@
 "use server";
 
+import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 
@@ -28,4 +29,23 @@ export async function updateSettings(formData: FormData) {
     .eq("id", user.id);
 
   revalidatePath("/dashboard");
+}
+
+export async function removeCourse(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/login");
+
+  const courseId = String(formData.get("courseId") ?? "").trim();
+  if (!courseId) redirect("/dashboard");
+
+  const { error } = await supabase.from("user_courses").delete().eq("id", courseId).eq("user_id", user.id);
+  if (error) {
+    console.error("Failed to remove course", error);
+  }
+
+  revalidatePath("/dashboard");
+  redirect("/dashboard");
 }

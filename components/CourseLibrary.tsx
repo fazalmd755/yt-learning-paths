@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { removeCourse } from "@/app/dashboard/actions";
 import type { CourseSummary } from "@/lib/data";
 import { formatDuration } from "@/lib/utils";
 import ProgressBar from "./ProgressBar";
@@ -79,28 +80,36 @@ export default function CourseLibrary({ courses, initialQuery = "" }: { courses:
             const pct = course.totalVideos ? Math.round((course.completedVideos / course.totalVideos) * 100) : 0;
             const complete = course.totalVideos > 0 && course.completedVideos === course.totalVideos;
             return (
-              <Link key={course.id} href={`/courses/${course.id}`} className="course-card">
-                <div className="course-art">
-                  {course.thumbnailUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={course.thumbnailUrl} alt="" loading="lazy" decoding="async" />
-                  ) : <div className="course-art-placeholder"><span>✳</span></div>}
-                  <span className={`course-status ${complete ? "course-status-done" : ""}`}>
-                    {complete ? "✓ Complete" : pct > 0 ? "● In progress" : "○ Not started"}
-                  </span>
-                  <span className="course-art-arrow" aria-hidden="true">↗</span>
-                </div>
-                <div className="course-card-body">
-                  <p className="course-channel">{course.channelTitle || "YouTube course"}</p>
-                  <h3>{course.title}</h3>
-                  <div className="course-progress-meta"><span>{course.completedVideos} / {course.totalVideos} videos</span><strong>{pct}%</strong></div>
-                  <ProgressBar value={pct} className="course-progress" />
-                  <div className="course-card-footer">
-                    <span>{formatDuration(Math.max(0, course.totalSeconds - course.completedSeconds))} left</span>
-                    <span>{complete ? "Review course" : "Continue learning"} <b aria-hidden="true">→</b></span>
+              <div key={course.id} className="course-card-shell">
+                <Link href={`/courses/${course.id}`} className="course-card">
+                  <div className="course-art">
+                    {course.thumbnailUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={course.thumbnailUrl} alt="" loading="lazy" decoding="async" />
+                    ) : <div className="course-art-placeholder"><span>✳</span></div>}
+                    <span className={`course-status ${complete ? "course-status-done" : ""}`}>
+                      {complete ? "✓ Complete" : pct > 0 ? "● In progress" : "○ Not started"}
+                    </span>
+                    <span className="course-art-arrow" aria-hidden="true">↗</span>
                   </div>
-                </div>
-              </Link>
+                  <div className="course-card-body">
+                    <p className="course-channel">{course.channelTitle || "YouTube course"}</p>
+                    <h3>{course.title}</h3>
+                    <div className="course-progress-meta"><span>{course.completedVideos} / {course.totalVideos} videos</span><strong>{pct}%</strong></div>
+                    <ProgressBar value={pct} className="course-progress" />
+                    <div className="course-card-footer">
+                      <span>{formatDuration(Math.max(0, course.totalSeconds - course.completedSeconds))} left</span>
+                      <span>{complete ? "Review course" : "Continue learning"} <b aria-hidden="true">→</b></span>
+                    </div>
+                  </div>
+                </Link>
+                <form action={removeCourse} className="course-card-remove">
+                  <input type="hidden" name="courseId" value={course.id} />
+                  <button type="submit" className="course-remove-button" aria-label={`Remove ${course.title} from your library`}>
+                    Remove
+                  </button>
+                </form>
+              </div>
             );
           })}
         </div>

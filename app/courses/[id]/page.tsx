@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { removeCourse } from "@/app/dashboard/actions";
 import ProgressBar from "@/components/ProgressBar";
 import { createClient } from "@/lib/supabase/server";
 import { formatDuration } from "@/lib/utils";
@@ -79,11 +80,17 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
           <ProgressBar value={videos.length ? (done / videos.length) * 100 : 0} className="detail-progress" />
           <div className="course-detail-action">
             <span>{done}/{videos.length} videos complete</span>
-            {nextVideo && (
-              <Link href={`/watch/${id}/${nextVideo}`} className="detail-start-button">
-                {done === 0 ? "Start course" : done === videos.length ? "Review course" : "Continue learning"} <span aria-hidden="true">→</span>
-              </Link>
-            )}
+            <div className="course-detail-actions">
+              {nextVideo && (
+                <Link href={`/watch/${id}/${nextVideo}`} className="detail-start-button">
+                  {done === 0 ? "Start course" : done === videos.length ? "Review course" : "Continue learning"} <span aria-hidden="true">→</span>
+                </Link>
+              )}
+              <form action={removeCourse} className="detail-remove-form">
+                <input type="hidden" name="courseId" value={id} />
+                <button type="submit" className="detail-remove-button">Remove playlist</button>
+              </form>
+            </div>
           </div>
         </div>
       </section>

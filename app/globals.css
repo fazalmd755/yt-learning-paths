@@ -255,8 +255,12 @@ a { color: inherit; text-decoration: none; }
 .course-search input::placeholder { color: #9ba296; }
 .course-search button { border: 0; background: transparent; color: #818b7d; cursor: pointer; font-size: 17px; }
 .course-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-.course-card { overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: white; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.course-card-shell { position: relative; }
+.course-card { display: block; overflow: hidden; border: 1px solid var(--line); border-radius: 8px; background: white; transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
 .course-card:hover { transform: translateY(-3px); border-color: #cbd6ad; box-shadow: 0 12px 28px rgba(34, 47, 34, .07); }
+.course-card-remove { position: absolute; right: 10px; top: 10px; z-index: 2; }
+.course-remove-button { border: 1px solid rgba(255,255,255,.8); border-radius: 999px; background: rgba(33, 41, 35, .9); color: white; cursor: pointer; font-size: 8px; font-weight: 700; letter-spacing: .06em; padding: 6px 9px; text-transform: uppercase; }
+.course-remove-button:hover { background: rgba(18, 25, 21, 1); }
 .course-art { position: relative; height: 143px; overflow: hidden; background: #e7ebdf; }
 .course-art > img { width: 100%; height: 100%; object-fit: cover; transition: transform .4s ease; }
 .course-card:hover .course-art > img { transform: scale(1.04); }
@@ -379,8 +383,12 @@ a { color: inherit; text-decoration: none; }
 .detail-progress { height: 6px !important; margin-top: 7px; background: #edf0e7 !important; }
 .detail-progress > div { background: #a4c73a !important; }
 .course-detail-action { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 13px; color: #858e80; font-size: 9px; }
+.course-detail-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px; }
 .detail-start-button { display: inline-flex; min-height: 37px; align-items: center; gap: 13px; border-radius: 5px; background: var(--ink); padding: 0 12px; color: white; font-size: 9px; font-weight: 700; }
 .detail-start-button span { color: var(--lime); font-size: 14px; }
+.detail-remove-form { display: inline-flex; }
+.detail-remove-button { border: 1px solid #e2e7d9; border-radius: 5px; background: white; color: #5a6654; cursor: pointer; font-size: 9px; font-weight: 700; min-height: 37px; padding: 0 12px; }
+.detail-remove-button:hover { border-color: #ccd7b8; background: #f8faf4; }
 .video-list-section { margin-top: 38px; }
 .video-list-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 14px; }
 .video-list-heading h2 { margin: 8px 0 0; font-size: 23px; letter-spacing: -.05em; }
