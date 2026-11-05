@@ -15,11 +15,10 @@ export const metadata: Metadata = {
   },
 };
 
+export const dynamic = "force-dynamic";
+
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user: any = null;
   let headerData: {
     streak: number;
     goalMinutes: number;
@@ -27,29 +26,41 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     remindersEnabled: boolean;
   } | null = null;
 
-  if (user) {
-    const [{ data: profile }, { data: streakData }] = await Promise.all([
-      supabase
-        .from("profiles")
-        .select("timezone, daily_goal_minutes, reminder_enabled")
-        .eq("id", user.id)
-        .maybeSingle(),
-      supabase.rpc("current_streak"),
-    ]);
-    const timezone = profile?.timezone ?? "Asia/Kolkata";
-    const { data: activity } = await supabase
-      .from("daily_activity")
-      .select("seconds_learned")
-      .eq("user_id", user.id)
-      .eq("activity_date", dateInTz(timezone))
-      .maybeSingle();
+  try {
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+      const supabase = await createClient();
+      const {
+        data: { user: authUser },
+      } = await supabase.auth.getUser();
+      user = authUser;
 
-    headerData = {
-      streak: Number(streakData ?? 0),
-      goalMinutes: profile?.daily_goal_minutes ?? 15,
-      todayMinutes: Math.floor((activity?.seconds_learned ?? 0) / 60),
-      remindersEnabled: profile?.reminder_enabled ?? true,
-    };
+      if (user) {
+        const [{ data: profile }, { data: streakData }] = await Promise.all([
+          supabase
+            .from("profiles")
+            .select("timezone, daily_goal_minutes, reminder_enabled")
+            .eq("id", user.id)
+            .maybeSingle(),
+          supabase.rpc("current_streak"),
+        ]);
+        const timezone = profile?.timezone ?? "Asia/Kolkata";
+        const { data: activity } = await supabase
+          .from("daily_activity")
+          .select("seconds_learned")
+          .eq("user_id", user.id)
+          .eq("activity_date", dateInTz(timezone))
+          .maybeSingle();
+
+        headerData = {
+          streak: Number(streakData ?? 0),
+          goalMinutes: profile?.daily_goal_minutes ?? 15,
+          todayMinutes: Math.floor((activity?.seconds_learned ?? 0) / 60),
+          remindersEnabled: profile?.reminder_enabled ?? true,
+        };
+      }
+    }
+  } catch (err) {
+    console.error("RootLayout auth/profile load error:", err);
   }
   const displayName = user
     ? [user.user_metadata?.display_name, user.user_metadata?.full_name, user.user_metadata?.name]
