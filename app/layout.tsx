@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Analytics } from '@vercel/analytics/next';
 import SiteHeader from "@/components/SiteHeader";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
@@ -99,6 +100,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
         </header>
         {children}
+        <Analytics />
       </body>
     </html>
   );
