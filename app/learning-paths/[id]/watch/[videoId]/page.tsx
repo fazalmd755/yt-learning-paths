@@ -84,28 +84,30 @@ export default async function LearningPathWatchPage({
         <div className="eyebrow"><span className="eyebrow-dot" /> LESSON {String(current.position + 1).padStart(2, "0")} / {String(count ?? 0).padStart(2, "0")}</div>
         <h1>{video.title}</h1>
       </section>
-      <div className="watch-player">
-        <Player
-          key={video.id}
+      <div className="watch-content-grid">
+        <div className="watch-player">
+          <Player
+            key={video.id}
+            userId={user.id}
+            courseId={null}
+            videoId={video.id}
+            youtubeId={video.youtube_video_id}
+            durationSeconds={video.duration_seconds ?? 0}
+            startAt={startAt ?? 0}
+            embeddable={video.embeddable !== false}
+            initialStatus={progress?.status ?? "not_started"}
+            nextHref={nextVideo ? `${watchPath}/${nextVideo.id}` : null}
+          />
+        </div>
+        <VideoNotes
           userId={user.id}
-          courseId={null}
+          courseId={id}
           videoId={video.id}
-          youtubeId={video.youtube_video_id}
           durationSeconds={video.duration_seconds ?? 0}
-          startAt={startAt ?? 0}
-          embeddable={video.embeddable !== false}
-          initialStatus={progress?.status ?? "not_started"}
-          nextHref={nextVideo ? `${watchPath}/${nextVideo.id}` : null}
+          notes={notes ?? []}
+          watchBaseHref={watchPath}
         />
       </div>
-      <VideoNotes
-        userId={user.id}
-        courseId={id}
-        videoId={video.id}
-        durationSeconds={video.duration_seconds ?? 0}
-        notes={notes ?? []}
-        watchBaseHref={watchPath}
-      />
       <div className="watch-pagination">
         {previousVideo ? (
           <Link href={`${watchPath}/${previousVideo.id}`} className="watch-prev"><span aria-hidden="true">←</span><span><small>PREVIOUS LESSON</small> {previousVideo.title}</span></Link>

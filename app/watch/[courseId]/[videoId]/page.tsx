@@ -97,27 +97,29 @@ export default async function WatchPage({
         <div className="eyebrow"><span className="eyebrow-dot" /> LESSON {String(index + 1).padStart(2, "0")} / {String(lessonCount ?? 0).padStart(2, "0")}</div>
         <h1>{video.title}</h1>
       </section>
-      <div className="watch-player">
-        <Player
-          key={video.id}
+      <div className="watch-content-grid">
+        <div className="watch-player">
+          <Player
+            key={video.id}
+            userId={user.id}
+            courseId={courseId}
+            videoId={video.id}
+            youtubeId={video.youtube_video_id}
+            durationSeconds={video.duration_seconds ?? 0}
+            startAt={startAt ?? 0}
+            embeddable={video.embeddable !== false}
+            initialStatus={progress?.status ?? "not_started"}
+            nextHref={next ? `/watch/${courseId}/${next.id}` : null}
+          />
+        </div>
+        <VideoNotes
           userId={user.id}
           courseId={courseId}
           videoId={video.id}
-          youtubeId={video.youtube_video_id}
           durationSeconds={video.duration_seconds ?? 0}
-          startAt={startAt ?? 0}
-          embeddable={video.embeddable !== false}
-          initialStatus={progress?.status ?? "not_started"}
-          nextHref={next ? `/watch/${courseId}/${next.id}` : null}
+          notes={notes ?? []}
         />
       </div>
-      <VideoNotes
-        userId={user.id}
-        courseId={courseId}
-        videoId={video.id}
-        durationSeconds={video.duration_seconds ?? 0}
-        notes={notes ?? []}
-      />
 
       <div className="watch-pagination">
         {prev ? (
