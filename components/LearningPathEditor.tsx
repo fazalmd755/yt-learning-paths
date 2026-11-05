@@ -36,7 +36,7 @@ export default function LearningPathEditor({
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
-  async function addVideo(event: React.FormEvent<HTMLFormElement>) {
+  async function addVideos(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setBusy("add");
     setError("");
@@ -50,17 +50,21 @@ export default function LearningPathEditor({
       const result = await response.json();
       if (!response.ok) {
         if (result.changed) {
-          if (result.video) setVideos((current) => [...current, { ...result.video, status: "not_started" }]);
+          if (Array.isArray(result.videos)) {
+            setVideos((current) => [...current, ...result.videos.map((video: Omit<LearningPathVideo, "status">) => ({ ...video, status: "not_started" }))]);
+          }
           router.refresh();
         }
-        throw new Error(result.error ?? "Could not add video.");
+        throw new Error(result.error ?? "Could not add videos.");
       }
-      setVideos((current) => [...current, { ...result.video, status: "not_started" }]);
+      setVideos((current) => [...current, ...result.videos.map((video: Omit<LearningPathVideo, "status">) => ({ ...video, status: "not_started" }))]);
       setUrl("");
-      setMessage("Video added to your learning path.");
+      setMessage(result.kind === "playlist"
+        ? `${result.videos.length} ${result.videos.length === 1 ? "video" : "videos"} added from the playlist.`
+        : "Video added to your learning path.");
       router.refresh();
     } catch (reason) {
-      setError(reason instanceof Error ? reason.message : "Could not add video.");
+      setError(reason instanceof Error ? reason.message : "Could not add videos.");
     } finally {
       setBusy("");
     }
@@ -152,11 +156,11 @@ export default function LearningPathEditor({
 
       <section className="learning-path-add-videos">
         <div className="eyebrow"><span className="eyebrow-dot" /> BUILD YOUR SEQUENCE</div>
-        <h2>Add videos one by one</h2>
-        <p>Paste a YouTube video link. Each video is added to the end of your path.</p>
-        <form onSubmit={addVideo}>
-          <input type="url" aria-label="YouTube video URL" value={url} onChange={(event) => setUrl(event.target.value)} placeholder="https://www.youtube.com/watch?v=..." required />
-          <button type="submit" disabled={busy !== ""}>{busy === "add" ? "Adding..." : "Add video"} <span aria-hidden="true">+</span></button>
+        <h2>Add videos or a playlist</h2>
+        <p>Paste a YouTube video or playlist link. Playlist videos are added in order to the end of your path.</p>
+        <form onSubmit={addVideos}>
+          <input type="url" aria-label="YouTube video or playlist URL" value={url} onChange={(event) => setUrl(event.target.value)} placeholder="https://www.youtube.com/watch?v=... or /playlist?list=..." required />
+          <button type="submit" disabled={busy !== ""}>{busy === "add" ? "Adding..." : "Add to path"} <span aria-hidden="true">+</span></button>
         </form>
       </section>
       {error && <p className="inline-feedback" role="alert">{error}</p>}

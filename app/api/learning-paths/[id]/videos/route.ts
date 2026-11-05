@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
-import { fetchSingleVideo, parseYoutubeInput } from "@/lib/youtube";
+import { fetchPlaylist, fetchSingleVideo, parseYoutubeInput } from "@/lib/youtube";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -13,8 +13,8 @@ export async function POST(request: Request, { params }: RouteContext) {
   const body: unknown = await request.json().catch(() => null);
   const url = body && typeof body === "object" && "url" in body && typeof body.url === "string" ? body.url.trim() : "";
   const parsed = parseYoutubeInput(url);
-  if (!parsed || parsed.kind !== "video") {
-    return NextResponse.json({ error: "Paste a YouTube video link, not a playlist link." }, { status: 400 });
+  if (!parsed) {
+    return NextResponse.json({ error: "Paste a valid YouTube video or playlist link." }, { status: 400 });
   }
 
   const { data: path, error: pathError } = await supabase.from("user_learning_paths")
@@ -29,35 +29,61 @@ export async function POST(request: Request, { params }: RouteContext) {
     .select("video_id", { count: "exact", head: true })
     .eq("path_id", pathId);
   if (countError) return NextResponse.json({ error: countError.message }, { status: 500 });
-  if ((count ?? 0) >= 200) return NextResponse.json({ error: "A learning path can contain up to 200 videos." }, { status: 400 });
 
   try {
-    const ytVideo = (await fetchSingleVideo(parsed.id)).videos[0];
-    if (!ytVideo) return NextResponse.json({ error: "This YouTube video is unavailable." }, { status: 422 });
+    const source = parsed.kind === "playlist"
+      ? await fetchPlaylist(parsed.id)
+      : await fetchSingleVideo(parsed.id);
+    const uniqueVideos = [...new Map(source.videos.map((video) => [video.youtubeVideoId, video])).values()];
+    if (uniqueVideos.length === 0) {
+      return NextResponse.json({ error: parsed.kind === "playlist" ? "No available videos were found in this playlist." : "This YouTube video is unavailable." }, { status: 422 });
+    }
 
     const admin = createAdminClient();
-    const { data: savedVideo, error: videoError } = await admin.from("videos")
-      .upsert({
-        youtube_video_id: ytVideo.youtubeVideoId,
-        title: ytVideo.title,
-        thumbnail_url: ytVideo.thumbnailUrl,
-        duration_seconds: ytVideo.durationSeconds,
-        embeddable: ytVideo.embeddable,
-      }, { onConflict: "youtube_video_id" })
-      .select("id")
-      .single();
-    if (videoError || !savedVideo) throw new Error(videoError?.message ?? "Could not save video details.");
+    const { data: savedVideos, error: videoError } = await admin.from("videos")
+      .upsert(uniqueVideos.map((video) => ({
+        youtube_video_id: video.youtubeVideoId,
+        title: video.title,
+        thumbnail_url: video.thumbnailUrl,
+        duration_seconds: video.durationSeconds,
+        embeddable: video.embeddable,
+      })), { onConflict: "youtube_video_id" })
+      .select("id, youtube_video_id");
+    if (videoError) throw new Error(videoError.message);
+
+    const idByYoutubeId = new Map((savedVideos ?? []).map((video) => [video.youtube_video_id, video.id]));
+    const savedItems = uniqueVideos.flatMap((video) => {
+      const id = idByYoutubeId.get(video.youtubeVideoId);
+      return id ? [{ video, id }] : [];
+    });
+    if (savedItems.length !== uniqueVideos.length) throw new Error("Could not save all playlist videos.");
 
     const { data: existing, error: existingError } = await supabase.from("user_learning_path_videos")
       .select("video_id")
       .eq("path_id", pathId)
-      .eq("video_id", savedVideo.id)
-      .maybeSingle();
+      .in("video_id", savedItems.map((item) => item.id));
     if (existingError) throw new Error(existingError.message);
-    if (existing) return NextResponse.json({ error: "This video is already in your path." }, { status: 409 });
+    const existingIds = new Set((existing ?? []).map((item) => item.video_id));
+    const newItems = savedItems.filter((item) => !existingIds.has(item.id));
+    if (newItems.length === 0) {
+      return NextResponse.json({
+        error: parsed.kind === "playlist" ? "All videos in this playlist are already in your path." : "This video is already in your path.",
+      }, { status: 409 });
+    }
+    if ((count ?? 0) + newItems.length > 200) {
+      return NextResponse.json({ error: "A learning path can contain up to 200 videos. Remove some videos before adding this playlist." }, { status: 400 });
+    }
 
+    const videos = newItems.map(({ video, id }, index) => ({
+      id,
+      title: video.title,
+      thumbnail_url: video.thumbnailUrl,
+      duration_seconds: video.durationSeconds,
+      embeddable: video.embeddable,
+      position: (count ?? 0) + index,
+    }));
     const { error: insertError } = await supabase.from("user_learning_path_videos")
-      .insert({ path_id: pathId, video_id: savedVideo.id, position: count ?? 0 });
+      .insert(videos.map((video) => ({ path_id: pathId, video_id: video.id, position: video.position })));
     if (insertError) throw new Error(insertError.message);
 
     const { error: updateError } = await supabase.from("user_learning_paths")
@@ -66,32 +92,17 @@ export async function POST(request: Request, { params }: RouteContext) {
       .eq("user_id", user.id);
     if (updateError) {
       return NextResponse.json({
-        error: `Video was added, but path update time could not be saved: ${updateError.message}`,
+        error: `Videos were added, but path update time could not be saved: ${updateError.message}`,
         changed: true,
-        video: {
-          id: savedVideo.id,
-          title: ytVideo.title,
-          thumbnail_url: ytVideo.thumbnailUrl,
-          duration_seconds: ytVideo.durationSeconds,
-          embeddable: ytVideo.embeddable,
-          position: count ?? 0,
-        },
+        videos,
+        kind: parsed.kind,
       }, { status: 500 });
     }
-    return NextResponse.json({
-      video: {
-        id: savedVideo.id,
-        title: ytVideo.title,
-        thumbnail_url: ytVideo.thumbnailUrl,
-        duration_seconds: ytVideo.durationSeconds,
-        embeddable: ytVideo.embeddable,
-        position: count ?? 0,
-      },
-    }, { status: 201 });
+    return NextResponse.json({ videos, kind: parsed.kind }, { status: 201 });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Could not add video.";
+    const message = error instanceof Error ? error.message : "Could not add videos.";
     const friendly = /not found or private/i.test(message)
-      ? "Video not found or private. Check the YouTube link and try again."
+      ? `${parsed.kind === "playlist" ? "Playlist" : "Video"} not found or private. Check the YouTube link and try again.`
       : /YOUTUBE_API_KEY/i.test(message)
         ? "YouTube API key is not configured."
         : message;

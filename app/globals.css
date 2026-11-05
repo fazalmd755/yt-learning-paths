@@ -1310,8 +1310,10 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
 .watch-player .rounded-md.bg-stone-900 { background: var(--primary); }
 .watch-player .border-stone-300 { border-color: #45494e; }
 .watch-pagination a, .watch-pagination span { color: #e1e3e5; font-size: 13px; }
+.watch-pagination .watch-prev, .watch-pagination .watch-next { border-color: #383c41; background: #222529; color: #e1e3e5; transition: border-color .16s, background .16s, color .16s; }
 .watch-pagination small { color: #aeb2b6; font-size: 10px; }
-.watch-pagination a:hover { color: var(--secondary); }
+.watch-pagination .watch-prev:hover, .watch-pagination .watch-next:hover { border-color: #626d50; background: #292d31; color: #f2f3f4; }
+.watch-pagination .watch-prev:focus-visible, .watch-pagination .watch-next:focus-visible { outline: 3px solid rgba(0,164,212,.45); outline-offset: 2px; }
 .watch-pagination .watch-course-finish { border-color: #53633a; background: #303a29; color: #d3eba6; }
 .watch-pagination .watch-course-finish:hover { border-color: #6a8141; background: #3a472d; color: #eff8d7; }
 
