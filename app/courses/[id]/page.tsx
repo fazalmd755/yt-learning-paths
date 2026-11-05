@@ -55,6 +55,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
 
   const done = videos.filter((v) => v.status === "completed").length;
   const totalSeconds = videos.reduce((s, v) => s + (v.duration_seconds ?? 0), 0);
+  const remainingSeconds = videos.filter((v) => v.status !== "completed").reduce((s, v) => s + (v.duration_seconds ?? 0), 0);
   const lastId = (courseRow as any).last_video_id as string | null;
   const lastPending = lastId && statusByVideo.get(lastId) !== "completed" ? lastId : null;
   const nextVideo = lastPending ?? videos.find((v) => v.status !== "completed")?.id ?? videos[0]?.id;
@@ -75,7 +76,15 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
           <div className="eyebrow"><span className="eyebrow-dot" /> COURSE OVERVIEW</div>
           <h1>{playlist.title}</h1>
           <p>{playlist.channel_title || "YouTube course"}</p>
-          <div className="course-detail-stats"><span><strong>{videos.length}</strong> videos</span><i /><span><strong>{formatDuration(totalSeconds)}</strong> total</span><i /><span><strong>{done}</strong> complete</span></div>
+          <div className="course-detail-stats">
+            <span><strong>{videos.length}</strong> videos</span>
+            <i />
+            <span><strong>{formatDuration(totalSeconds)}</strong> total</span>
+            <i />
+            <span><strong>{formatDuration(remainingSeconds)}</strong> left</span>
+            <i />
+            <span><strong>{done}</strong> complete</span>
+          </div>
           <div className="detail-progress-row"><span>YOUR PROGRESS</span><strong>{videos.length ? Math.round((done / videos.length) * 100) : 0}%</strong></div>
           <ProgressBar value={videos.length ? (done / videos.length) * 100 : 0} className="detail-progress" />
           <div className="course-detail-action">

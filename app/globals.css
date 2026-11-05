@@ -1656,3 +1656,120 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   .learning-path-video-item .video-row { flex-wrap: wrap; }
   .learning-path-video-actions { width: 100%; justify-content: flex-end; padding-left: 46px; }
 }
+
+
+/* Player shortcuts hint */
+.player-shortcuts-hint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #2f343a;
+  color: #8c9298;
+  font-size: 11px;
+}
+.player-shortcuts-hint kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid #454b51;
+  border-radius: 4px;
+  background: #1a1d21;
+  color: #cfd2d6;
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* Video notes enhanced tools */
+.video-note-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.video-note-export-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  border: 1px solid #454b51;
+  border-radius: 5px;
+  background: #252a2e;
+  padding: 0 9px;
+  color: #c9ccd0;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  transition: all .15s ease;
+}
+.video-note-export-btn:hover {
+  border-color: #6a7d3b;
+  background: #2b3137;
+  color: #d8f58c;
+}
+.video-note-time-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.video-note-time-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.video-note-time-input-wrap input {
+  width: 78px;
+  flex: none;
+}
+.video-note-capture-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  height: 37px;
+  border: 1px solid #454b51;
+  border-radius: 5px;
+  background: #252a2e;
+  padding: 0 8px;
+  color: #a3d12f;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: all .15s ease;
+}
+.video-note-capture-btn:hover {
+  border-color: #7d8f48;
+  background: #2f363b;
+  color: #eff8d7;
+}
+
+/* Drag and Drop styling in LearningPathEditor */
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 30px;
+  color: #6a7178;
+  cursor: grab;
+  font-size: 13px;
+  user-select: none;
+  transition: color .15s ease;
+}
+.drag-handle:hover {
+  color: #d1d4d8;
+}
+.learning-path-video-item {
+  transition: background .15s ease, border-color .15s ease, opacity .15s ease;
+}
+.learning-path-video-item.dragging {
+  opacity: .4;
+  border-style: dashed;
+  border-color: #7d8f48;
+}
+.learning-path-video-item.drag-over {
+  border-color: var(--secondary);
+  background: rgba(0, 164, 212, 0.08);
+}

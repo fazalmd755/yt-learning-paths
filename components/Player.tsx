@@ -149,6 +149,43 @@ export default function Player({
       }, 1000);
     });
 
+    // Expose position getter for VideoNotes and other widgets
+    if (typeof window !== "undefined") {
+      (window as any).__watchifyGetCurrentTime = () => position();
+    }
+
+    const onKeyDown = (e: KeyboardEvent) => {
+      const activeTag = (document.activeElement?.tagName || "").toLowerCase();
+      if (activeTag === "input" || activeTag === "textarea" || (document.activeElement as HTMLElement)?.isContentEditable) {
+        return;
+      }
+      const p = playerRef.current;
+      if (!p || typeof p.getPlayerState !== "function") return;
+
+      if (e.code === "Space" || e.key === "k" || e.key === "K") {
+        e.preventDefault();
+        const s = p.getPlayerState();
+        if (s === 1) {
+          p.pauseVideo();
+        } else {
+          p.playVideo();
+        }
+      } else if (e.code === "ArrowLeft" || e.key === "j" || e.key === "J") {
+        e.preventDefault();
+        p.seekTo(Math.max(0, position() - 5), true);
+      } else if (e.code === "ArrowRight" || e.key === "l" || e.key === "L") {
+        e.preventDefault();
+        p.seekTo(position() + 5, true);
+      } else if (e.key === "m" || e.key === "M") {
+        e.preventDefault();
+        if (typeof p.isMuted === "function") {
+          if (p.isMuted()) p.unMute();
+          else p.mute();
+        }
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+
     const onHide = () => {
       if (document.visibilityState === "hidden") {
         if (playingRef.current) tick();
@@ -163,6 +200,10 @@ export default function Player({
       if (interval) clearInterval(interval);
       document.removeEventListener("visibilitychange", onHide);
       window.removeEventListener("pagehide", onHide);
+      window.removeEventListener("keydown", onKeyDown);
+      if (typeof window !== "undefined") {
+        delete (window as any).__watchifyGetCurrentTime;
+      }
       if (playingRef.current) tick();
       flush(true);
       try {
@@ -213,6 +254,12 @@ export default function Player({
             Next video →
           </Link>
         )}
+      </div>
+
+      <div className="player-shortcuts-hint">
+        <span><kbd>Space</kbd> Play/Pause</span>
+        <span><kbd>←</kbd> <kbd>→</kbd> Seek 5s</span>
+        <span><kbd>M</kbd> Mute</span>
       </div>
     </div>
   );
