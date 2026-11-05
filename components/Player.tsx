@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import ScheduleLessonModal from "./ScheduleLessonModal";
 import { createClient } from "@/lib/supabase/client";
 
 declare global {
@@ -21,7 +23,11 @@ type Props = {
   embeddable: boolean;
   initialStatus: string;
   nextHref: string | null;
+  videoTitle?: string;
+  courseTitle?: string;
 };
+
+const SPEEDS = [0.75, 1, 1.25, 1.5, 1.75, 2];
 
 let ytPromise: Promise<any> | null = null;
 function loadYT(): Promise<any> {
@@ -51,14 +57,74 @@ export default function Player({
   embeddable,
   initialStatus,
   nextHref,
+  videoTitle = "Lesson",
+  courseTitle = "Course",
 }: Props) {
+  const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
   const mountRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<any>(null);
-  const accRef = useRef(0); // abhi tak ka unsaved ACTUAL play time (seconds)
+  const accRef = useRef(0); // unsaved ACTUAL play time (seconds)
   const lastTickRef = useRef(0);
   const playingRef = useRef(false);
   const [status, setStatus] = useState(initialStatus);
+
+  // Enhancements: Playback speed, autoplay next, shortcuts modal, schedule modal
+  const [speed, setSpeed] = useState(1);
+  const [autoplayNext, setAutoplayNext] = useState(false);
+  const autoplayNextRef = useRef(autoplayNext);
+  autoplayNextRef.current = autoplayNext;
+
+  const [autoplayCountdown, setAutoplayCountdown] = useState<number | null>(null);
+  const [showShortcuts, setShowShortcuts] = useState(false);
+  const [showSchedule, setShowSchedule] = useState(false);
+
+  useEffect(() => {
+    try {
+      const savedSpeed = localStorage.getItem("watchify_speed");
+      if (savedSpeed && SPEEDS.includes(Number(savedSpeed))) {
+        setSpeed(Number(savedSpeed));
+      }
+      const savedAutoplay = localStorage.getItem("watchify_autoplay_next");
+      if (savedAutoplay !== null) {
+        setAutoplayNext(savedAutoplay === "true");
+      }
+    } catch {}
+  }, []);
+
+  const changeSpeed = useCallback((newSpeed: number) => {
+    setSpeed(newSpeed);
+    try {
+      localStorage.setItem("watchify_speed", String(newSpeed));
+    } catch {}
+    const p = playerRef.current;
+    if (p && typeof p.setPlaybackRate === "function") {
+      p.setPlaybackRate(newSpeed);
+    }
+  }, []);
+
+  const toggleAutoplay = useCallback(() => {
+    setAutoplayNext((prev) => {
+      const next = !prev;
+      try {
+        localStorage.setItem("watchify_autoplay_next", String(next));
+      } catch {}
+      return next;
+    });
+  }, []);
+
+  // Countdown handler for autoplay next
+  useEffect(() => {
+    if (autoplayCountdown === null) return;
+    if (autoplayCountdown <= 0) {
+      if (nextHref) router.push(nextHref);
+      return;
+    }
+    const timer = setTimeout(() => {
+      setAutoplayCountdown((prev) => (prev !== null ? prev - 1 : null));
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [autoplayCountdown, nextHref, router]);
 
   const position = () => {
     const p = playerRef.current;
@@ -67,7 +133,6 @@ export default function Player({
 
   const tick = useCallback(() => {
     const now = Date.now();
-    // Ek tick mein max 2s: tab throttle ho to bhi time inflate nahi hoga
     accRef.current += Math.min((now - lastTickRef.current) / 1000, 2);
     lastTickRef.current = now;
   }, []);
@@ -83,7 +148,7 @@ export default function Player({
         p_seconds: seconds,
         p_duration: durationSeconds,
       });
-      if (error) accRef.current += seconds; // agli baar dobara try hoga
+      if (error) accRef.current += seconds;
       else if (seconds > 0) setStatus((s) => (s === "not_started" ? "in_progress" : s));
     },
     [supabase, videoId, durationSeconds]
@@ -120,6 +185,12 @@ export default function Player({
         height: "100%",
         playerVars: { start: startAt, rel: 0, playsinline: 1 },
         events: {
+          onReady: (e: any) => {
+            const savedSpeed = Number(localStorage.getItem("watchify_speed") || "1");
+            if (savedSpeed && typeof e.target.setPlaybackRate === "function") {
+              e.target.setPlaybackRate(savedSpeed);
+            }
+          },
           onStateChange: (e: any) => {
             const S = YT.PlayerState;
             if (e.data === S.PLAYING) {
@@ -136,7 +207,12 @@ export default function Player({
               if (playingRef.current) tick();
               playingRef.current = false;
               if (e.data === S.PAUSED || e.data === S.ENDED) flush(true);
-              if (e.data === S.ENDED) markComplete();
+              if (e.data === S.ENDED) {
+                markComplete();
+                if (autoplayNextRef.current && nextHref) {
+                  setAutoplayCountdown(5);
+                }
+              }
             }
           },
         },
@@ -149,7 +225,6 @@ export default function Player({
       }, 1000);
     });
 
-    // Expose position getter & seek function for VideoNotes and VideoDescription
     if (typeof window !== "undefined") {
       (window as any).__watchifyGetCurrentTime = () => position();
       (window as any).__watchifySeekTo = (sec: number) => {
@@ -165,6 +240,18 @@ export default function Player({
       if (activeTag === "input" || activeTag === "textarea" || (document.activeElement as HTMLElement)?.isContentEditable) {
         return;
       }
+
+      if (e.key === "?" || (e.shiftKey && e.key === "/")) {
+        e.preventDefault();
+        setShowShortcuts((prev) => !prev);
+        return;
+      }
+      if (e.key === "Escape") {
+        setShowShortcuts(false);
+        setAutoplayCountdown(null);
+        return;
+      }
+
       const p = playerRef.current;
       if (!p || typeof p.getPlayerState !== "function") return;
 
@@ -187,6 +274,18 @@ export default function Player({
         if (typeof p.isMuted === "function") {
           if (p.isMuted()) p.unMute();
           else p.mute();
+        }
+      } else if (e.key === ">" || (e.shiftKey && e.key === ".")) {
+        e.preventDefault();
+        const currentIndex = SPEEDS.indexOf(speed);
+        if (currentIndex < SPEEDS.length - 1) {
+          changeSpeed(SPEEDS[currentIndex + 1]);
+        }
+      } else if (e.key === "<" || (e.shiftKey && e.key === ",")) {
+        e.preventDefault();
+        const currentIndex = SPEEDS.indexOf(speed);
+        if (currentIndex > 0) {
+          changeSpeed(SPEEDS[currentIndex - 1]);
         }
       }
     };
@@ -219,10 +318,41 @@ export default function Player({
       playerRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [embeddable, youtubeId, videoId, courseId]);
+  }, [embeddable, youtubeId, videoId, courseId, nextHref, changeSpeed]);
 
   return (
-    <div>
+    <div className="player-container">
+      {/* Autoplay Countdown Overlay */}
+      {autoplayCountdown !== null && nextHref && (
+        <div className="autoplay-countdown-banner">
+          <div className="autoplay-countdown-info">
+            <span className="autoplay-spinner" />
+            <span>
+              Next lesson starting in <strong>{autoplayCountdown}s</strong>...
+            </span>
+          </div>
+          <div className="autoplay-countdown-buttons">
+            <button
+              type="button"
+              onClick={() => {
+                setAutoplayCountdown(null);
+                router.push(nextHref);
+              }}
+              className="autoplay-now-btn"
+            >
+              Play Now →
+            </button>
+            <button
+              type="button"
+              onClick={() => setAutoplayCountdown(null)}
+              className="autoplay-cancel-btn"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
       {embeddable ? (
         <div className="aspect-video w-full overflow-hidden rounded-lg bg-black" ref={mountRef} />
       ) : (
@@ -242,32 +372,140 @@ export default function Player({
         </div>
       )}
 
-      <div className="mt-3 flex flex-wrap items-center gap-3">
-        {status === "completed" ? (
-          <span className="watch-complete-badge">Complete ✓</span>
-        ) : (
+      {/* Main Player Action Bar */}
+      <div className="player-action-bar">
+        <div className="player-action-left">
+          {status === "completed" ? (
+            <span className="watch-complete-badge">Complete ✓</span>
+          ) : (
+            <button onClick={markComplete} className="watch-mark-complete">
+              Mark as complete
+            </button>
+          )}
+
+          {nextHref && (
+            <Link href={nextHref} className="watch-next-button">
+              Next video →
+            </Link>
+          )}
+
           <button
-            onClick={markComplete}
-            className="watch-mark-complete"
+            type="button"
+            onClick={() => setShowSchedule(true)}
+            className="player-schedule-btn"
+            title="Schedule this lesson in your study planner"
           >
-            Mark as complete
+            <span aria-hidden="true">📅</span> Schedule
           </button>
-        )}
-        {nextHref && (
-          <Link
-            href={nextHref}
-            className="watch-next-button"
+        </div>
+
+        <div className="player-action-right">
+          {/* Speed Selector */}
+          <div className="player-speed-picker">
+            <span className="player-speed-label">Speed:</span>
+            <div className="player-speed-options">
+              {SPEEDS.map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => changeSpeed(s)}
+                  className={`player-speed-btn ${speed === s ? "player-speed-btn-active" : ""}`}
+                >
+                  {s}x
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Autoplay Next Toggle */}
+          <button
+            type="button"
+            onClick={toggleAutoplay}
+            className={`player-autoplay-toggle ${autoplayNext ? "player-autoplay-active" : ""}`}
+            title={autoplayNext ? "Autoplay next lesson is ON" : "Autoplay next lesson is OFF"}
           >
-            Next video →
-          </Link>
-        )}
+            <span className="player-autoplay-indicator" />
+            <span>Autoplay</span>
+          </button>
+
+          {/* Shortcuts Help Button */}
+          <button
+            type="button"
+            onClick={() => setShowShortcuts(true)}
+            className="player-shortcuts-modal-btn"
+            title="Keyboard shortcuts (?)"
+            aria-label="View keyboard shortcuts"
+          >
+            ?
+          </button>
+        </div>
       </div>
 
       <div className="player-shortcuts-hint">
         <span><kbd>Space</kbd> Play/Pause</span>
         <span><kbd>←</kbd> <kbd>→</kbd> Seek 5s</span>
+        <span><kbd>&lt;</kbd> <kbd>&gt;</kbd> Speed</span>
         <span><kbd>M</kbd> Mute</span>
+        <span><kbd>?</kbd> All Shortcuts</span>
       </div>
+
+      {/* Keyboard Shortcuts Dialog */}
+      {showShortcuts && (
+        <div className="shortcuts-modal-backdrop" onClick={() => setShowShortcuts(false)}>
+          <div className="shortcuts-modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="shortcuts-modal-header">
+              <h3>Keyboard Shortcuts</h3>
+              <button
+                type="button"
+                onClick={() => setShowShortcuts(false)}
+                className="shortcuts-modal-close"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="shortcuts-modal-grid">
+              <div className="shortcut-row">
+                <span>Play / Pause</span>
+                <span><kbd>Space</kbd> or <kbd>K</kbd></span>
+              </div>
+              <div className="shortcut-row">
+                <span>Rewind 5 seconds</span>
+                <span><kbd>←</kbd> or <kbd>J</kbd></span>
+              </div>
+              <div className="shortcut-row">
+                <span>Fast-forward 5 seconds</span>
+                <span><kbd>→</kbd> or <kbd>L</kbd></span>
+              </div>
+              <div className="shortcut-row">
+                <span>Increase Playback Speed</span>
+                <span><kbd>&gt;</kbd> (Shift + .)</span>
+              </div>
+              <div className="shortcut-row">
+                <span>Decrease Playback Speed</span>
+                <span><kbd>&lt;</kbd> (Shift + ,)</span>
+              </div>
+              <div className="shortcut-row">
+                <span>Mute / Unmute</span>
+                <span><kbd>M</kbd></span>
+              </div>
+              <div className="shortcut-row">
+                <span>Toggle Shortcuts Help</span>
+                <span><kbd>?</kbd></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Schedule Lesson Modal */}
+      <ScheduleLessonModal
+        isOpen={showSchedule}
+        onClose={() => setShowSchedule(false)}
+        userId={userId}
+        videoTitle={videoTitle}
+        watchUrl={typeof window !== "undefined" ? window.location.pathname : `/watch/${courseId}/${videoId}`}
+        courseTitle={courseTitle}
+      />
     </div>
   );
 }

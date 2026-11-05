@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
@@ -182,10 +181,16 @@ export default function VideoNotes({
         </div>
 
         <label className="video-note-content">
-          Note
+          <span>Note <small>(Press Ctrl+Enter to save)</small></span>
           <textarea
             value={content}
             onChange={(event) => setContent(event.target.value)}
+            onKeyDown={(event) => {
+              if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+                event.preventDefault();
+                event.currentTarget.form?.requestSubmit();
+              }
+            }}
             placeholder="Write down a key idea, formula, or question..."
             maxLength={5000}
             required
@@ -205,13 +210,19 @@ export default function VideoNotes({
         <ol className="video-note-list">
           {notes.map((note) => (
             <li className="video-note-item" key={note.id}>
-              <Link
+              <button
+                type="button"
                 className="video-note-time"
-                href={`${watchBaseHref ?? `/watch/${courseId}`}/${videoId}?t=${note.timestamp_seconds}`}
+                onClick={() => {
+                  if (typeof window !== "undefined" && typeof (window as any).__watchifySeekTo === "function") {
+                    (window as any).__watchifySeekTo(note.timestamp_seconds);
+                  }
+                }}
+                title={`Jump video to ${formatTime(note.timestamp_seconds)}`}
                 aria-label={`Jump to ${formatTime(note.timestamp_seconds)}`}
               >
                 <span aria-hidden="true">▶</span> {formatTime(note.timestamp_seconds)}
-              </Link>
+              </button>
               <p>{note.content}</p>
               <button
                 type="button"

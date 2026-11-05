@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { removeCourse } from "@/app/dashboard/actions";
+import CourseLessonScheduleButton from "@/components/CourseLessonScheduleButton";
+import CourseNotesExport, { type ExportableNote } from "@/components/CourseNotesExport";
 import ProgressBar from "@/components/ProgressBar";
+import SyncPlaylistButton from "@/components/SyncPlaylistButton";
 import { createClient } from "@/lib/supabase/server";
 import { formatDuration } from "@/lib/utils";
 
@@ -16,12 +19,21 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: courseRow } = await supabase
-    .from("user_courses")
-    .select("id, last_video_id, playlist:playlists(id, title, channel_title, thumbnail_url)")
-    .eq("id", id)
-    .eq("user_id", user.id)
-    .maybeSingle();
+  const [courseRes, profileRes] = await Promise.all([
+    supabase
+      .from("user_courses")
+      .select("id, last_video_id, playlist:playlists(id, youtube_playlist_id, title, channel_title, thumbnail_url)")
+      .eq("id", id)
+      .eq("user_id", user.id)
+      .maybeSingle(),
+    supabase
+      .from("profiles")
+      .select("daily_goal_minutes")
+      .eq("id", user.id)
+      .maybeSingle(),
+  ]);
+
+  const courseRow = courseRes.data;
   if (!courseRow) notFound();
 
   const playlist = one<any>((courseRow as any).playlist);
@@ -37,14 +49,25 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
     .limit(10000);
 
   const videoIds = [...new Set((links ?? []).map((link) => link.video_id))];
-  const { data: progress } = videoIds.length
-    ? await supabase
-        .from("video_progress")
-        .select("video_id, status, last_position")
-        .eq("user_id", user.id)
-        .in("video_id", videoIds)
-        .limit(10000)
-    : { data: [] };
+
+  const [{ data: progress }, { data: notesData }] = await Promise.all([
+    videoIds.length
+      ? supabase
+          .from("video_progress")
+          .select("video_id, status, last_position")
+          .eq("user_id", user.id)
+          .in("video_id", videoIds)
+          .limit(10000)
+      : Promise.resolve({ data: [] }),
+    videoIds.length
+      ? supabase
+          .from("video_notes")
+          .select("id, video_id, timestamp_seconds, content, created_at")
+          .eq("user_id", user.id)
+          .in("video_id", videoIds)
+          .order("timestamp_seconds", { ascending: true })
+      : Promise.resolve({ data: [] }),
+  ]);
 
   const statusByVideo = new Map<string, string>();
   for (const p of (progress ?? []) as any[]) statusByVideo.set(p.video_id, p.status);
@@ -59,6 +82,35 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
   const lastId = (courseRow as any).last_video_id as string | null;
   const lastPending = lastId && statusByVideo.get(lastId) !== "completed" ? lastId : null;
   const nextVideo = lastPending ?? videos.find((v) => v.status !== "completed")?.id ?? videos[0]?.id;
+
+  // Prepare notes for export
+  const videoMetaMap = new Map<string, { title: string; position: number }>();
+  videos.forEach((v, idx) => {
+    videoMetaMap.set(v.id, { title: v.title, position: idx });
+  });
+
+  const exportableNotes: ExportableNote[] = (notesData ?? []).map((n: any) => {
+    const meta = videoMetaMap.get(n.video_id);
+    return {
+      videoTitle: meta?.title ?? "Lesson",
+      position: meta?.position ?? 0,
+      timestampSeconds: n.timestamp_seconds,
+      content: n.content,
+      createdAt: n.created_at,
+    };
+  });
+
+  // Calculate Estimated Completion Date (ETC)
+  const goalMinutes = profileRes.data?.daily_goal_minutes ?? 15;
+  const remainingMinutes = Math.ceil(remainingSeconds / 60);
+  const daysToFinish = goalMinutes > 0 ? Math.ceil(remainingMinutes / goalMinutes) : 0;
+  const targetDate = new Date();
+  targetDate.setDate(targetDate.getDate() + daysToFinish);
+  const formattedTargetDate = new Intl.DateTimeFormat("en", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  }).format(targetDate);
 
   return (
     <main className="course-page">
@@ -85,6 +137,24 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
             <i />
             <span><strong>{done}</strong> complete</span>
           </div>
+
+          {/* Estimated Course Completion Card */}
+          <div className="course-etc-banner">
+            <span className="etc-icon">🎯</span>
+            <div className="etc-copy">
+              <strong>
+                {done === videos.length && videos.length > 0
+                  ? "Course Completed! 🎉"
+                  : `Finish in ~${daysToFinish} ${daysToFinish === 1 ? "day" : "days"} (by ${formattedTargetDate})`}
+              </strong>
+              <span>
+                {done === videos.length && videos.length > 0
+                  ? "Great job finishing this playlist."
+                  : `Based on your daily goal of ${goalMinutes} mins/day (${formatDuration(remainingSeconds)} remaining).`}
+              </span>
+            </div>
+          </div>
+
           <div className="detail-progress-row"><span>YOUR PROGRESS</span><strong>{videos.length ? Math.round((done / videos.length) * 100) : 0}%</strong></div>
           <ProgressBar value={videos.length ? (done / videos.length) * 100 : 0} className="detail-progress" />
           <div className="course-detail-action">
@@ -101,38 +171,64 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
               </form>
             </div>
           </div>
+
+          {/* Course Utilities Toolbar */}
+          <div className="course-utilities-toolbar">
+            <CourseNotesExport
+              courseTitle={playlist.title}
+              channelTitle={playlist.channel_title}
+              notes={exportableNotes}
+            />
+            {playlist.youtube_playlist_id && (
+              <SyncPlaylistButton youtubePlaylistId={playlist.youtube_playlist_id} />
+            )}
+          </div>
         </div>
       </section>
 
       <section className="video-list-section">
-        <div className="video-list-heading"><div><div className="eyebrow"><span className="eyebrow-dot" /> THE COURSE</div><h2>Video lessons</h2></div><span>{videos.length} lessons</span></div>
-      <ol className="video-list">
-        {videos.map((v, i) => (
-          <li key={v.id} className="video-list-item">
-            <Link href={`/watch/${id}/${v.id}`} className="video-row">
-              <span className="video-index">{String(i + 1).padStart(2, "0")}</span>
-              {v.thumbnail_url ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={v.thumbnail_url} alt="" className="video-thumbnail" loading="lazy" decoding="async" />
-              ) : (
-                <div className="video-thumbnail video-thumbnail-empty"><span>▶</span></div>
-              )}
-              <div className="video-row-copy">
-                <p>{v.title}</p>
-                <span>{formatDuration(v.duration_seconds ?? 0)}{v.embeddable === false && " · Watch on YouTube"}</span>
-              </div>
-              <span className={`video-status video-status-${v.status}`}>
-                {v.status === "completed"
-                  ? "Complete"
-                  : v.status === "in_progress"
-                    ? "In progress"
-                    : "Not started"}
-              </span>
-              <span className="video-row-arrow" aria-hidden="true">→</span>
-            </Link>
-          </li>
-        ))}
-      </ol>
+        <div className="video-list-heading">
+          <div>
+            <div className="eyebrow"><span className="eyebrow-dot" /> THE COURSE</div>
+            <h2>Video lessons</h2>
+          </div>
+          <span>{videos.length} lessons</span>
+        </div>
+        <ol className="video-list">
+          {videos.map((v, i) => (
+            <li key={v.id} className="video-list-item">
+              <Link href={`/watch/${id}/${v.id}`} className="video-row">
+                <span className="video-index">{String(i + 1).padStart(2, "0")}</span>
+                {v.thumbnail_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={v.thumbnail_url} alt="" className="video-thumbnail" loading="lazy" decoding="async" />
+                ) : (
+                  <div className="video-thumbnail video-thumbnail-empty"><span>▶</span></div>
+                )}
+                <div className="video-row-copy">
+                  <p>{v.title}</p>
+                  <span>{formatDuration(v.duration_seconds ?? 0)}{v.embeddable === false && " · Watch on YouTube"}</span>
+                </div>
+                <div className="video-row-actions" onClick={(e) => e.stopPropagation()}>
+                  <CourseLessonScheduleButton
+                    userId={user.id}
+                    videoTitle={v.title}
+                    courseTitle={playlist.title}
+                    watchUrl={`/watch/${id}/${v.id}`}
+                  />
+                  <span className={`video-status video-status-${v.status}`}>
+                    {v.status === "completed"
+                      ? "Complete"
+                      : v.status === "in_progress"
+                        ? "In progress"
+                        : "Not started"}
+                  </span>
+                </div>
+                <span className="video-row-arrow" aria-hidden="true">→</span>
+              </Link>
+            </li>
+          ))}
+        </ol>
       </section>
     </main>
   );

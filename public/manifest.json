@@ -1,0 +1,16 @@
+{
+  "name": "Watchify - YouTube Learning Paths",
+  "short_name": "Watchify",
+  "description": "Turn YouTube playlists and videos into structured courses with progress tracking, notes, and study planner.",
+  "start_url": "/dashboard",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4b4b4d",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

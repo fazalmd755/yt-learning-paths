@@ -8,7 +8,7 @@ export default function ProgressBar({ value, className = "" }: { value: number; 
       aria-valuemin={0}
       aria-valuemax={100}
     >
-      <div className="h-full rounded-full bg-stone-900 transition-all" style={{ width: `${pct}%` }} />
+      <div className="h-full rounded-full bg-stone-900 transition-all duration-500 ease-out" style={{ width: `${pct}%` }} />
     </div>
   );
 }

@@ -108,6 +108,8 @@ export default async function LearningPathWatchPage({
             embeddable={video.embeddable !== false}
             initialStatus={progress?.status ?? "not_started"}
             nextHref={nextVideo ? `${watchPath}/${nextVideo.id}` : null}
+            videoTitle={video.title}
+            courseTitle={path.title}
           />
           <VideoDescription description={description} />
         </div>

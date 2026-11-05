@@ -8,6 +8,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Watchify | Study with intention",
   description: "Watchify turns YouTube playlists into learning paths with progress tracking, study planning and timestamped notes.",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

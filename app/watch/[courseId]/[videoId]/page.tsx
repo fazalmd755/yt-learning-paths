@@ -25,7 +25,7 @@ export default async function WatchPage({
 
   const { data: course } = await supabase
     .from("user_courses")
-    .select("id, playlist_id")
+    .select("id, playlist_id, playlist:playlists(title)")
     .eq("id", courseId)
     .eq("user_id", user.id)
     .maybeSingle();
@@ -113,6 +113,8 @@ export default async function WatchPage({
             embeddable={video.embeddable !== false}
             initialStatus={progress?.status ?? "not_started"}
             nextHref={next ? `/watch/${courseId}/${next.id}` : null}
+            videoTitle={video.title}
+            courseTitle={one<any>(course?.playlist)?.title ?? "Course"}
           />
           <VideoDescription description={description} />
         </div>

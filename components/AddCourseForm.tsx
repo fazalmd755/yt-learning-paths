@@ -34,7 +34,7 @@ export default function AddCourseForm() {
 
   return (
     <form onSubmit={onSubmit} className="add-course-form">
-      <label htmlFor="course-url" className="course-url-label">YOUTUBE PLAYLIST YA VIDEO KA LINK</label>
+      <label htmlFor="course-url" className="course-url-label">PASTE A YOUTUBE PLAYLIST OR VIDEO LINK</label>
       <div className="course-url-row">
         <input
           id="course-url"

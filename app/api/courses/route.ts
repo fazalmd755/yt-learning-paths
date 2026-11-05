@@ -84,6 +84,7 @@ export async function POST(req: Request) {
   if (!user) return NextResponse.json({ error: "Please sign in first." }, { status: 401 });
 
   const body = await req.json().catch(() => ({}));
+  const refresh = Boolean(body?.refresh);
   const parsed = parseYoutubeInput(String(body?.url ?? ""));
   if (!parsed) {
     return NextResponse.json(
@@ -104,7 +105,7 @@ export async function POST(req: Request) {
 
     let playlistId: string | undefined = existing?.id;
     const stale =
-      !existing || Date.now() - new Date(existing.last_synced_at).getTime() > CACHE_MS;
+      refresh || !existing || Date.now() - new Date(existing.last_synced_at).getTime() > CACHE_MS;
 
     if (stale) {
       const yt =
