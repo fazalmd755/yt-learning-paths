@@ -193,19 +193,55 @@ export default function LearningPathEditor({
     }
   }
 
+  async function deletePath() {
+    if (!window.confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) {
+      return;
+    }
+    setBusy("delete");
+    setError("");
+    setMessage("");
+    try {
+      const response = await fetch(`/api/learning-paths/${pathId}`, {
+        method: "DELETE",
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error ?? "Could not delete learning path.");
+      }
+      router.push("/syllabus/select");
+      router.refresh();
+    } catch (reason) {
+      setError(reason instanceof Error ? reason.message : "Could not delete learning path.");
+      setBusy("");
+    }
+  }
+
   return (
     <div className="learning-path-editor">
-      <form className="learning-path-rename" onSubmit={renamePath}>
-        <label htmlFor="edit-path-title">Path name</label>
-        <input
-          id="edit-path-title"
-          value={title}
-          onChange={(event) => setTitle(event.target.value)}
-          maxLength={120}
-          required
-        />
-        <button type="submit" disabled={busy !== ""}>Save name</button>
-      </form>
+      <div className="learning-path-rename-wrap">
+        <form className="learning-path-rename" onSubmit={renamePath}>
+          <label htmlFor="edit-path-title">Path name</label>
+          <input
+            id="edit-path-title"
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+            maxLength={120}
+            required
+          />
+          <button type="submit" disabled={busy !== ""}>
+            {busy === "rename" ? "Saving..." : "Save name"}
+          </button>
+        </form>
+        <button
+          type="button"
+          onClick={deletePath}
+          disabled={busy !== ""}
+          className="learning-path-delete-btn"
+          title="Delete this learning path"
+        >
+          {busy === "delete" ? "Deleting..." : "Delete path"}
+        </button>
+      </div>
 
       <section className="learning-path-add-videos">
         <div className="eyebrow"><span className="eyebrow-dot" /> BUILD YOUR SEQUENCE</div>
@@ -322,6 +358,21 @@ export default function LearningPathEditor({
           </ol>
         )}
       </section>
+
+      <div className="learning-path-danger-card">
+        <div>
+          <h3>Danger Zone</h3>
+          <p>Delete &ldquo;{title}&rdquo; and all its sequenced videos permanently.</p>
+        </div>
+        <button
+          type="button"
+          onClick={deletePath}
+          disabled={busy !== ""}
+          className="learning-path-delete-btn"
+        >
+          {busy === "delete" ? "Deleting..." : "Delete learning path"}
+        </button>
+      </div>
     </div>
   );
 }

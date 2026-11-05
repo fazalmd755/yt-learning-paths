@@ -1773,3 +1773,178 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   border-color: var(--secondary);
   background: rgba(0, 164, 212, 0.08);
 }
+
+/* Video Description Styling */
+.video-description-card {
+  margin-top: 14px;
+  border: 1px solid #383c41;
+  border-radius: 8px;
+  background: #1c1f23;
+  padding: 14px 16px;
+  transition: all .2s ease;
+}
+.video-description-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 11px;
+}
+.video-description-label {
+  color: #aeb2b6;
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: .08em;
+}
+.video-description-channel {
+  color: #7cdaf2;
+  font-size: 11px;
+  font-weight: 600;
+}
+.video-description-body {
+  color: #d1d4d8;
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font-family: inherit;
+}
+.video-description-card.collapsed .video-description-body {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.video-description-link {
+  color: #00a4d4;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.video-description-link:hover {
+  color: #7cdaf2;
+}
+.video-description-time-btn {
+  display: inline-block;
+  background: #253941;
+  border: 1px solid #35535f;
+  border-radius: 4px;
+  color: #7cdaf2;
+  padding: 0 4px;
+  margin: 0 2px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  vertical-align: baseline;
+  transition: all .15s ease;
+}
+.video-description-time-btn:hover {
+  background: #2d4853;
+  border-color: #4a7587;
+  color: #aff0ff;
+}
+.video-description-toggle {
+  margin-top: 8px;
+  background: transparent;
+  border: 0;
+  color: #aeb2b6;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  transition: color .15s ease;
+}
+.video-description-toggle:hover {
+  color: #f2f3f4;
+}
+
+/* Learning Path Delete & Danger Zone */
+.learning-path-rename-wrap {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.learning-path-rename-wrap .learning-path-rename {
+  flex: 1;
+  min-width: 260px;
+}
+.learning-path-delete-btn {
+  height: 38px;
+  border: 1px solid #6b352b;
+  border-radius: 6px;
+  background: #2f1d19;
+  color: #ff9878;
+  padding: 0 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .15s ease;
+}
+.learning-path-delete-btn:hover:not(:disabled) {
+  border-color: #8c4234;
+  background: #3e241e;
+  color: #ffb8a2;
+}
+.learning-path-delete-btn:disabled {
+  opacity: .5;
+  cursor: wait;
+}
+.learning-path-danger-card {
+  margin-top: 24px;
+  border: 1px solid #4a2822;
+  border-radius: 8px;
+  background: #221a18;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.learning-path-danger-card h3 {
+  margin: 0 0 4px;
+  color: #ff9878;
+  font-size: 15px;
+}
+.learning-path-danger-card p {
+  margin: 0;
+  color: #b09e99;
+  font-size: 12px;
+}
+.learning-path-card-shell {
+  position: relative;
+  display: flex;
+}
+.learning-path-card-shell .learning-path-card {
+  flex: 1;
+  padding-right: 40px;
+}
+.learning-path-item-delete {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: transparent;
+  color: #8c9298;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: all .15s ease;
+  z-index: 2;
+}
+.learning-path-item-delete:hover:not(:disabled) {
+  border-color: #6b352b;
+  background: #2f1d19;
+  color: #ff9878;
+}
+.learning-path-item-delete:disabled {
+  opacity: .4;
+  cursor: wait;
+}

@@ -162,3 +162,18 @@ export async function fetchSingleVideo(videoId: string): Promise<YtPlaylist> {
     ],
   };
 }
+
+/** Video description fetch karta hai (with 24h caching) */
+export async function fetchVideoDescription(youtubeVideoId: string): Promise<string> {
+  const key = process.env.YOUTUBE_API_KEY;
+  if (!key) return "";
+  try {
+    const url = `${API}/videos?part=snippet&id=${encodeURIComponent(youtubeVideoId)}&key=${key}`;
+    const res = await fetch(url, { next: { revalidate: 86400 } });
+    if (!res.ok) return "";
+    const data = await res.json();
+    return data.items?.[0]?.snippet?.description ?? "";
+  } catch {
+    return "";
+  }
+}

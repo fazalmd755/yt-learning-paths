@@ -149,9 +149,15 @@ export default function Player({
       }, 1000);
     });
 
-    // Expose position getter for VideoNotes and other widgets
+    // Expose position getter & seek function for VideoNotes and VideoDescription
     if (typeof window !== "undefined") {
       (window as any).__watchifyGetCurrentTime = () => position();
+      (window as any).__watchifySeekTo = (sec: number) => {
+        const p = playerRef.current;
+        if (p && typeof p.seekTo === "function") {
+          p.seekTo(Math.max(0, sec), true);
+        }
+      };
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
@@ -203,6 +209,7 @@ export default function Player({
       window.removeEventListener("keydown", onKeyDown);
       if (typeof window !== "undefined") {
         delete (window as any).__watchifyGetCurrentTime;
+        delete (window as any).__watchifySeekTo;
       }
       if (playingRef.current) tick();
       flush(true);

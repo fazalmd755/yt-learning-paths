@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import Player from "@/components/Player";
+import VideoDescription from "@/components/VideoDescription";
 import VideoNotes from "@/components/VideoNotes";
 import { createClient } from "@/lib/supabase/server";
+import { fetchVideoDescription } from "@/lib/youtube";
 
 const one = <T,>(v: T | T[] | null | undefined): T | null =>
   Array.isArray(v) ? (v[0] ?? null) : (v ?? null);
@@ -47,7 +49,7 @@ export default async function WatchPage({
   const video = one<any>((currentLink as any).video);
   if (!video) notFound();
 
-  const [{ data: previousLink }, { data: nextLink }, { data: progress }, { data: notes, error: notesError }] = await Promise.all([
+  const [{ data: previousLink }, { data: nextLink }, { data: progress }, { data: notes, error: notesError }, description] = await Promise.all([
     supabase
       .from("playlist_videos")
       .select("position, video:videos(id, title)")
@@ -76,6 +78,7 @@ export default async function WatchPage({
       .eq("user_id", user.id)
       .eq("video_id", videoId)
       .order("timestamp_seconds", { ascending: true }),
+    fetchVideoDescription(video.youtube_video_id),
   ]);
   if (notesError) throw new Error(`Could not load lesson notes: ${notesError.message}`);
   const prev = one<any>(previousLink?.video);
@@ -111,6 +114,7 @@ export default async function WatchPage({
             initialStatus={progress?.status ?? "not_started"}
             nextHref={next ? `/watch/${courseId}/${next.id}` : null}
           />
+          <VideoDescription description={description} />
         </div>
         <VideoNotes
           userId={user.id}

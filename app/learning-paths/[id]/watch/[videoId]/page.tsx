@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import Player from "@/components/Player";
+import VideoDescription from "@/components/VideoDescription";
 import VideoNotes from "@/components/VideoNotes";
 import { createClient } from "@/lib/supabase/server";
+import { fetchVideoDescription } from "@/lib/youtube";
 
 const one = <T,>(value: T | T[] | null | undefined): T | null =>
   Array.isArray(value) ? value[0] ?? null : value ?? null;
@@ -37,7 +39,15 @@ export default async function LearningPathWatchPage({
 
   const video = one(current.video);
   if (!video) notFound();
-  const [{ data: previous, error: previousError }, { data: next, error: nextError }, { data: progress, error: progressError }, { data: notes, error: notesError }, { count, error: countError }] = await Promise.all([
+
+  const [
+    { data: previous, error: previousError },
+    { data: next, error: nextError },
+    { data: progress, error: progressError },
+    { data: notes, error: notesError },
+    { count, error: countError },
+    description,
+  ] = await Promise.all([
     supabase.from("user_learning_path_videos")
       .select("video:videos(id, title)")
       .eq("path_id", id)
@@ -65,6 +75,7 @@ export default async function LearningPathWatchPage({
     supabase.from("user_learning_path_videos")
       .select("video_id", { count: "exact", head: true })
       .eq("path_id", id),
+    fetchVideoDescription(video.youtube_video_id),
   ]);
   const detailsError = previousError ?? nextError ?? progressError ?? notesError ?? countError;
   if (detailsError) throw new Error(`Could not load lesson details: ${detailsError.message}`);
@@ -98,6 +109,7 @@ export default async function LearningPathWatchPage({
             initialStatus={progress?.status ?? "not_started"}
             nextHref={nextVideo ? `${watchPath}/${nextVideo.id}` : null}
           />
+          <VideoDescription description={description} />
         </div>
         <VideoNotes
           userId={user.id}
