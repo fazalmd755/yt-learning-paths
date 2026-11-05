@@ -6,6 +6,8 @@ import VideoNotes from "@/components/VideoNotes";
 import { createClient } from "@/lib/supabase/server";
 import { fetchVideoDescription } from "@/lib/youtube";
 
+export const dynamic = "force-dynamic";
+
 const one = <T,>(v: T | T[] | null | undefined): T | null =>
   Array.isArray(v) ? (v[0] ?? null) : (v ?? null);
 

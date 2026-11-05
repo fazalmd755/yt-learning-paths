@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import ProfileSettingsForms from "@/components/ProfileSettingsForms";
 import { createClient } from "@/lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function SettingsPage() {
   const supabase = await createClient();
   const { data: { user }, error: userError } = await supabase.auth.getUser();

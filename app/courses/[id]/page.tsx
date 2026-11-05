@@ -8,6 +8,8 @@ import SyncPlaylistButton from "@/components/SyncPlaylistButton";
 import { createClient } from "@/lib/supabase/server";
 import { formatDuration } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 const one = <T,>(v: T | T[] | null | undefined): T | null =>
   Array.isArray(v) ? (v[0] ?? null) : (v ?? null);
 
@@ -50,31 +52,39 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
 
   const videoIds = [...new Set((links ?? []).map((link) => link.video_id))];
 
-  const [{ data: progress }, { data: notesData }] = await Promise.all([
-    videoIds.length
-      ? supabase
-          .from("video_progress")
-          .select("video_id, status, last_position")
-          .eq("user_id", user.id)
-          .in("video_id", videoIds)
-          .limit(10000)
-      : Promise.resolve({ data: [] }),
-    videoIds.length
-      ? supabase
-          .from("video_notes")
-          .select("id, video_id, timestamp_seconds, content, created_at")
-          .eq("user_id", user.id)
-          .in("video_id", videoIds)
-          .order("timestamp_seconds", { ascending: true })
-      : Promise.resolve({ data: [] }),
-  ]);
+  let progress: any[] = [];
+  let notesData: any[] = [];
+
+  if (videoIds.length > 0) {
+    const results = await Promise.allSettled([
+      supabase
+        .from("video_progress")
+        .select("video_id, status, last_position")
+        .eq("user_id", user.id)
+        .in("video_id", videoIds)
+        .limit(10000),
+      supabase
+        .from("video_notes")
+        .select("id, video_id, timestamp_seconds, content, created_at")
+        .eq("user_id", user.id)
+        .in("video_id", videoIds)
+        .order("timestamp_seconds", { ascending: true }),
+    ]);
+
+    if (results[0].status === "fulfilled" && results[0].value.data) {
+      progress = results[0].value.data;
+    }
+    if (results[1].status === "fulfilled" && results[1].value.data) {
+      notesData = results[1].value.data;
+    }
+  }
 
   const statusByVideo = new Map<string, string>();
-  for (const p of (progress ?? []) as any[]) statusByVideo.set(p.video_id, p.status);
+  for (const p of progress) statusByVideo.set(p.video_id, p.status);
 
   const videos = ((links ?? []) as any[])
     .map((l) => ({ ...one<any>(l.video), status: statusByVideo.get(l.video_id) ?? "not_started" }))
-    .filter((v) => v.id);
+    .filter((v) => v && v.id);
 
   const done = videos.filter((v) => v.status === "completed").length;
   const totalSeconds = videos.reduce((s, v) => s + (v.duration_seconds ?? 0), 0);
@@ -89,7 +99,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
     videoMetaMap.set(v.id, { title: v.title, position: idx });
   });
 
-  const exportableNotes: ExportableNote[] = (notesData ?? []).map((n: any) => {
+  const exportableNotes: ExportableNote[] = notesData.map((n: any) => {
     const meta = videoMetaMap.get(n.video_id);
     return {
       videoTitle: meta?.title ?? "Lesson",
@@ -100,17 +110,26 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
     };
   });
 
-  // Calculate Estimated Completion Date (ETC)
-  const goalMinutes = profileRes.data?.daily_goal_minutes ?? 15;
-  const remainingMinutes = Math.ceil(remainingSeconds / 60);
-  const daysToFinish = goalMinutes > 0 ? Math.ceil(remainingMinutes / goalMinutes) : 0;
+  // Calculate Estimated Completion Date (ETC) safely
+  const goalMinutes = Math.max(1, profileRes.data?.daily_goal_minutes ?? 15);
+  const remainingMinutes = Math.max(0, Math.ceil(remainingSeconds / 60));
+  const daysToFinish = Math.max(0, Math.ceil(remainingMinutes / goalMinutes));
   const targetDate = new Date();
-  targetDate.setDate(targetDate.getDate() + daysToFinish);
-  const formattedTargetDate = new Intl.DateTimeFormat("en", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(targetDate);
+  if (Number.isFinite(daysToFinish)) {
+    targetDate.setDate(targetDate.getDate() + daysToFinish);
+  }
+  let formattedTargetDate = "Soon";
+  try {
+    formattedTargetDate = new Intl.DateTimeFormat("en", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(targetDate);
+  } catch {
+    formattedTargetDate = "in a few days";
+  }
+
+  const completionPct = videos.length > 0 ? Math.round((done / videos.length) * 100) : 0;
 
   return (
     <main className="course-page">
@@ -155,8 +174,8 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
             </div>
           </div>
 
-          <div className="detail-progress-row"><span>YOUR PROGRESS</span><strong>{videos.length ? Math.round((done / videos.length) * 100) : 0}%</strong></div>
-          <ProgressBar value={videos.length ? (done / videos.length) * 100 : 0} className="detail-progress" />
+          <div className="detail-progress-row"><span>YOUR PROGRESS</span><strong>{completionPct}%</strong></div>
+          <ProgressBar value={completionPct} className="detail-progress" />
           <div className="course-detail-action">
             <span>{done}/{videos.length} videos complete</span>
             <div className="course-detail-actions">
@@ -197,35 +216,37 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
         <ol className="video-list">
           {videos.map((v, i) => (
             <li key={v.id} className="video-list-item">
-              <Link href={`/watch/${id}/${v.id}`} className="video-row">
-                <span className="video-index">{String(i + 1).padStart(2, "0")}</span>
-                {v.thumbnail_url ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={v.thumbnail_url} alt="" className="video-thumbnail" loading="lazy" decoding="async" />
-                ) : (
-                  <div className="video-thumbnail video-thumbnail-empty"><span>▶</span></div>
-                )}
-                <div className="video-row-copy">
-                  <p>{v.title}</p>
-                  <span>{formatDuration(v.duration_seconds ?? 0)}{v.embeddable === false && " · Watch on YouTube"}</span>
-                </div>
-                <div className="video-row-actions" onClick={(e) => e.stopPropagation()}>
+              <div className="video-row">
+                <Link href={`/watch/${id}/${v.id}`} className="video-row-link">
+                  <span className="video-index">{String(i + 1).padStart(2, "0")}</span>
+                  {v.thumbnail_url ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={v.thumbnail_url} alt="" className="video-thumbnail" loading="lazy" decoding="async" />
+                  ) : (
+                    <div className="video-thumbnail video-thumbnail-empty"><span>▶</span></div>
+                  )}
+                  <div className="video-row-copy">
+                    <p>{v.title}</p>
+                    <span>{formatDuration(v.duration_seconds ?? 0)}{v.embeddable === false && " · Watch on YouTube"}</span>
+                  </div>
+                </Link>
+                <div className="video-row-actions">
                   <CourseLessonScheduleButton
                     userId={user.id}
                     videoTitle={v.title}
                     courseTitle={playlist.title}
                     watchUrl={`/watch/${id}/${v.id}`}
                   />
-                  <span className={`video-status video-status-${v.status}`}>
+                  <Link href={`/watch/${id}/${v.id}`} className={`video-status video-status-${v.status}`}>
                     {v.status === "completed"
                       ? "Complete"
                       : v.status === "in_progress"
                         ? "In progress"
                         : "Not started"}
-                  </span>
+                  </Link>
+                  <Link href={`/watch/${id}/${v.id}`} className="video-row-arrow" aria-hidden="true">→</Link>
                 </div>
-                <span className="video-row-arrow" aria-hidden="true">→</span>
-              </Link>
+              </div>
             </li>
           ))}
         </ol>

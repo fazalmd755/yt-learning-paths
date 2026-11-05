@@ -9,6 +9,8 @@ import { createClient } from "@/lib/supabase/server";
 import { dateInTz, lastNDates } from "@/lib/utils";
 import { updateSettings } from "./actions";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage({
   searchParams,
 }: {

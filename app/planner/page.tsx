@@ -5,6 +5,8 @@ import { getCourseSummaries } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
 
+export const dynamic = "force-dynamic";
+
 export default async function PlannerPage() {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();

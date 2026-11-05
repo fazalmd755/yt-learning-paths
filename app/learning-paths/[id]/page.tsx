@@ -3,6 +3,8 @@ import { notFound, redirect } from "next/navigation";
 import LearningPathEditor, { type LearningPathVideo } from "@/components/LearningPathEditor";
 import { createClient } from "@/lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+
 const one = <T,>(value: T | T[] | null | undefined): T | null =>
   Array.isArray(value) ? value[0] ?? null : value ?? null;
 
