@@ -94,7 +94,7 @@ export default async function LearningPathWatchPage({
     <main className="watch-page">
       <Link href={`/learning-paths/${id}`} className="back-link"><span aria-hidden="true">←</span> Back to {path.title}</Link>
       <section className="watch-heading">
-        <div className="eyebrow"><span className="eyebrow-dot" /> LESSON {String(current.position + 1).padStart(2, "0")} / {String(count ?? 0).padStart(2, "0")}</div>
+        <div className="watch-lesson-meta">Lesson {String(current.position + 1).padStart(2, "0")} of {String(count ?? 0).padStart(2, "0")}</div>
         <h1>{video.title}</h1>
       </section>
       <div className="watch-content-grid">

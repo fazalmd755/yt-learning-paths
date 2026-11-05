@@ -22,7 +22,7 @@ export default async function SettingsPage() {
   return (
     <main className="settings-page-shell">
       <header className="settings-page-heading">
-        <div className="eyebrow"><span className="eyebrow-dot" /> MAKE WATCHIFY YOURS</div>
+
         <h1>Profile settings</h1>
         <p>Manage your account details, learning goals and security.</p>
       </header>

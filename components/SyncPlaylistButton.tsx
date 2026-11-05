@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { SyncIcon } from "./Icons";
 
 type Props = {
   youtubePlaylistId: string;
@@ -54,7 +55,7 @@ export default function SyncPlaylistButton({ youtubePlaylistId }: Props) {
         title="Check YouTube for new or updated videos in this playlist"
       >
         <span className={`sync-playlist-icon ${syncing ? "syncing" : ""}`} aria-hidden="true">
-          ↻
+          <SyncIcon size={14} />
         </span>
         <span>{syncing ? "Syncing..." : "Sync latest videos"}</span>
       </button>

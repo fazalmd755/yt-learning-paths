@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ArrowRightIcon, ClockIcon, DownloadIcon, PlayIcon } from "@/components/Icons";
 import { createClient } from "@/lib/supabase/client";
 
 export type VideoNote = {
@@ -136,9 +137,8 @@ export default function VideoNotes({
     <section className="video-notes-panel">
       <div className="video-notes-heading">
         <div>
-          <div className="eyebrow"><span className="eyebrow-dot" /> YOUR LESSON NOTES</div>
-          <h2>Catch the important bits.</h2>
-          <p>Save a note with a timestamp and jump back to that moment when you review.</p>
+          <h2>Lesson notes</h2>
+          <p>Save notes with timestamps to jump back during review.</p>
         </div>
         <div className="video-note-tools">
           {notes.length > 0 && (
@@ -148,6 +148,7 @@ export default function VideoNotes({
               onClick={exportNotes}
               title="Export all notes for this lesson as Markdown"
             >
+              <DownloadIcon size={14} className="inline-block mr-1.5" />
               Export (.md)
             </button>
           )}
@@ -175,7 +176,8 @@ export default function VideoNotes({
               onClick={captureCurrentTime}
               title="Capture current playback timestamp from player"
             >
-              ⏱ Current time
+              <ClockIcon size={14} className="inline-block mr-1" />
+              Current time
             </button>
           </div>
         </div>
@@ -198,7 +200,7 @@ export default function VideoNotes({
         </label>
 
         <button type="submit" disabled={saving}>
-          {saving ? "Saving..." : <>Save note <span aria-hidden="true">→</span></>}
+          {saving ? "Saving..." : <>Save note <ArrowRightIcon size={14} className="inline-block ml-1" /></>}
         </button>
       </form>
 
@@ -221,7 +223,7 @@ export default function VideoNotes({
                 title={`Jump video to ${formatTime(note.timestamp_seconds)}`}
                 aria-label={`Jump to ${formatTime(note.timestamp_seconds)}`}
               >
-                <span aria-hidden="true">▶</span> {formatTime(note.timestamp_seconds)}
+                <PlayIcon size={10} className="inline-block mr-1" /> {formatTime(note.timestamp_seconds)}
               </button>
               <p>{note.content}</p>
               <button

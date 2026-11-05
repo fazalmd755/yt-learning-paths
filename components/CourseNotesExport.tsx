@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { DownloadIcon } from "./Icons";
 
 export type ExportableNote = {
   videoTitle: string;
@@ -88,7 +89,7 @@ export default function CourseNotesExport({ courseTitle, channelTitle, notes }: 
       className={`course-notes-export-btn ${notes.length === 0 ? "course-notes-export-btn-empty" : ""}`}
       title={notes.length === 0 ? "No notes recorded yet for this course" : `Export all ${notes.length} notes as Markdown`}
     >
-      <span aria-hidden="true">📥</span>
+      <DownloadIcon size={14} className="inline-block mr-1.5" />
       <span>{downloading ? "Exporting..." : notes.length > 0 ? `Export All Notes (${notes.length})` : "Export Notes"}</span>
     </button>
   );

@@ -31,7 +31,7 @@ export default async function PlannerPage() {
   return (
     <main className="product-shell">
       <section className="product-page-heading">
-        <div><div className="eyebrow"><span className="eyebrow-dot" /> YOUR WEEK, AT YOUR PACE</div><h1>Study planner</h1><p>Build a simple plan, make room for breaks, and keep your learning moving.</p></div>
+        <div><h1>Study planner</h1><p>Build a simple plan, make room for breaks, and keep your learning moving.</p></div>
         <Link className="quiet-link" href="/syllabus/select">Browse my playlists <span aria-hidden="true">↗</span></Link>
       </section>
       <StudyPlanner userId={user.id} today={today} initialTasks={tasksResult.data ?? []} courses={courses} />

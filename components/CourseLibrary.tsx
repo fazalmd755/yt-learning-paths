@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { removeCourse } from "@/app/dashboard/actions";
+import { ArrowRightIcon, PlayIcon, SearchIcon } from "@/components/Icons";
 import type { CourseSummary } from "@/lib/data";
 import { formatDuration } from "@/lib/utils";
 import ProgressBar from "./ProgressBar";
@@ -56,12 +57,12 @@ export default function CourseLibrary({ courses, initialQuery = "" }: { courses:
           ))}
         </div>
         <label className="course-search">
-          <span aria-hidden="true">⌕</span>
+          <SearchIcon size={15} />
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search courses or channels"
+            placeholder="Search courses or channels..."
             aria-label="Search courses or channels"
           />
           {query && <button type="button" onClick={() => setQuery("")} aria-label="Clear search">×</button>}
@@ -70,9 +71,9 @@ export default function CourseLibrary({ courses, initialQuery = "" }: { courses:
 
       {visibleCourses.length === 0 ? (
         <div className="library-empty">
-          <span aria-hidden="true">{courses.length ? "⌕" : "✳"}</span>
-          <strong>{courses.length ? "No courses match your search" : "Your first course will appear here"}</strong>
-          <p>{courses.length ? "Try changing your search or filter." : "Add a YouTube playlist link above to create a learning path."}</p>
+          <SearchIcon size={32} className="library-empty-icon" />
+          <strong>{courses.length ? "No courses match your search" : "Your library is ready"}</strong>
+          <p>{courses.length ? "Try a different search term or filter." : "Add a YouTube playlist link above to start your first structured path."}</p>
         </div>
       ) : (
         <div className="course-grid">
@@ -86,20 +87,29 @@ export default function CourseLibrary({ courses, initialQuery = "" }: { courses:
                     {course.thumbnailUrl ? (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img src={course.thumbnailUrl} alt="" loading="lazy" decoding="async" />
-                    ) : <div className="course-art-placeholder"><span>✳</span></div>}
+                    ) : (
+                      <div className="course-art-placeholder">
+                        <PlayIcon size={28} />
+                      </div>
+                    )}
                     <span className={`course-status ${complete ? "course-status-done" : ""}`}>
-                      {complete ? "✓ Complete" : pct > 0 ? "● In progress" : "○ Not started"}
+                      {complete ? "✓ Complete" : pct > 0 ? "In progress" : "Not started"}
                     </span>
-                    <span className="course-art-arrow" aria-hidden="true">↗</span>
+                    <span className="course-art-arrow" aria-hidden="true">
+                      <ArrowRightIcon size={14} />
+                    </span>
                   </div>
                   <div className="course-card-body">
                     <p className="course-channel">{course.channelTitle || "YouTube course"}</p>
                     <h3>{course.title}</h3>
-                    <div className="course-progress-meta"><span>{course.completedVideos} / {course.totalVideos} videos</span><strong>{pct}%</strong></div>
+                    <div className="course-progress-meta">
+                      <span>{course.completedVideos} / {course.totalVideos} videos</span>
+                      <strong>{pct}%</strong>
+                    </div>
                     <ProgressBar value={pct} className="course-progress" />
                     <div className="course-card-footer">
                       <span>{formatDuration(Math.max(0, course.totalSeconds - course.completedSeconds))} left</span>
-                      <span>{complete ? "Review course" : "Continue learning"} <b aria-hidden="true">→</b></span>
+                      <span>{complete ? "Review course" : "Continue"} <ArrowRightIcon size={12} className="inline-block ml-1" /></span>
                     </div>
                   </div>
                 </Link>

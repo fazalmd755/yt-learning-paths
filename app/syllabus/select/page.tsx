@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import AddCourseForm from "@/components/AddCourseForm";
 import CourseLibrary from "@/components/CourseLibrary";
+import { BookOpenIcon, CheckCircleIcon, PlayIcon } from "@/components/Icons";
 import LearningPathLibrary from "@/components/LearningPathLibrary";
 import { getCourseSummaries } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
@@ -35,7 +36,7 @@ export default async function PlaylistLibraryPage() {
     <main className="dashboard-shell">
       <section className="dashboard-welcome">
         <div>
-          <div className="eyebrow"><span className="eyebrow-dot" /> YOUR LEARNING LIBRARY</div>
+
           <h1>Your <span>playlists.</span></h1>
           <p>Every YouTube playlist you add, together in one place.</p>
         </div>
@@ -44,31 +45,31 @@ export default async function PlaylistLibraryPage() {
 
       <section className="dashboard-overview playlist-overview">
         <article className="library-stat-card">
-          <div className="overview-card-top"><span className="overview-icon library-icon">▤</span><span className="card-kicker">YOUR PLAYLISTS</span></div>
+          <div className="overview-card-top"><span className="overview-icon library-icon"><BookOpenIcon size={16} /></span><span className="card-kicker">YOUR PLAYLISTS</span></div>
           <div className="library-stat-number">{courses.length}<span> playlists</span></div>
         </article>
         <article className="streak-card playlist-stat-card">
-          <div className="overview-card-top"><span className="overview-icon streak-icon">▶</span><span className="card-kicker">LESSONS TO LEARN</span></div>
+          <div className="overview-card-top"><PlayIcon size={14} /><span className="card-kicker">LESSONS TO LEARN</span></div>
           <div className="streak-number">{videoCount}<span> videos</span></div>
         </article>
         <article className="goal-card playlist-stat-card">
-          <div className="overview-card-top"><span className="overview-icon goal-icon">✓</span><span className="card-kicker">COMPLETED LESSONS</span></div>
+          <div className="overview-card-top"><CheckCircleIcon size={16} /><span className="card-kicker">COMPLETED LESSONS</span></div>
           <div className="goal-number">{courses.reduce((total, course) => total + course.completedVideos, 0)}<span> videos</span></div>
         </article>
       </section>
 
       <section className="add-course-section">
-        <div className="section-title-row"><div><div className="eyebrow"><span className="eyebrow-dot" /> ADD TO YOUR LIBRARY</div><h2>Add a playlist</h2></div><span className="section-side-note">Paste a public YouTube playlist or video link.</span></div>
+        <div className="section-title-row"><div><h2>Add a playlist</h2></div><span className="section-side-note">Paste a public YouTube playlist or video link.</span></div>
         <AddCourseForm />
       </section>
 
       <section className="learning-paths-section">
-        <div className="section-title-row"><div><div className="eyebrow"><span className="eyebrow-dot" /> MAKE IT YOURS</div><h2>Create a learning path</h2></div><span className="section-side-note">Combine individual YouTube videos in your own order.</span></div>
+        <div className="section-title-row"><div><h2>Create a learning path</h2></div><span className="section-side-note">Combine individual YouTube videos in your own order.</span></div>
         <LearningPathLibrary paths={learningPaths} />
       </section>
 
       <section id="courses" className="library-section">
-        <div className="section-title-row"><div><div className="eyebrow"><span className="eyebrow-dot" /> YOUR COLLECTION</div><h2>All playlists <span className="heading-count">{courses.length}</span></h2></div><span className="section-side-note">Continue a lesson or check your progress.</span></div>
+        <div className="section-title-row"><div><h2>All playlists <span className="heading-count">{courses.length}</span></h2></div><span className="section-side-note">Continue a lesson or check your progress.</span></div>
         <CourseLibrary courses={courses} />
       </section>
     </main>

@@ -99,7 +99,7 @@ export default async function WatchPage({
         <span aria-hidden="true">←</span> Back to course
       </Link>
       <section className="watch-heading">
-        <div className="eyebrow"><span className="eyebrow-dot" /> LESSON {String(index + 1).padStart(2, "0")} / {String(lessonCount ?? 0).padStart(2, "0")}</div>
+        <div className="watch-lesson-meta">Lesson {String(index + 1).padStart(2, "0")} of {String(lessonCount ?? 0).padStart(2, "0")}</div>
         <h1>{video.title}</h1>
       </section>
       <div className="watch-content-grid">

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ArrowRightIcon, CalendarIcon, CheckCircleIcon } from "./Icons";
 import ScheduleLessonModal from "./ScheduleLessonModal";
 import { createClient } from "@/lib/supabase/client";
 
@@ -376,7 +377,9 @@ export default function Player({
       <div className="player-action-bar">
         <div className="player-action-left">
           {status === "completed" ? (
-            <span className="watch-complete-badge">Complete ✓</span>
+            <span className="watch-complete-badge">
+              <CheckCircleIcon size={14} className="inline-block mr-1 text-lime" /> Complete
+            </span>
           ) : (
             <button onClick={markComplete} className="watch-mark-complete">
               Mark as complete
@@ -385,7 +388,7 @@ export default function Player({
 
           {nextHref && (
             <Link href={nextHref} className="watch-next-button">
-              Next video →
+              Next video <ArrowRightIcon size={13} className="inline-block ml-1" />
             </Link>
           )}
 
@@ -395,7 +398,7 @@ export default function Player({
             className="player-schedule-btn"
             title="Schedule this lesson in your study planner"
           >
-            <span aria-hidden="true">📅</span> Schedule
+            <CalendarIcon size={14} /> Schedule
           </button>
         </div>
 

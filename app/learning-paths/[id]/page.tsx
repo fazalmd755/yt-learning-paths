@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
+import { ArrowRightIcon } from "@/components/Icons";
 import LearningPathEditor, { type LearningPathVideo } from "@/components/LearningPathEditor";
 import { createClient } from "@/lib/supabase/server";
 
@@ -49,7 +50,7 @@ export default async function LearningPathPage({ params }: { params: Promise<{ i
     <main className="course-page">
       <Link href="/syllabus/select" className="back-link"><span aria-hidden="true">←</span> My playlists</Link>
       <section className="learning-path-hero">
-        <div className="eyebrow"><span className="eyebrow-dot" /> YOUR CUSTOM LEARNING PATH</div>
+        
         <h1>{path.title}</h1>
         {path.description && <p>{path.description}</p>}
         <div className="learning-path-hero-stats">
@@ -59,7 +60,7 @@ export default async function LearningPathPage({ params }: { params: Promise<{ i
         </div>
         {videos[0] && (
           <Link className="detail-start-button" href={`/learning-paths/${id}/watch/${videos.find((video) => video.status !== "completed")?.id ?? videos[0].id}`}>
-            {completed ? "Continue learning" : "Start learning"} <span aria-hidden="true">→</span>
+            {completed ? "Continue learning" : "Start learning"} <ArrowRightIcon size={14} className="inline-block ml-1" />
           </Link>
         )}
       </section>

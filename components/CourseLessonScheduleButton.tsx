@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CalendarIcon } from "./Icons";
 import ScheduleLessonModal from "./ScheduleLessonModal";
 
 type Props = {
@@ -31,7 +32,7 @@ export default function CourseLessonScheduleButton({
         title="Schedule this lesson in Study Planner"
         aria-label={`Schedule ${videoTitle}`}
       >
-        <span aria-hidden="true">📅</span>
+        <CalendarIcon size={14} />
       </button>
 
       <ScheduleLessonModal

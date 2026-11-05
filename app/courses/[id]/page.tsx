@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { removeCourse } from "@/app/dashboard/actions";
 import CourseLessonScheduleButton from "@/components/CourseLessonScheduleButton";
 import CourseNotesExport, { type ExportableNote } from "@/components/CourseNotesExport";
+import { ArrowRightIcon, PlayIcon, TargetIcon } from "@/components/Icons";
 import ProgressBar from "@/components/ProgressBar";
 import SyncPlaylistButton from "@/components/SyncPlaylistButton";
 import { createClient } from "@/lib/supabase/server";
@@ -139,12 +140,10 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
           {playlist.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={playlist.thumbnail_url} alt="" />
-          ) : <span aria-hidden="true">✳</span>}
+          ) : <PlayIcon size={48} />}
           <div className="course-detail-art-shade" />
-          <span className="course-detail-art-label">YOUR LEARNING PATH</span>
         </div>
         <div className="course-detail-copy">
-          <div className="eyebrow"><span className="eyebrow-dot" /> COURSE OVERVIEW</div>
           <h1>{playlist.title}</h1>
           <p>{playlist.channel_title || "YouTube course"}</p>
           <div className="course-detail-stats">
@@ -159,7 +158,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
 
           {/* Estimated Course Completion Card */}
           <div className="course-etc-banner">
-            <span className="etc-icon">🎯</span>
+            <span className="etc-icon"><TargetIcon size={20} /></span>
             <div className="etc-copy">
               <strong>
                 {done === videos.length && videos.length > 0
@@ -181,7 +180,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
             <div className="course-detail-actions">
               {nextVideo && (
                 <Link href={`/watch/${id}/${nextVideo}`} className="detail-start-button">
-                  {done === 0 ? "Start course" : done === videos.length ? "Review course" : "Continue learning"} <span aria-hidden="true">→</span>
+                  {done === 0 ? "Start course" : done === videos.length ? "Review course" : "Continue learning"} <ArrowRightIcon size={14} className="inline-block ml-1" />
                 </Link>
               )}
               <form action={removeCourse} className="detail-remove-form">
@@ -208,7 +207,6 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
       <section className="video-list-section">
         <div className="video-list-heading">
           <div>
-            <div className="eyebrow"><span className="eyebrow-dot" /> THE COURSE</div>
             <h2>Video lessons</h2>
           </div>
           <span>{videos.length} lessons</span>
@@ -223,7 +221,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
                     // eslint-disable-next-line @next/next/no-img-element
                     <img src={v.thumbnail_url} alt="" className="video-thumbnail" loading="lazy" decoding="async" />
                   ) : (
-                    <div className="video-thumbnail video-thumbnail-empty"><span>▶</span></div>
+                    <div className="video-thumbnail video-thumbnail-empty"><PlayIcon size={16} /></div>
                   )}
                   <div className="video-row-copy">
                     <p>{v.title}</p>

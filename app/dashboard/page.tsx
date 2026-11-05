@@ -4,6 +4,13 @@ import AddCourseForm from "@/components/AddCourseForm";
 import CourseLibrary from "@/components/CourseLibrary";
 import ProgressBar from "@/components/ProgressBar";
 import StreakCalendar from "@/components/StreakCalendar";
+import {
+  FlameIcon,
+  TargetIcon,
+  BookOpenIcon,
+  PlayIcon,
+  ArrowRightIcon,
+} from "@/components/Icons";
 import { getCourseSummaries } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz, lastNDates } from "@/lib/utils";
@@ -62,62 +69,107 @@ export default async function DashboardPage({
     <main className="dashboard-shell">
       <section className="dashboard-welcome">
         <div>
-          <div className="eyebrow"><span className="eyebrow-dot" /> YOUR LEARNING SPACE</div>
           <h1>Let’s make <span>today a learning day.</span></h1>
-          <p>Every small step brings you closer to your learning goals.</p>
+          <p>Every small session builds momentum towards your learning goals.</p>
         </div>
-        <div className="welcome-date"><span>TODAY</span><strong>{new Intl.DateTimeFormat("en", { weekday: "long", month: "short", day: "numeric", timeZone: tz }).format(new Date())}</strong></div>
+        <div className="welcome-date">
+          <span>TODAY</span>
+          <strong>{new Intl.DateTimeFormat("en", { weekday: "long", month: "short", day: "numeric", timeZone: tz }).format(new Date())}</strong>
+        </div>
       </section>
 
       <section className="dashboard-overview">
         <article className="goal-card">
-          <div className="overview-card-top"><span className="overview-icon goal-icon">✦</span><span className="card-kicker">DAILY FOCUS</span><span className="card-more">↗</span></div>
+          <div className="overview-card-top">
+            <span className="overview-icon goal-icon"><TargetIcon size={18} /></span>
+            <span className="card-kicker">DAILY FOCUS</span>
+          </div>
           <div className="goal-number">{Math.floor(todaySeconds / 60)}<span> / {goalMinutes} min</span></div>
           <ProgressBar value={goalPercent} className="goal-progress" />
-          <div className="goal-caption"><span>{todaySeconds >= goalSeconds ? "Daily goal reached. Nice work!" : "A little more to reach your goal."}</span><strong>{Math.round(goalPercent)}%</strong></div>
+          <div className="goal-caption">
+            <span>{todaySeconds >= goalSeconds ? "Daily goal reached! Great job." : "A little more to reach your goal."}</span>
+            <strong>{Math.round(goalPercent)}%</strong>
+          </div>
         </article>
+
         <article className="streak-card">
-          <div className="overview-card-top"><span className="overview-icon streak-icon">↗</span><span className="card-kicker">CURRENT STREAK</span><span className="card-more">✳</span></div>
+          <div className="overview-card-top">
+            <span className="overview-icon streak-icon"><FlameIcon size={18} /></span>
+            <span className="card-kicker">CURRENT STREAK</span>
+          </div>
           <div className="streak-number">{streak}<span> days</span></div>
-          <p className="overview-caption">{streak ? "Consistency is your superpower." : "Start your streak today."}</p>
+          <p className="overview-caption">{streak > 0 ? "Consistency is your superpower." : "Start your streak today."}</p>
         </article>
+
         <article className="library-stat-card">
-          <div className="overview-card-top"><span className="overview-icon library-icon">▤</span><span className="card-kicker">YOUR LIBRARY</span></div>
+          <div className="overview-card-top">
+            <span className="overview-icon library-icon"><BookOpenIcon size={18} /></span>
+            <span className="card-kicker">MY LIBRARY</span>
+          </div>
           <div className="library-stat-number">{courses.length}<span> courses</span></div>
-          <p className="overview-caption">{completedVideos} of {totalVideos} videos complete</p>
-          <div className="stat-decoration" aria-hidden="true">✳</div>
+          <p className="overview-caption">{completedVideos} of {totalVideos} lessons completed</p>
         </article>
       </section>
 
       {resume && resume.continueVideoId && (
         <section className="resume-card">
-          <div className="resume-art"><span>▶</span><small>PICK UP WHERE YOU LEFT OFF</small></div>
-          <div className="resume-copy"><span className="card-kicker">CONTINUE LEARNING</span><h2>{resume.title}</h2><p>{resume.completedVideos} of {resume.totalVideos} videos complete{resume.channelTitle ? ` · ${resume.channelTitle}` : ""}</p></div>
-          <Link href={`/watch/${resume.id}/${resume.continueVideoId}`} className="resume-button">Continue <span aria-hidden="true">→</span></Link>
+          <div className="resume-art">
+            <PlayIcon size={24} />
+            <small>CURRENT LESSON</small>
+          </div>
+          <div className="resume-copy">
+            <h2>{resume.title}</h2>
+            <p>{resume.completedVideos} of {resume.totalVideos} lessons complete{resume.channelTitle ? ` · ${resume.channelTitle}` : ""}</p>
+          </div>
+          <Link href={`/watch/${resume.id}/${resume.continueVideoId}`} className="resume-button">
+            Continue learning <ArrowRightIcon size={16} />
+          </Link>
         </section>
       )}
 
       <section className="add-course-section">
-        <div className="section-title-row"><div><div className="eyebrow"><span className="eyebrow-dot" /> GROW YOUR SKILLS</div><h2>Start a new learning path</h2></div><span className="section-side-note">Paste a playlist link and we’ll take it from there.</span></div>
+        <div className="section-title-row">
+          <div>
+            <h2>Start a new learning path</h2>
+          </div>
+          <span className="section-side-note">Paste any YouTube playlist or video link.</span>
+        </div>
         <AddCourseForm />
       </section>
 
       <section id="courses" className="library-section">
-        <div className="section-title-row"><div><div className="eyebrow"><span className="eyebrow-dot" /> YOUR COLLECTION</div><h2>Your courses <span className="heading-count">{courses.length}</span></h2></div><span className="section-side-note">Learn at your own pace and keep track of your progress.</span></div>
+        <div className="section-title-row">
+          <div>
+            <h2>Your courses <span className="heading-count">{courses.length}</span></h2>
+          </div>
+          <span className="section-side-note">Learn at your own pace and track your mastery.</span>
+        </div>
         <CourseLibrary courses={courses} initialQuery={search} />
       </section>
 
       <section id="settings" className="dashboard-lower">
         <div className="panel-card activity-panel">
-          <div className="panel-heading"><div><div className="eyebrow"><span className="eyebrow-dot" /> SHOW UP, EVERY DAY</div><h2>Your consistency</h2></div><span className="panel-period">LAST 5 WEEKS</span></div>
+          <div className="panel-heading">
+            <div>
+              <h2>Your consistency</h2>
+            </div>
+            <span className="panel-period">LAST 5 WEEKS</span>
+          </div>
           <StreakCalendar days={days} goalSeconds={goalSeconds} today={today} />
         </div>
 
         <form action={updateSettings} className="panel-card settings-panel">
-          <div className="panel-heading"><div><div className="eyebrow"><span className="eyebrow-dot" /> MAKE IT YOURS</div><h2>Learning settings</h2></div><span className="settings-symbol" aria-hidden="true">⚙</span></div>
+          <div className="panel-heading">
+            <div>
+              <h2>Learning preferences</h2>
+            </div>
+          </div>
           <label className="settings-field">
             <span>Daily goal <small>Minutes you want to learn each day</small></span>
-            <span className="input-suffix"><input name="daily_goal_minutes" type="number" min={1} max={600} defaultValue={goalMinutes} /><small>min</small></span>
+            <span className="input-suffix">
+              <input name="daily_goal_minutes" type="number" min={1} max={600} defaultValue={goalMinutes} />
+              <small>min</small>
+            </span>
           </label>
           <label className="settings-field">
             <span>Timezone <small>Used for your streak and reminders</small></span>
@@ -128,7 +180,7 @@ export default async function DashboardPage({
             <span className="custom-check" aria-hidden="true">✓</span>
             <span>Email reminder<small>Remind me when I miss my daily goal</small></span>
           </label>
-          <button className="settings-save">Save preferences <span aria-hidden="true">→</span></button>
+          <button className="settings-save">Save preferences →</button>
         </form>
       </section>
     </main>
