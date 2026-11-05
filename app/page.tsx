@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRightIcon, PlayIcon, SparklesIcon } from "@/components/Icons";
 
 const highlights = [
   {
@@ -23,15 +24,21 @@ export default function Home() {
     <main>
       <section className="hero-shell">
         <div className="hero-content">
-          <div className="eyebrow"><span className="eyebrow-dot" /> YOUR NEXT SKILL STARTS HERE</div>
-          <h1>Learn on YouTube.<br /><span>Finish what you start.</span></h1>
+          <div className="pixel-badge">
+            <span className="pixel-badge-dot" /> AI-POWERED STUDY TRACKER
+          </div>
+          <h1 className="hero-display-title">
+            <span className="hero-display-line">LEARN ON YOUTUBE</span>
+            <span className="hero-display-pixel">WATCHIFY</span>
+            <span className="hero-display-line hero-display-accent">FINISH WHAT YOU START</span>
+          </h1>
           <p className="hero-copy">
             Turn scattered playlists into a personal learning plan. Track your progress,
             reach your daily goal, and finish what you started.
           </p>
           <div className="hero-actions">
             <Link href="/login" className="button-primary">
-              Create your learning path <span aria-hidden="true">↗</span>
+              Create your learning path <ArrowRightIcon size={16} className="inline-block ml-1" />
             </Link>
             <a href="#how-it-works" className="button-text">How it works <span aria-hidden="true">↓</span></a>
           </div>
@@ -87,7 +94,7 @@ export default function Home() {
 
       <section id="how-it-works" className="how-section">
         <div className="section-heading">
-          <div><div className="eyebrow"><span className="eyebrow-dot" /> SIMPLE BY DESIGN</div><h2>Getting started is easy.<br /><span>Keeping it going is easier.</span></h2></div>
+          <div><h2>Getting started is easy.<br /><span>Keeping it going is easier.</span></h2></div>
           <p>From one link to a new skill, every small step counts.</p>
         </div>
         <div className="feature-grid">
@@ -103,8 +110,14 @@ export default function Home() {
       </section>
 
       <section className="closing-cta">
-        <div><span className="eyebrow"><span className="eyebrow-dot" /> YOUR NEXT SESSION STARTS HERE</span><h2>This time, you’ll finish the course.</h2></div>
-        <Link href="/login" className="button-primary">Let’s get started <span aria-hidden="true">↗</span></Link>
+        <div>
+          <h2 className="hero-display-title">
+            <span className="hero-display-line" style={{ fontSize: "clamp(34px, 5.5vw, 62px)" }}>THIS TIME,</span>
+            <span className="hero-display-pixel" style={{ fontSize: "clamp(30px, 4.8vw, 54px)" }}>YOU WILL FINISH</span>
+            <span className="hero-display-line hero-display-accent" style={{ fontSize: "clamp(34px, 5.5vw, 62px)" }}>THE COURSE</span>
+          </h2>
+        </div>
+        <Link href="/login" className="button-primary">Let’s get started <ArrowRightIcon size={16} className="inline-block ml-1" /></Link>
       </section>
       <footer className="home-footer"><Link href="/" className="brand-link"><span className="brand-mark">W</span> Watchify</Link><span>Made for curious minds.</span><div><Link href="/syllabus/select">My playlists</Link><Link href="/planner">Planner</Link></div></footer>
     </main>

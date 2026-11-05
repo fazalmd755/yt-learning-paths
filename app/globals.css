@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pixelify+Sans:wght@500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
+  --font-display: 'Bebas Neue', Impact, -apple-system, sans-serif;
+  --font-pixel: 'Pixelify Sans', monospace;
   --background: #ffffff;
   --foreground: #4b4b4d;
   --muted: #737376;
@@ -66,6 +69,124 @@ a { color: inherit; text-decoration: none; }
   font-variant-numeric: tabular-nums;
 }
 
+/* ==========================================================================
+   Typographic Lockup (Bebas Neue Display + Pixelify Sans Neon Glow)
+   ========================================================================== */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.font-pixel {
+  font-family: var(--font-pixel);
+  letter-spacing: 0.04em;
+}
+
+/* Authentic Neon Glow Pixel Effect matching reference */
+.pixel-glow {
+  font-family: var(--font-pixel);
+  color: #ffffff;
+  display: inline-block;
+  font-weight: 700;
+  text-shadow:
+    0 0 10px #3b82f6,
+    0 0 25px #2563eb,
+    0 0 45px rgba(29, 78, 216, 0.85),
+    0 0 70px rgba(37, 99, 235, 0.5);
+  letter-spacing: 0.05em;
+  padding: 0 4px;
+}
+
+.pixel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  font-weight: 600;
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
+  margin-bottom: 18px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pixel-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: #60a5fa;
+  box-shadow: 0 0 8px #3b82f6;
+  display: inline-block;
+}
+
+.hero-display-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0 0 22px;
+  line-height: 0.95;
+}
+
+.hero-display-line {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 7.5vw, 86px);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.95;
+}
+
+.hero-display-accent {
+  background: linear-gradient(180deg, #ffffff 20%, #a1a7b0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-display-pixel {
+  font-family: var(--font-pixel);
+  font-size: clamp(38px, 6.5vw, 76px);
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow:
+    0 0 10px #3b82f6,
+    0 0 25px #2563eb,
+    0 0 50px rgba(29, 78, 216, 0.85),
+    0 0 80px rgba(37, 99, 235, 0.45);
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  margin: 2px 0;
+}
+
+.dashboard-display-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 6px 0 8px;
+  line-height: 1.1;
+}
+
+.dashboard-display-title .font-display {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 52px);
+  letter-spacing: 0.03em;
+  color: #ffffff;
+}
+
+.dashboard-display-title .pixel-glow {
+  font-size: clamp(22px, 3.6vw, 36px);
+  padding: 0;
+}
+
 .site-header {
   position: relative;
   z-index: 5;
@@ -88,13 +209,18 @@ a { color: inherit; text-decoration: none; }
   width: 32px;
   height: 32px;
   place-items: center;
-  border-radius: 10px;
-  background: var(--ink);
-  color: var(--lime);
-  font-size: 17px;
-  font-weight: 800;
-  font-style: italic;
+  border-radius: 8px;
+  background: #191c20;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  color: #ffffff;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  font-weight: 700;
+  text-shadow: 0 0 10px #3b82f6;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.25);
 }
+
+  
 .site-nav { display: flex; align-items: center; gap: 24px; font-size: 13px; font-weight: 650; }
 .nav-dashboard, .nav-login { display: inline-flex; align-items: center; gap: 12px; }
 .nav-login { border-radius: 999px; background: var(--ink); padding: 11px 17px; color: white; }
@@ -953,6 +1079,8 @@ textarea, select { font: inherit; }
 
 :root {
   color-scheme: light;
+  --font-display: 'Bebas Neue', Impact, -apple-system, sans-serif;
+  --font-pixel: 'Pixelify Sans', monospace;
   --background: #ffffff;
   --foreground: #4b4b4d;
   --muted: #737376;
@@ -1005,8 +1133,141 @@ body { background: var(--background); color: var(--foreground); }
 .learning-path-hero-stats {
   font-variant-numeric: tabular-nums;
 }
+
+/* ==========================================================================
+   Typographic Lockup (Bebas Neue Display + Pixelify Sans Neon Glow)
+   ========================================================================== */
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.font-pixel {
+  font-family: var(--font-pixel);
+  letter-spacing: 0.04em;
+}
+
+/* Authentic Neon Glow Pixel Effect matching reference */
+.pixel-glow {
+  font-family: var(--font-pixel);
+  color: #ffffff;
+  display: inline-block;
+  font-weight: 700;
+  text-shadow:
+    0 0 10px #3b82f6,
+    0 0 25px #2563eb,
+    0 0 45px rgba(29, 78, 216, 0.85),
+    0 0 70px rgba(37, 99, 235, 0.5);
+  letter-spacing: 0.05em;
+  padding: 0 4px;
+}
+
+.pixel-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  font-weight: 600;
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  padding: 6px 14px;
+  border-radius: 6px;
+  text-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+  box-shadow: 0 0 20px rgba(37, 99, 235, 0.15);
+  margin-bottom: 18px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pixel-badge-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  background: #60a5fa;
+  box-shadow: 0 0 8px #3b82f6;
+  display: inline-block;
+}
+
+.hero-display-title {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0 0 22px;
+  line-height: 0.95;
+}
+
+.hero-display-line {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 7.5vw, 86px);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #ffffff;
+  line-height: 0.95;
+}
+
+.hero-display-accent {
+  background: linear-gradient(180deg, #ffffff 20%, #a1a7b0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-display-pixel {
+  font-family: var(--font-pixel);
+  font-size: clamp(38px, 6.5vw, 76px);
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow:
+    0 0 10px #3b82f6,
+    0 0 25px #2563eb,
+    0 0 50px rgba(29, 78, 216, 0.85),
+    0 0 80px rgba(37, 99, 235, 0.45);
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  margin: 2px 0;
+}
+
+.dashboard-display-title {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 6px 0 8px;
+  line-height: 1.1;
+}
+
+.dashboard-display-title .font-display {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 52px);
+  letter-spacing: 0.03em;
+  color: #ffffff;
+}
+
+.dashboard-display-title .pixel-glow {
+  font-size: clamp(22px, 3.6vw, 36px);
+  padding: 0;
+}
 .site-header { border-color: #e7e7e8; background: rgba(255,255,255,.92); }
-.brand-mark, .mini-logo { background: var(--foreground); color: var(--lime); }
+.brand-mark, .mini-logo {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 8px;
+  background: #191c20;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  color: #ffffff;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  font-weight: 700;
+  text-shadow: 0 0 10px #3b82f6;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.25);
+}
+
 .site-nav-links { color: var(--foreground); }
 .site-nav-links a:hover, .nav-dashboard:hover { color: var(--secondary); }
 .nav-login, .button-primary, .course-add-button, .detail-start-button,
@@ -1082,7 +1343,22 @@ html { background: var(--background); }
 body { background: var(--background); color: var(--foreground); font-size: 17px; }
 .site-header { border-color: #34373c; background: rgba(23,25,28,.93); }
 .brand-link, .site-nav-links, .nav-dashboard { color: #f2f3f4; }
-.brand-mark, .mini-logo { background: #303338; color: var(--lime); }
+.brand-mark, .mini-logo {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 8px;
+  background: #191c20;
+  border: 1px solid rgba(59, 130, 246, 0.45);
+  color: #ffffff;
+  font-family: var(--font-pixel);
+  font-size: 15px;
+  font-weight: 700;
+  text-shadow: 0 0 10px #3b82f6;
+  box-shadow: 0 0 14px rgba(37, 99, 235, 0.25);
+}
+
 .header-icon-button, .header-streak { color: #c1c4c8; }
 .header-icon-button:hover, .header-icon-active { background: #2a3033; color: var(--secondary); }
 .header-avatar-button { border-color: #3c4650; background: #26333a; color: #f2f3f4; }
@@ -1644,7 +1920,7 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   border: 1px solid #485344;
   border-radius: 11px;
   background: #30382a;
-  color: var(--lime);
+
   font-size: 22px;
 }
 .profile-settings-icon.password-icon { border-color: #3b555e; background: #26363b; color: var(--secondary); }

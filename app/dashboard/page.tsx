@@ -69,7 +69,12 @@ export default async function DashboardPage({
     <main className="dashboard-shell">
       <section className="dashboard-welcome">
         <div>
-          <h1>Let’s make <span>today a learning day.</span></h1>
+          <div className="pixel-badge">
+            <span className="pixel-badge-dot" /> ACTIVE STUDY SPACE
+          </div>
+          <h1 className="dashboard-display-title">
+            <span className="font-display">MAKE TODAY A</span> <span className="pixel-glow">LEARNING DAY</span>
+          </h1>
           <p>Every small session builds momentum towards your learning goals.</p>
         </div>
         <div className="welcome-date">
