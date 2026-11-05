@@ -10,11 +10,41 @@ function fail(message: string, path = "/login"): never {
 
 async function siteOrigin(): Promise<string> {
   const h = await headers();
+  const host = h.get("x-forwarded-host") ?? h.get("host");
+  const proto = h.get("x-forwarded-proto") ?? "https";
+  if (host && !host.includes("localhost")) {
+    return `${proto}://${host}`;
+  }
   return (
     h.get("origin") ??
     process.env.NEXT_PUBLIC_SITE_URL ??
     "http://localhost:3000"
   );
+}
+
+export async function signInWithGoogle() {
+  const supabase = await createClient();
+  const origin = await siteOrigin();
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: {
+      redirectTo: `${origin}/auth/callback`,
+      queryParams: {
+        access_type: "offline",
+        prompt: "consent",
+      },
+    },
+  });
+
+  if (error) {
+    fail(error.message);
+  }
+
+  if (data?.url) {
+    redirect(data.url);
+  }
+
+  fail("Could not start Google sign-in. Please try again.");
 }
 
 export async function login(formData: FormData) {

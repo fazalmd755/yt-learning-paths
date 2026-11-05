@@ -2,10 +2,18 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
-  const code = searchParams.get("code");
-  const providerErrorCode = searchParams.get("error");
-  const providerError = searchParams.get("error_description") ?? providerErrorCode;
+  const requestUrl = new URL(request.url);
+  const forwardedHost = request.headers.get("x-forwarded-host");
+  const isLocalEnv = process.env.NODE_ENV === "development";
+  const origin = isLocalEnv
+    ? requestUrl.origin
+    : forwardedHost
+      ? `https://${forwardedHost}`
+      : requestUrl.origin;
+
+  const code = requestUrl.searchParams.get("code");
+  const providerErrorCode = requestUrl.searchParams.get("error");
+  const providerError = requestUrl.searchParams.get("error_description") ?? providerErrorCode;
 
   if (providerError) {
     const message = providerErrorCode === "access_denied"

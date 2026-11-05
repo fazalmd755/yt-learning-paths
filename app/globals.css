@@ -1352,7 +1352,44 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
 .auth-signup-link:hover, .auth-google:hover { border-color: #535960; background: #33373b; }
 .auth-divider { color: #aeb2b6; font-size: 11px; }
 .auth-divider::before { background: #41454a; }
-.auth-divider span { background: #222529; }
+.auth-divider span {
+  position: relative;
+  background: #222529;
+  padding: 0 12px;
+  color: #9aa1a8;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.auth-google-form {
+  width: 100%;
+  margin-top: 22px;
+}
+.auth-google {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid #41464b;
+  border-radius: 8px;
+  background: #282b30;
+  color: #f2f3f4;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.auth-google:hover:not(:disabled) {
+  border-color: #5d636b;
+  background: #31353b;
+}
+.auth-google:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
 .auth-footnote, .resend-confirmation-form label { color: #b0b3b8; font-size: 12px; }
 .auth-footnote a { color: var(--secondary); }
 .auth-message { font-size: 13px; }
@@ -1485,9 +1522,60 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   border-color: #555b61;
   background: #303439;
 }
-.auth-divider { height: 48px; color: #aeb3b7; font-size: 11px; }
-.auth-divider::before { background: #41464b; }
-.auth-divider span { background: #222529; }
+.auth-divider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 16px;
+  text-align: center;
+}
+.auth-divider::before {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: #3a3f45;
+  content: "";
+}
+.auth-divider span {
+  position: relative;
+  background: #222529;
+  padding: 0 12px;
+  color: #9aa1a8;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.auth-google-form {
+  width: 100%;
+  margin-top: 22px;
+}
+.auth-google {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid #41464b;
+  border-radius: 8px;
+  background: #282b30;
+  color: #f2f3f4;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.auth-google:hover:not(:disabled) {
+  border-color: #5d636b;
+  background: #31353b;
+}
+.auth-google:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
 .auth-footnote { margin-top: 18px; color: #b7bbc0; font-size: 12px; line-height: 1.6; }
 .auth-footnote a { color: var(--secondary); }
 .auth-message { padding: 12px 14px; font-size: 13px; }
