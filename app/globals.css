@@ -3421,3 +3421,1117 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
 .course-url-hint {
   color: #94a3b8 !important;
 }
+
+
+/* ==========================================================================
+   NEW POWER FEATURES: POMODORO, AI TUTOR, CERTIFICATES, ROADMAPS, BADGES & PWA
+   ========================================================================== */
+
+/* 1. Pomodoro Focus Timer */
+.pomodoro-widget {
+  position: relative;
+  z-index: 30;
+}
+.pomodoro-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  background: #181d26;
+  border: 1px solid #28303f;
+  color: #f1f5f9;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.pomodoro-toggle-btn:hover {
+  background: #202735;
+  border-color: #3b465c;
+  color: #ffffff;
+}
+.pomodoro-icon {
+  font-size: 15px;
+}
+.pomodoro-time-preview {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  color: #38bdf8;
+}
+.pomodoro-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: pulse 1.5s infinite;
+}
+
+.pomodoro-card {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 300px;
+  padding: 16px;
+  border-radius: 14px;
+  background: #13161c;
+  border: 1px solid #28303f;
+  box-shadow: 0 16px 40px -4px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pomodoro-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.pomodoro-title {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+.pomodoro-close-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.pomodoro-close-btn:hover {
+  color: #ffffff;
+  background: #1e2430;
+}
+.pomodoro-mode-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  background: #0b0d11;
+  padding: 4px;
+  border-radius: 8px;
+}
+.pomodoro-tab {
+  padding: 5px 0;
+  font-size: 11px;
+  font-weight: 650;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  cursor: pointer;
+  text-align: center;
+}
+.pomodoro-tab.active {
+  background: #1e2430;
+  color: #38bdf8;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.pomodoro-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0 6px;
+}
+.pomodoro-big-time {
+  font-family: var(--font-mono);
+  font-size: 44px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.pomodoro-status-text {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 6px;
+}
+.pomodoro-progress-bar {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: #1e2430;
+  margin-top: 14px;
+  overflow: hidden;
+}
+.pomodoro-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #10b981, #38bdf8);
+  transition: width 0.3s ease;
+}
+.pomodoro-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+.pomodoro-btn-main {
+  padding: 9px 14px;
+  border-radius: 8px;
+  background: #10b981;
+  border: 1px solid #10b981;
+  color: #0b0d11;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.pomodoro-btn-main:hover {
+  background: #059669;
+}
+.pomodoro-btn-main.running {
+  background: #f97316;
+  border-color: #f97316;
+  color: #ffffff;
+}
+.pomodoro-btn-reset {
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: #181d26;
+  border: 1px solid #28303f;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.pomodoro-btn-reset:hover {
+  background: #202735;
+  color: #ffffff;
+}
+.pomodoro-footer {
+  text-align: center;
+  font-size: 11px;
+  color: #64748b;
+  border-top: 1px solid #1e2430;
+  padding-top: 8px;
+}
+.pomodoro-footer strong {
+  color: #f1f5f9;
+}
+
+/* 2. AI Lesson Tutor (Summary, Quiz, Flashcards) */
+.ai-lesson-tutor-container {
+  margin-top: 20px;
+  border-radius: 12px;
+  background: #13161c;
+  border: 1px solid #222734;
+  overflow: hidden;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+}
+.ai-tutor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-bottom: 1px solid #222734;
+  background: #171b23;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.ai-sparkle-icon {
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+}
+.ai-tutor-heading {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+.ai-tutor-nav {
+  display: flex;
+  gap: 6px;
+}
+.ai-tab-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.ai-tab-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.04);
+}
+.ai-tab-btn.active {
+  background: rgba(56, 189, 248, 0.12);
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+}
+.ai-tab-content {
+  padding: 20px;
+}
+
+/* Summary Tab */
+.summary-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+.summary-badge {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #34d399;
+}
+.summary-read-time {
+  font-size: 11px;
+  color: #64748b;
+}
+.summary-points-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.summary-point-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #cbd5e1;
+}
+.point-bullet {
+  color: #10b981;
+  font-size: 12px;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* Quiz Tab */
+.quiz-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.quiz-kicker {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+.quiz-score-pill {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+.quiz-score-pill.pass {
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+}
+.quiz-score-pill.retry {
+  background: rgba(249, 115, 22, 0.18);
+  border: 1px solid rgba(249, 115, 22, 0.35);
+  color: #fb923c;
+}
+.quiz-questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.quiz-question-box {
+  background: #181c24;
+  border: 1px solid #28303f;
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+.quiz-question-text {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  color: #f1f5f9;
+  line-height: 1.45;
+}
+.quiz-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.quiz-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 7px;
+  background: #13161c;
+  border: 1px solid #232836;
+  color: #cbd5e1;
+  font-size: 12.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.quiz-option-btn:hover:not(:disabled) {
+  background: #202635;
+  border-color: #384257;
+  color: #ffffff;
+}
+.option-letter {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 10.5px;
+  font-weight: 750;
+  flex-shrink: 0;
+}
+.quiz-option-btn.selected-answer {
+  border-color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  color: #ffffff;
+}
+.quiz-option-btn.correct-answer {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+}
+.quiz-option-btn.wrong-answer {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+  color: #fca5a5;
+}
+.quiz-explanation {
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: #94a3b8;
+  padding-top: 8px;
+  border-top: 1px dashed #28303f;
+}
+.quiz-footer-actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: flex-end;
+}
+.quiz-submit-btn,
+.quiz-retry-btn {
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.quiz-submit-btn {
+  background: #10b981;
+  border: 1px solid #10b981;
+  color: #0b0d11;
+}
+.quiz-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.quiz-retry-btn {
+  background: #181c24;
+  border: 1px solid #28303f;
+  color: #f1f5f9;
+}
+
+/* Flashcards Tab */
+.flashcards-top-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #94a3b8;
+  margin-bottom: 14px;
+}
+.flashcard-card {
+  perspective: 1000px;
+  height: 180px;
+  cursor: pointer;
+  outline: none;
+}
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+.flashcard-card.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #28303f;
+}
+.flashcard-front {
+  background: linear-gradient(135deg, #181d26, #12151c);
+}
+.flashcard-back {
+  background: linear-gradient(135deg, #13221b, #12151c);
+  border-color: rgba(16, 185, 129, 0.35);
+  transform: rotateY(180deg);
+}
+.flashcard-side-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #64748b;
+}
+.flashcard-text {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  color: #ffffff;
+  line-height: 1.45;
+}
+.flashcard-tap-hint {
+  font-size: 11px;
+  color: #38bdf8;
+}
+.flashcards-controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14px;
+}
+.flashcard-nav-btn {
+  padding: 7px 16px;
+  border-radius: 8px;
+  background: #181c24;
+  border: 1px solid #28303f;
+  color: #f1f5f9;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+.flashcard-nav-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* 3. Course Completion Certificate */
+.course-certificate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.course-certificate-btn.unlocked {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.15), rgba(16, 185, 129, 0.15));
+  border: 1px solid rgba(234, 179, 8, 0.4);
+  color: #fef08a;
+}
+.course-certificate-btn.unlocked:hover {
+  border-color: #facc15;
+  box-shadow: 0 0 16px rgba(234, 179, 8, 0.3);
+}
+.course-certificate-btn.preview {
+  background: #181c24;
+  border: 1px solid #28303f;
+  color: #94a3b8;
+}
+.cert-btn-icon {
+  font-size: 14px;
+}
+.cert-unlocked-badge {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: rgba(16, 185, 129, 0.25);
+  color: #34d399;
+}
+
+.certificate-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.certificate-modal-content {
+  width: min(840px, 100%);
+  background: #12151c;
+  border: 1px solid #28303f;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+.cert-modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.cert-modal-close {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+/* Printable Certificate Frame */
+.certificate-frame {
+  background: #090b0e;
+  border: 2px solid #b45309;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: inset 0 0 0 4px #171922;
+}
+.certificate-inner-border {
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 8px;
+  padding: 38px 40px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.06), transparent 70%);
+}
+.certificate-brand-top {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.cert-logo-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #0b0d11;
+  font-weight: 850;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+.cert-brand-name {
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  color: #f1f5f9;
+}
+.cert-pre-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  color: #fbbf24;
+  margin-bottom: 6px;
+}
+.cert-main-heading {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 850;
+  color: #ffffff;
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+.cert-subtext {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 14px 0 0;
+}
+.cert-recipient-name {
+  font-size: clamp(26px, 3.5vw, 36px);
+  font-weight: 800;
+  color: #38bdf8;
+  margin: 10px 0 16px;
+  letter-spacing: -0.01em;
+  border-bottom: 2px solid rgba(56, 189, 248, 0.3);
+  display: inline-block;
+  padding: 0 20px 4px;
+}
+.cert-congrats-text {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 0 0 8px;
+}
+.cert-course-name {
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-weight: 750;
+  color: #fef08a;
+  margin: 6px 0;
+}
+.cert-instructor-line {
+  font-size: 12px;
+  color: #64748b;
+  margin: 0 0 28px;
+}
+.certificate-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 24px;
+  margin-top: 20px;
+}
+.cert-footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cert-col-val {
+  font-size: 13px;
+  font-weight: 700;
+  color: #f1f5f9;
+}
+.cert-col-lbl {
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  color: #64748b;
+}
+.cert-gold-seal {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fbbf24 30%, #b45309 100%);
+  color: #451a03;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 850;
+  font-size: 18px;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
+  border: 2px dashed #fef08a;
+}
+.cert-gold-seal small {
+  font-size: 7.5px;
+  letter-spacing: 0.1em;
+}
+
+.cert-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+.cert-print-btn {
+  padding: 9px 18px;
+  border-radius: 8px;
+  background: #10b981;
+  border: 1px solid #10b981;
+  color: #0b0d11;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+}
+.cert-share-btn {
+  padding: 9px 18px;
+  border-radius: 8px;
+  background: #181c24;
+  border: 1px solid #28303f;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* 4. Gamification & Achievements Badges */
+.achievements-section-card {
+  background: #13161c;
+  border: 1px solid #222734;
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+}
+.achievements-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+.achievements-kicker {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  margin-bottom: 4px;
+}
+.achievements-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #f8fafc;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.achievements-counter {
+  font-size: 12px;
+  font-weight: 700;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.14);
+  padding: 3px 9px;
+  border-radius: 9999px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.achievements-toggle-btn {
+  background: transparent;
+  border: none;
+  color: #38bdf8;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+.achievement-badge-card {
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid #222734;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.achievement-badge-card.unlocked {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), #13161c);
+  border-color: rgba(16, 185, 129, 0.35);
+}
+.achievement-badge-card.locked {
+  background: #181c24;
+  opacity: 0.75;
+}
+.badge-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.badge-emoji {
+  font-size: 22px;
+}
+.badge-status-pill {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+}
+.badge-status-pill.unlocked {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+}
+.badge-status-pill.locked {
+  background: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+.badge-title {
+  font-size: 13.5px;
+  font-weight: 750;
+  color: #ffffff;
+}
+.badge-desc {
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.4;
+}
+.badge-progress-track {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-top: 6px;
+  overflow: hidden;
+}
+.badge-progress-fill {
+  height: 100%;
+  background: #38bdf8;
+}
+
+/* 5. Roadmaps Page */
+.roadmaps-page-shell {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 36px 0 64px;
+}
+.roadmaps-hero {
+  text-align: center;
+  max-width: 680px;
+  margin: 0 auto 36px;
+}
+.roadmaps-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 4px 14px;
+  border-radius: 9999px;
+  margin-bottom: 16px;
+}
+.roadmaps-hero-title {
+  font-size: clamp(32px, 4.5vw, 50px);
+  font-weight: 850;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+}
+.roadmaps-hero-copy {
+  font-size: 15px;
+  color: #94a3b8;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.roadmaps-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.roadmaps-search-box {
+  width: 100%;
+}
+.roadmaps-search-input {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: #13161c;
+  border: 1px solid #28303f;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+}
+.roadmaps-search-input:focus {
+  border-color: #10b981;
+}
+.roadmaps-cat-pills {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+.roadmap-cat-pill {
+  padding: 7px 15px;
+  border-radius: 9999px;
+  background: #181c24;
+  border: 1px solid #28303f;
+  color: #cbd5e1;
+  font-size: 12.5px;
+  font-weight: 650;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+.roadmap-cat-pill.active {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: #10b981;
+  color: #34d399;
+}
+
+.roadmaps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 18px;
+}
+.roadmap-card {
+  background: #13161c;
+  border: 1px solid #222734;
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35);
+  transition: all 0.2s ease;
+}
+.roadmap-card:hover {
+  border-color: #384257;
+  transform: translateY(-2px);
+}
+.roadmap-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.roadmap-level-tag {
+  font-size: 10.5px;
+  font-weight: 750;
+  padding: 3px 9px;
+  border-radius: 9999px;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+}
+.roadmap-stats-meta {
+  font-size: 11.5px;
+  color: #64748b;
+}
+.roadmap-card-title {
+  font-size: 17px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 4px;
+  line-height: 1.35;
+}
+.roadmap-creator {
+  font-size: 12px;
+  color: #94a3b8;
+  margin: 0 0 10px;
+}
+.roadmap-desc {
+  font-size: 13px;
+  color: #94a3b8;
+  line-height: 1.5;
+  margin: 0 0 16px;
+}
+.roadmap-tags-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.roadmap-tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #181c24;
+  color: #64748b;
+}
+.roadmap-card-footer {
+  border-top: 1px solid #1e2430;
+  padding-top: 14px;
+}
+.roadmap-enroll-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: #10b981;
+  border: 1px solid #10b981;
+  color: #0b0d11;
+  font-size: 13px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: all 0.16s ease;
+}
+.roadmap-enroll-btn:hover:not(:disabled) {
+  background: #059669;
+}
+.roadmap-enroll-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+/* 6. PWA Install Prompt Banner */
+.pwa-install-banner {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: #13161c;
+  border: 1px solid #28303f;
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.6);
+  max-width: 440px;
+  animation: slideUp 0.3s ease-out;
+}
+.pwa-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.pwa-banner-icon {
+  font-size: 24px;
+}
+.pwa-banner-text strong {
+  display: block;
+  font-size: 13px;
+  color: #ffffff;
+}
+.pwa-banner-text span {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.35;
+}
+.pwa-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.pwa-install-btn {
+  padding: 7px 14px;
+  border-radius: 7px;
+  background: #10b981;
+  border: none;
+  color: #0b0d11;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+}
+.pwa-dismiss-btn {
+  background: transparent;
+  border: none;
+  color: #64748b;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px;
+}
+
+/* Print Styles */
+@media print {
+  .no-print,
+  .site-header,
+  .watch-pagination,
+  .course-utilities-toolbar,
+  .back-link,
+  .pwa-install-banner {
+    display: none !important;
+  }
+  body, html {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .certificate-frame {
+    box-shadow: none !important;
+    border: 2px solid #b45309 !important;
+    page-break-inside: avoid;
+  }
+}

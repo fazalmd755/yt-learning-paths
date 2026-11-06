@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SiteHeader from "@/components/SiteHeader";
+import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
 import "./globals.css";
@@ -189,6 +190,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </Link>
             <nav className="site-nav">
               <div className="site-nav-links">
+                <Link href="/roadmaps">Roadmaps</Link>
                 <Link href="/syllabus/select">My playlists</Link>
                 <Link href="/planner">Planner</Link>
               </div>
@@ -210,6 +212,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </div>
         </header>
         {children}
+        <PwaInstallPrompt />
       </body>
     </html>
   );

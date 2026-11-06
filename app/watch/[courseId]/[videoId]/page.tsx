@@ -3,6 +3,8 @@ import { notFound, redirect } from "next/navigation";
 import Player from "@/components/Player";
 import VideoDescription from "@/components/VideoDescription";
 import VideoNotes from "@/components/VideoNotes";
+import PomodoroTimer from "@/components/PomodoroTimer";
+import AiLessonTutor from "@/components/AiLessonTutor";
 import { createClient } from "@/lib/supabase/server";
 import { fetchVideoDescription } from "@/lib/youtube";
 
@@ -51,7 +53,13 @@ export default async function WatchPage({
   const video = one<any>((currentLink as any).video);
   if (!video) notFound();
 
-  const [{ data: previousLink }, { data: nextLink }, { data: progress }, { data: notes, error: notesError }, description] = await Promise.all([
+  const [
+    { data: previousLink },
+    { data: nextLink },
+    { data: progress },
+    { data: notes, error: notesError },
+    description,
+  ] = await Promise.all([
     supabase
       .from("playlist_videos")
       .select("position, video:videos(id, title)")
@@ -83,25 +91,35 @@ export default async function WatchPage({
     fetchVideoDescription(video.youtube_video_id),
   ]);
   if (notesError) throw new Error(`Could not load lesson notes: ${notesError.message}`);
+
   const prev = one<any>(previousLink?.video);
   const next = one<any>(nextLink?.video);
   const index = position;
 
-  // Complete ho chuke video ko shuru se chalao
   const requestedStart = t && /^\d+$/.test(t) ? Number(t) : NaN;
-  const startAt = Number.isSafeInteger(requestedStart) && requestedStart >= 0
-    ? Math.min(requestedStart, video.duration_seconds || requestedStart)
-    : progress && progress.status !== "completed" ? progress.last_position : 0;
+  const startAt =
+    Number.isSafeInteger(requestedStart) && requestedStart >= 0
+      ? Math.min(requestedStart, video.duration_seconds || requestedStart)
+      : progress && progress.status !== "completed"
+      ? progress.last_position
+      : 0;
 
   return (
     <main className="watch-page">
-      <Link href={`/courses/${courseId}`} className="back-link">
-        <span aria-hidden="true">←</span> Back to course
-      </Link>
+      <div className="watch-top-bar flex items-center justify-between">
+        <Link href={`/courses/${courseId}`} className="back-link">
+          <span aria-hidden="true">←</span> Back to course
+        </Link>
+        <PomodoroTimer />
+      </div>
+
       <section className="watch-heading">
-        <div className="watch-lesson-meta">Lesson {String(index + 1).padStart(2, "0")} of {String(lessonCount ?? 0).padStart(2, "0")}</div>
+        <div className="watch-lesson-meta">
+          Lesson {String(index + 1).padStart(2, "0")} of {String(lessonCount ?? 0).padStart(2, "0")}
+        </div>
         <h1>{video.title}</h1>
       </section>
+
       <div className="watch-content-grid">
         <div className="watch-player">
           <Player
@@ -119,6 +137,11 @@ export default async function WatchPage({
             courseTitle={one<any>(course?.playlist)?.title ?? "Course"}
           />
           <VideoDescription description={description} />
+          <AiLessonTutor
+            videoTitle={video.title}
+            description={description}
+            notes={notes ?? []}
+          />
         </div>
         <VideoNotes
           userId={user.id}
@@ -132,16 +155,26 @@ export default async function WatchPage({
       <div className="watch-pagination">
         {prev ? (
           <Link href={`/watch/${courseId}/${prev.id}`} className="watch-prev">
-            <span aria-hidden="true">←</span><span><small>PREVIOUS LESSON</small> {prev.title}</span>
+            <span aria-hidden="true">←</span>
+            <span>
+              <small>PREVIOUS LESSON</small> {prev.title}
+            </span>
           </Link>
         ) : (
           <span className="watch-prev-placeholder" />
         )}
         {next ? (
           <Link href={`/watch/${courseId}/${next.id}`} className="watch-next">
-            <span><small>NEXT LESSON</small> {next.title}</span><span aria-hidden="true">→</span>
+            <span>
+              <small>NEXT LESSON</small> {next.title}
+            </span>
+            <span aria-hidden="true">→</span>
           </Link>
-        ) : <Link href={`/courses/${courseId}`} className="watch-next watch-course-finish">Course complete <span aria-hidden="true">✓</span></Link>}
+        ) : (
+          <Link href={`/courses/${courseId}`} className="watch-next watch-course-finish">
+            Course complete <span aria-hidden="true">✓</span>
+          </Link>
+        )}
       </div>
     </main>
   );

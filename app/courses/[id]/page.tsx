@@ -6,6 +6,7 @@ import CourseNotesExport, { type ExportableNote } from "@/components/CourseNotes
 import { ArrowRightIcon, PlayIcon, TargetIcon } from "@/components/Icons";
 import ProgressBar from "@/components/ProgressBar";
 import SyncPlaylistButton from "@/components/SyncPlaylistButton";
+import CourseCertificate from "@/components/CourseCertificate";
 import { createClient } from "@/lib/supabase/server";
 import { formatDuration } from "@/lib/utils";
 
@@ -192,6 +193,13 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
 
           {/* Course Utilities Toolbar */}
           <div className="course-utilities-toolbar">
+            <CourseCertificate
+              courseTitle={playlist.title}
+              channelTitle={playlist.channel_title}
+              userName={user.user_metadata?.display_name || user.email?.split("@")[0] || "Learner"}
+              totalLessons={videos.length}
+              isCompleted={done === videos.length && videos.length > 0}
+            />
             <CourseNotesExport
               courseTitle={playlist.title}
               channelTitle={playlist.channel_title}

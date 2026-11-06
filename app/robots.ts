@@ -20,7 +20,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/syllabus", "/syllabus/*", "/planner", "/login", "/signup"],
+        allow: ["/", "/roadmaps", "/syllabus", "/syllabus/*", "/planner", "/login", "/signup"],
         disallow: [
           "/api/*",
           "/dashboard",
@@ -33,7 +33,7 @@ export default function robots(): MetadataRoute.Robots {
       },
       {
         userAgent: "Googlebot",
-        allow: ["/", "/syllabus", "/syllabus/*", "/planner", "/login", "/signup"],
+        allow: ["/", "/roadmaps", "/syllabus", "/syllabus/*", "/planner", "/login", "/signup"],
         disallow: [
           "/api/*",
           "/dashboard",

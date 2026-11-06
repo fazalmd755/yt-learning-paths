@@ -5,6 +5,7 @@ import CourseLibrary from "@/components/CourseLibrary";
 import ProgressBar from "@/components/ProgressBar";
 import StreakCalendar from "@/components/StreakCalendar";
 import CompactDailyGoal from "@/components/CompactDailyGoal";
+import AchievementsBadges from "@/components/AchievementsBadges";
 import {
   FlameIcon,
   TargetIcon,
@@ -90,6 +91,7 @@ export default async function DashboardPage({
 
   const completedVideos = courses.reduce((total, course) => total + course.completedVideos, 0);
   const totalVideos = courses.reduce((total, course) => total + course.totalVideos, 0);
+  const finishedCourses = courses.filter((c) => c.completedVideos === c.totalVideos && c.totalVideos > 0).length;
 
   const resume = [...courses]
     .filter((course) => course.continueVideoId && course.completedVideos < course.totalVideos)
@@ -216,6 +218,17 @@ export default async function DashboardPage({
           <span className="section-side-note">Learn at your own pace and track your mastery.</span>
         </div>
         <CourseLibrary courses={courses} initialQuery={search} />
+      </section>
+
+      {/* Gamification: Badges & Milestones */}
+      <section className="mb-6">
+        <AchievementsBadges
+          streak={streak}
+          totalActiveDays={totalActiveDays}
+          completedVideos={completedVideos}
+          totalCourses={courses.length}
+          finishedCourses={finishedCourses}
+        />
       </section>
 
       {/* Consistency Heatmap + Compact Daily Goal */}
