@@ -4535,3 +4535,326 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
     page-break-inside: avoid;
   }
 }
+
+/* ==========================================================================
+   Learning Path File/Folder Tree View (VS Code Explorer Style)
+   ========================================================================== */
+
+.path-tree-heading-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #b0b3b8;
+  font-size: 12px;
+}
+
+.path-tree-toggle-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1e2226;
+  border: 1px solid #383e44;
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+
+.path-tree-btn-subtle {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.path-tree-btn-subtle:hover {
+  color: #f3f4f6;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.path-tree-toggle-actions span {
+  color: #4b5563;
+  font-size: 10px;
+}
+
+.path-tree-view {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* Playlist Folder Node */
+.path-tree-folder {
+  border: 1px solid #343a40;
+  border-radius: 10px;
+  background: #1c2024;
+  overflow: hidden;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.path-tree-folder.is-expanded {
+  border-color: #4a545e;
+  background: #1c2024;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.path-tree-folder:hover {
+  border-color: #4b5563;
+}
+
+/* Folder Header Row (VS Code Explorer folder line) */
+.path-tree-folder-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: #21262b;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+  min-height: 52px;
+}
+
+.path-tree-folder-header:hover {
+  background: #282e34;
+}
+
+.path-tree-chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  background: transparent;
+  color: #9ca3af;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  transition: transform 0.15s, color 0.15s;
+}
+
+.path-tree-folder-header:hover .path-tree-chevron {
+  color: #f3f4f6;
+}
+
+.path-tree-folder-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.path-tree-folder-thumb {
+  width: 44px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.path-tree-folder-thumb-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #2b3036;
+  color: #6b7280;
+}
+
+.path-tree-folder-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  gap: 2px;
+}
+
+.path-tree-folder-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.path-tree-folder-title {
+  color: #f3f4f6;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.path-tree-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  flex-shrink: 0;
+}
+
+.path-tree-file-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 8.5px;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  background: rgba(56, 189, 248, 0.12);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  flex-shrink: 0;
+}
+
+.path-tree-folder-meta {
+  color: #8b949e;
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.path-tree-folder-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+
+.path-tree-study-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 28px;
+  padding: 0 11px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  background: var(--primary);
+  color: #ffffff !important;
+  border: 1px solid var(--primary);
+  text-decoration: none;
+  transition: opacity 0.15s, background 0.15s;
+}
+
+.path-tree-study-btn:hover {
+  background: #e43700;
+}
+
+.path-tree-folder-actions button {
+  display: grid;
+  place-items: center;
+  min-width: 28px;
+  height: 28px;
+  border: 1px solid #454b51;
+  border-radius: 5px;
+  background: #252a2e;
+  color: #d8dade;
+  cursor: pointer;
+  font-size: 12px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.path-tree-folder-actions button:hover:not(:disabled) {
+  border-color: #7d8f48;
+  color: #a3d12f;
+}
+
+.path-tree-folder-actions .path-tree-remove-btn:hover:not(:disabled) {
+  border-color: #9c5145;
+  color: #ff9a83;
+}
+
+.path-tree-folder-actions button:disabled {
+  cursor: wait;
+  opacity: 0.4;
+}
+
+/* Children container (Tree branch with vertical guide line) */
+.path-tree-folder-children {
+  padding: 8px 12px 12px 20px;
+  background: #181b1e;
+  border-top: 1px solid #2b3036;
+}
+
+.path-tree-children-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  padding-left: 18px;
+  border-left: 2px solid #343a40; /* VS Code vertical tree guideline */
+}
+
+.path-tree-child-item {
+  position: relative;
+}
+
+/* Horizontal branch connector to child item */
+.path-tree-child-item::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -18px;
+  width: 14px;
+  height: 1px;
+  background: #343a40;
+}
+
+.path-tree-file-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+  flex-shrink: 0;
+}
+
+/* Standalone Video (File style at root level) */
+.path-tree-standalone-file {
+  border-radius: 8px;
+  position: relative;
+}
+
+.path-tree-standalone-file .video-row {
+  border-left: 3px solid #38bdf8;
+}
+
+@media (max-width: 680px) {
+  .path-tree-folder-header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .path-tree-folder-actions {
+    width: 100%;
+    justify-content: flex-end;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  .path-tree-heading-stats {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .path-tree-children-list {
+    padding-left: 10px;
+  }
+  .path-tree-child-item::before {
+    left: -10px;
+    width: 8px;
+  }
+}

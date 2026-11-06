@@ -58,6 +58,44 @@ export async function POST(request: Request, { params }: RouteContext) {
     });
     if (savedItems.length !== uniqueVideos.length) throw new Error("Could not save all playlist videos.");
 
+    let playlistRecord: { id: string; title: string; thumbnailUrl: string | null; channelTitle: string | null } | null = null;
+    if (parsed.kind === "playlist" && "youtubePlaylistId" in source) {
+      const { data: pl } = await admin
+        .from("playlists")
+        .upsert(
+          {
+            youtube_playlist_id: parsed.id,
+            title: source.title,
+            channel_title: source.channelTitle,
+            thumbnail_url: source.thumbnailUrl,
+            last_synced_at: new Date().toISOString(),
+          },
+          { onConflict: "youtube_playlist_id" }
+        )
+        .select("id, title, thumbnail_url, channel_title")
+        .single();
+
+      if (pl) {
+        playlistRecord = {
+          id: pl.id,
+          title: pl.title,
+          thumbnailUrl: pl.thumbnail_url,
+          channelTitle: pl.channel_title,
+        };
+
+        const plLinks = uniqueVideos
+          .map((v, index) => {
+            const vid = idByYoutubeId.get(v.youtubeVideoId);
+            return vid ? { playlist_id: pl.id, video_id: vid, position: index } : null;
+          })
+          .filter((l): l is { playlist_id: string; video_id: string; position: number } => l !== null);
+
+        if (plLinks.length > 0) {
+          await admin.from("playlist_videos").upsert(plLinks, { onConflict: "playlist_id,video_id" });
+        }
+      }
+    }
+
     const { data: existing, error: existingError } = await supabase.from("user_learning_path_videos")
       .select("video_id")
       .eq("path_id", pathId)
@@ -81,6 +119,10 @@ export async function POST(request: Request, { params }: RouteContext) {
       duration_seconds: video.durationSeconds,
       embeddable: video.embeddable,
       position: (count ?? 0) + index,
+      playlist_id: playlistRecord?.id ?? null,
+      playlist_title: playlistRecord?.title ?? null,
+      playlist_thumbnail_url: playlistRecord?.thumbnailUrl ?? null,
+      playlist_channel_title: playlistRecord?.channelTitle ?? null,
     }));
     const { error: insertError } = await supabase.from("user_learning_path_videos")
       .insert(videos.map((video) => ({ path_id: pathId, video_id: video.id, position: video.position })));
@@ -96,9 +138,10 @@ export async function POST(request: Request, { params }: RouteContext) {
         changed: true,
         videos,
         kind: parsed.kind,
+        playlist: playlistRecord,
       }, { status: 500 });
     }
-    return NextResponse.json({ videos, kind: parsed.kind }, { status: 201 });
+    return NextResponse.json({ videos, kind: parsed.kind, playlist: playlistRecord }, { status: 201 });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Could not add videos.";
     const friendly = /not found or private/i.test(message)
@@ -112,8 +155,16 @@ export async function POST(request: Request, { params }: RouteContext) {
 
 export async function DELETE(request: Request, { params }: RouteContext) {
   const { id: pathId } = await params;
-  const videoId = new URL(request.url).searchParams.get("videoId");
-  if (!videoId) return NextResponse.json({ error: "Video ID is required." }, { status: 400 });
+  const url = new URL(request.url);
+  const videoId = url.searchParams.get("videoId");
+  const videoIdsParam = url.searchParams.get("videoIds");
+  const targetIds = videoIdsParam
+    ? videoIdsParam.split(",").map((v) => v.trim()).filter(Boolean)
+    : videoId
+    ? [videoId]
+    : [];
+
+  if (targetIds.length === 0) return NextResponse.json({ error: "Video ID is required." }, { status: 400 });
 
   const supabase = await createClient();
   const { data: { user }, error: authError } = await supabase.auth.getUser();
@@ -130,7 +181,7 @@ export async function DELETE(request: Request, { params }: RouteContext) {
   const { error } = await supabase.from("user_learning_path_videos")
     .delete()
     .eq("path_id", pathId)
-    .eq("video_id", videoId);
+    .in("video_id", targetIds);
   if (error) return NextResponse.json({ error: `Could not remove video: ${error.message}` }, { status: 500 });
 
   const { data: videos, error: listError } = await supabase.from("user_learning_path_videos")
