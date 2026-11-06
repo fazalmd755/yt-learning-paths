@@ -60,82 +60,104 @@ export default function ProfileSettingsForms({
 
   return (
     <div className="profile-settings-layout">
-      {/* 0 to 100% Profile Progress Overview Card */}
-      <section className="profile-progress-hero-card">
-        <div className="profile-progress-header">
-          <div className="profile-progress-title-block">
-            <span className="card-kicker">PROFILE COMPLETION</span>
-            <h2>{percent}% Profile Completed</h2>
-            <p>
-              {isComplete
-                ? "🎉 Shaandar! Aapki profile 100% complete ho chuki hai. Aapke recommendations personalized hain."
-                : `Fill in the remaining ${remainingSteps.length} ${remainingSteps.length === 1 ? "field" : "fields"} below to reach 100%.`}
-            </p>
-          </div>
+      {/* If profile is incomplete (< 100%), show the clean progress card at the top */}
+      {!isComplete && (
+        <section className="profile-progress-hero-card">
+          <div className="profile-progress-header">
+            <div className="profile-progress-title-block">
+              <span className="card-kicker">PROFILE COMPLETION</span>
+              <h2>{percent}% Profile Completed</h2>
+              <p>
+                Fill in the remaining {remainingSteps.length} {remainingSteps.length === 1 ? "field" : "fields"} below to reach 100% and personalize your recommendations.
+              </p>
+            </div>
 
-          <div className="profile-progress-circle-wrap">
-            <div className={`profile-progress-circle ${isComplete ? "is-100" : ""}`}>
-              <span className="profile-progress-circle-number">{percent}%</span>
-              <span className="profile-progress-circle-label">{isComplete ? "Complete" : "Progress"}</span>
+            <div className="profile-progress-circle-wrap">
+              <div className="profile-progress-circle">
+                <span className="profile-progress-circle-number">{percent}%</span>
+                <span className="profile-progress-circle-label">Progress</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Progress Bar Track */}
-        <div className="profile-progress-main-track">
-          <div
-            className={`profile-progress-main-fill ${isComplete ? "fill-complete" : ""}`}
-            style={{ width: `${percent}%` }}
-            role="progressbar"
-            aria-valuenow={percent}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          />
-        </div>
-
-        {/* Checklist of 6 Steps */}
-        <div className="profile-steps-grid">
-          {steps.map((step) => (
+          {/* Progress Bar Track */}
+          <div className="profile-progress-main-track">
             <div
-              key={step.key}
-              className={`profile-step-pill ${step.done ? "is-done" : "is-pending"}`}
-              title={step.description}
-            >
-              <span className="step-icon">
-                {step.done ? <CheckIcon size={12} /> : "○"}
-              </span>
-              <span className="step-label">{step.label}</span>
-              <span className="step-weight">+{step.weight}%</span>
-            </div>
-          ))}
-        </div>
-      </section>
+              className="profile-progress-main-fill"
+              style={{ width: `${percent}%` }}
+              role="progressbar"
+              aria-valuenow={percent}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            />
+          </div>
+
+          {/* Checklist of Steps (clean without math points) */}
+          <div className="profile-steps-grid">
+            {steps.map((step) => (
+              <div
+                key={step.key}
+                className={`profile-step-pill ${step.done ? "is-done" : "is-pending"}`}
+                title={step.description}
+              >
+                <span className="step-icon">
+                  {step.done ? <CheckIcon size={12} /> : "○"}
+                </span>
+                <span className="step-label">{step.label}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Main Profile Update Form */}
       <section className="profile-settings-card">
         <div className="profile-settings-heading">
-          <div className="profile-avatar-preview">
-            {avatarUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={avatarUrl} alt="" className="profile-user-avatar" />
-            ) : (
-              <span className="profile-user-avatar-placeholder">
-                {(displayName || email).charAt(0).toUpperCase()}
-              </span>
-            )}
-            <span className="profile-google-badge" title="Authenticated with Google">G</span>
+          <div className="profile-heading-left">
+            <div className="profile-avatar-preview">
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatarUrl}
+                  alt=""
+                  className="profile-user-avatar"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <span className="profile-user-avatar-placeholder">
+                  {(displayName || email).charAt(0).toUpperCase()}
+                </span>
+              )}
+              <span className="profile-google-badge" title="Authenticated with Google">G</span>
+            </div>
+            <div>
+              <span className="card-kicker">PERSONAL DETAILS</span>
+              <h2>Edit Profile & Study Goals</h2>
+            </div>
           </div>
-          <div>
-            <span className="card-kicker">PERSONAL DETAILS</span>
-            <h2>Edit Profile & Study Goals</h2>
-          </div>
+
+          {/* When 100% complete, show a sleek small circle badge in the corner */}
+          {isComplete && (
+            <div className="profile-100-badge-corner" title="Profile is 100% complete">
+              <div className="profile-100-circle" aria-label="100% complete">
+                <span>100%</span>
+              </div>
+              <div className="profile-100-text">
+                <strong>Profile Complete</strong>
+                <small>All details filled ✓</small>
+              </div>
+            </div>
+          )}
         </div>
 
-        <form action={profileAction} className="profile-settings-form">
+        <form action={profileAction} className="profile-modern-form">
           <div className="profile-form-grid-2">
-            <label>
-              Full / Display Name <span className="field-badge">+20%</span>
+            <div className="profile-field">
+              <label htmlFor="display_name" className="profile-field-label">
+                Full / Display Name
+              </label>
               <input
+                id="display_name"
                 name="display_name"
                 type="text"
                 value={displayName}
@@ -144,29 +166,46 @@ export default function ProfileSettingsForms({
                 maxLength={80}
                 autoComplete="name"
                 required
+                className="profile-input"
               />
-            </label>
+            </div>
 
-            <label>
-              Email address <span className="field-badge-subtle">Google Verified</span>
-              <input type="email" value={email} readOnly aria-describedby="email-help" className="bg-[#1a1d21] text-[#9ca3af] cursor-not-allowed" />
-              <small id="email-help">Google login email cannot be edited.</small>
-            </label>
+            <div className="profile-field">
+              <div className="profile-field-header-row">
+                <label htmlFor="email" className="profile-field-label">
+                  Email address
+                </label>
+                <span className="profile-badge-verified">Google Verified</span>
+              </div>
+              <input
+                id="email"
+                type="email"
+                value={email}
+                readOnly
+                aria-describedby="email-help"
+                className="profile-input profile-input-readonly"
+              />
+              <small id="email-help" className="profile-field-help">Google login email cannot be edited.</small>
+            </div>
           </div>
 
-          <label>
-            Learning Focus / Target Exam <span className="field-badge">+25%</span>
+          <div className="profile-field">
+            <label htmlFor="learning_focus" className="profile-field-label">
+              Learning Focus / Target Exam
+            </label>
             <input
+              id="learning_focus"
               name="learning_focus"
               type="text"
               value={learningFocus}
               onChange={(e) => setLearningFocus(e.target.value)}
               placeholder="e.g. GATE CSE, Full-Stack Web Development, DSA"
               maxLength={120}
+              className="profile-input"
             />
             {/* Quick Suggestion Chips */}
             <div className="profile-chips-row">
-              <span className="text-[11px] text-[#8f959a] mr-1">Quick suggestions:</span>
+              <span className="profile-chips-hint">Quick suggestions:</span>
               {FOCUS_SUGGESTIONS.map((sug) => (
                 <button
                   key={sug}
@@ -178,25 +217,32 @@ export default function ProfileSettingsForms({
                 </button>
               ))}
             </div>
-          </label>
+          </div>
 
           <div className="profile-form-grid-2">
-            <label>
-              College / Role / Company <span className="field-badge">+15%</span>
+            <div className="profile-field">
+              <label htmlFor="college_or_company" className="profile-field-label">
+                College / Role / Company
+              </label>
               <input
+                id="college_or_company"
                 name="college_or_company"
                 type="text"
                 value={collegeOrCompany}
                 onChange={(e) => setCollegeOrCompany(e.target.value)}
                 placeholder="e.g. B.Tech CS Student / Frontend Dev"
                 maxLength={100}
+                className="profile-input"
               />
-            </label>
+            </div>
 
-            <label>
-              Daily Study Goal <span className="field-badge">+10%</span>
-              <span className="profile-goal-input">
+            <div className="profile-field">
+              <label htmlFor="daily_goal_minutes" className="profile-field-label">
+                Daily Study Goal
+              </label>
+              <div className="profile-goal-box">
                 <input
+                  id="daily_goal_minutes"
                   name="daily_goal_minutes"
                   type="number"
                   min={1}
@@ -204,15 +250,22 @@ export default function ProfileSettingsForms({
                   value={dailyGoalMinutes}
                   onChange={(e) => setDailyGoalMinutes(Number(e.target.value) || 0)}
                   required
+                  className="profile-goal-number-input"
                 />
-                <span>minutes per day</span>
-              </span>
-            </label>
+                <span className="profile-goal-unit">minutes / day</span>
+              </div>
+            </div>
           </div>
 
-          <label>
-            Short Bio / About Yourself <span className="field-badge">+15%</span>
+          <div className="profile-field">
+            <div className="profile-field-header-row">
+              <label htmlFor="bio" className="profile-field-label">
+                Short Bio / About Yourself
+              </label>
+              <span className="profile-char-count">{bio.length}/300 characters</span>
+            </div>
             <textarea
+              id="bio"
               name="bio"
               value={bio}
               onChange={(e) => setBio(e.target.value)}
@@ -221,10 +274,7 @@ export default function ProfileSettingsForms({
               rows={3}
               className="profile-textarea"
             />
-            <span className="text-[10px] text-right text-[#8f959a] block mt-1">
-              {bio.length}/300 characters
-            </span>
-          </label>
+          </div>
 
           <div className="profile-settings-divider">
             <span>NOTIFICATIONS</span>
