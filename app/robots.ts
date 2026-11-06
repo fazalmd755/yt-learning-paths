@@ -10,7 +10,7 @@ function getSiteUrl(): string {
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
-  return "https://watchify.app";
+  return "https://watchlify.app";
 }
 
 export default function robots(): MetadataRoute.Robots {

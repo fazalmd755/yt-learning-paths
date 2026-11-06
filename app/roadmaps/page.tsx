@@ -26,7 +26,7 @@ export default function RoadmapsPage() {
         </h1>
         <p className="roadmaps-hero-copy">
           No more searching for random tutorials. Pick a curated, community-approved syllabus
-          and add it straight to your personal Watchify library with progress tracking.
+          and add it straight to your personal Watchlify library with progress tracking.
         </p>
       </header>
 

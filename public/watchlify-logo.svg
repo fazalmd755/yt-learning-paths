@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 280" width="960" height="280">
+  <defs>
+    <linearGradient id="g" x1="60" y1="60" x2="260" y2="220" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#10B981"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+    <linearGradient id="t" x1="560" y1="0" x2="860" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#10B981"/>
+      <stop offset="1" stop-color="#22D3EE"/>
+    </linearGradient>
+  </defs>
+  <rect width="960" height="280" fill="#0B0D10"/>
+  <g transform="translate(6,-5) scale(0.6)">
+    <path d="M96 150 L176 366 L256 226 L336 366 L416 150" fill="none" stroke="url(#g)" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M236 100 L236 172 L294 136 Z" fill="url(#g)" stroke="url(#g)" stroke-width="14" stroke-linejoin="round"/>
+  </g>
+  <text x="300" y="168" font-family="Inter, 'SF Pro Display', 'Segoe UI', Helvetica, Arial, sans-serif" font-size="112" font-weight="700" letter-spacing="-3" fill="#FFFFFF">Watch<tspan fill="url(#t)">lify</tspan></text>
+</svg>

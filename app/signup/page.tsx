@@ -7,7 +7,7 @@ import { signInWithGoogle } from "../login/actions";
 export const metadata: Metadata = {
   title: "Create Account",
   description:
-    "Join Watchify with Google for free. Turn YouTube playlists into structured learning paths with progress tracking and daily streaks.",
+    "Join Watchlify with Google for free. Turn YouTube playlists into structured learning paths with progress tracking and daily streaks.",
   alternates: {
     canonical: "/signup",
   },

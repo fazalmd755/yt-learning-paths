@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Watchify - Turn YouTube Playlists into Structured Courses";
+export const alt = "Watchlify - Turn YouTube Playlists into Structured Courses";
 export const size = {
   width: 1200,
   height: 630,
@@ -33,20 +33,42 @@ export default async function Image() {
               width: "56px",
               height: "56px",
               borderRadius: "14px",
-              background: "linear-gradient(135deg, #10b981, #059669)",
+              background: "#0B0D10",
+              border: "1px solid rgba(34, 211, 238, 0.3)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              color: "#ffffff",
-              fontSize: "30px",
-              fontWeight: 800,
-              boxShadow: "0 0 24px rgba(16, 185, 129, 0.4)",
+              boxShadow: "0 0 24px rgba(16, 185, 129, 0.35)",
             }}
           >
-            W
+            <svg width="44" height="44" viewBox="0 0 512 512">
+              <defs>
+                <linearGradient id="og-grad" x1="80" y1="100" x2="440" y2="400" gradientUnits="userSpaceOnUse">
+                  <stop offset="0" stopColor="#10B981" />
+                  <stop offset="1" stopColor="#22D3EE" />
+                </linearGradient>
+              </defs>
+              <g transform="translate(0,14)">
+                <path
+                  d="M96 150 L176 366 L256 226 L336 366 L416 150"
+                  fill="none"
+                  stroke="url(#og-grad)"
+                  strokeWidth="44"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M236 100 L236 172 L294 136 Z"
+                  fill="url(#og-grad)"
+                  stroke="url(#og-grad)"
+                  strokeWidth="14"
+                  strokeLinejoin="round"
+                />
+              </g>
+            </svg>
           </div>
           <span style={{ fontSize: "28px", fontWeight: 800, letterSpacing: "-0.02em" }}>
-            Watchify
+            Watch<span style={{ color: "#22D3EE" }}>lify</span>
           </span>
           <div
             style={{

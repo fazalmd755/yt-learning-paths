@@ -8,7 +8,11 @@ export default function PwaInstallPrompt() {
 
   useEffect(() => {
     // Check if dismissed previously
-    if (typeof window !== "undefined" && localStorage.getItem("watchify_pwa_dismissed") === "true") {
+    if (
+      typeof window !== "undefined" &&
+      (localStorage.getItem("watchlify_pwa_dismissed") === "true" ||
+        localStorage.getItem("watchify_pwa_dismissed") === "true")
+    ) {
       return;
     }
 
@@ -35,7 +39,7 @@ export default function PwaInstallPrompt() {
   const handleDismiss = () => {
     setShowPrompt(false);
     if (typeof window !== "undefined") {
-      localStorage.setItem("watchify_pwa_dismissed", "true");
+      localStorage.setItem("watchlify_pwa_dismissed", "true");
     }
   };
 
@@ -46,7 +50,7 @@ export default function PwaInstallPrompt() {
       <div className="pwa-banner-content">
         <span className="pwa-banner-icon">📱</span>
         <div className="pwa-banner-text">
-          <strong>Install Watchify App</strong>
+          <strong>Install Watchlify App</strong>
           <span>Study with zero distractions directly from your home screen.</span>
         </div>
       </div>

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRightIcon, PlayIcon, SparklesIcon, CheckIcon } from "@/components/Icons";
+import { WatchlifyIcon } from "@/components/BrandLogo";
 
 export const metadata: Metadata = {
-  title: "Watchify — Turn YouTube Playlists into Distraction-Free Courses",
+  title: "Watchlify — Turn YouTube Playlists into Distraction-Free Courses",
   description:
     "Turn scattered YouTube playlists into organized, distraction-free courses. Strip away recommendations, track exact watch progress, take timestamped notes, and finish what you start.",
   alternates: {
@@ -17,7 +18,7 @@ const highlights = [
     title: "Zero-Distraction Player",
     subtitle: "No clickbait sidebars, no infinite shorts",
     description:
-      "YouTube is built to distract you with recommendations. Watchify strips away comments, ads, and suggested feeds — leaving only you, your video, and your course syllabus.",
+      "YouTube is built to distract you with recommendations. Watchlify strips away comments, ads, and suggested feeds — leaving only you, your video, and your course syllabus.",
   },
   {
     number: "02",
@@ -44,12 +45,12 @@ const highlights = [
 
 const faqs = [
   {
-    q: "Is Watchify really 100% free?",
-    a: "Yes, Watchify is completely free to use. There are no paywalls, hidden fees, or credit cards required. Just sign in with your Google account and start organizing your learning.",
+    q: "Is Watchlify really 100% free?",
+    a: "Yes, Watchlify is completely free to use. There are no paywalls, hidden fees, or credit cards required. Just sign in with your Google account and start organizing your learning.",
   },
   {
     q: "Does this replace my YouTube account?",
-    a: "No. Watchify uses YouTube's official embed player. The creators still get their video views, but you get a clean, focused environment free from toxic comments, shorts, and algorithmic rabbit holes.",
+    a: "No. Watchlify uses YouTube's official embed player. The creators still get their video views, but you get a clean, focused environment free from toxic comments, shorts, and algorithmic rabbit holes.",
   },
   {
     q: "What happens to my study notes?",
@@ -57,11 +58,11 @@ const faqs = [
   },
   {
     q: "Can I combine multiple playlists and standalone videos?",
-    a: "Yes! Watchify's Learning Paths feature lets you create custom sequences. Playlists appear as clean collapsible folders (like folders in VS Code) alongside individual videos, so you can build complete curriculum roadmaps.",
+    a: "Yes! Watchlify's Learning Paths feature lets you create custom sequences. Playlists appear as clean collapsible folders (like folders in VS Code) alongside individual videos, so you can build complete curriculum roadmaps.",
   },
   {
     q: "How does the study streak and daily goal work?",
-    a: "You set a daily target (e.g. 15 or 30 minutes). Every time you watch lessons on Watchify, your active study time is automatically logged. Reach your goal each day to build your streak on the contribution heatmap.",
+    a: "You set a daily target (e.g. 15 or 30 minutes). Every time you watch lessons on Watchlify, your active study time is automatically logged. Reach your goal each day to build your streak on the contribution heatmap.",
   },
 ];
 
@@ -79,7 +80,7 @@ export default function Home() {
             <span className="hero-accent-line"> The worst distractions are too.</span>
           </h1>
           <p className="hero-copy">
-            Watchify strips away clickbait recommendations, infinite shorts, and algorithmic rabbit holes.
+            Watchlify strips away clickbait recommendations, infinite shorts, and algorithmic rabbit holes.
             Paste any playlist URL to turn it into an ad-free, trackable course with timestamped notes,
             auto-resume at the exact second, and daily study streaks.
           </p>
@@ -112,7 +113,7 @@ export default function Home() {
           <div className="preview-card">
             <div className="preview-topline">
               <div className="preview-brand">
-                <span className="mini-logo">W</span> Watchify
+                <WatchlifyIcon size={20} /> Watchlify
               </div>
               <span className="preview-avatar">A</span>
             </div>
@@ -172,15 +173,15 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Comparison Section: YouTube Native vs Watchify */}
+      {/* Comparison Section: YouTube Native vs Watchlify */}
       <section id="comparison" className="home-comparison-section">
         <div className="section-heading text-center">
           <div className="eyebrow"><span className="eyebrow-dot" /> THE PROBLEM & THE SOLUTION</div>
           <h2>
             Why learning on regular YouTube fails.<br />
-            <span>And how Watchify fixes it.</span>
+            <span>And how Watchlify fixes it.</span>
           </h2>
-          <p>YouTube is optimized to keep you watching random videos. Watchify is built to help you finish courses.</p>
+          <p>YouTube is optimized to keep you watching random videos. Watchlify is built to help you finish courses.</p>
         </div>
 
         <div className="comparison-grid">
@@ -223,10 +224,10 @@ export default function Home() {
             </ul>
           </div>
 
-          {/* Side B: Watchify */}
+          {/* Side B: Watchlify */}
           <div className="comparison-card comparison-watchify">
             <div className="comparison-card-header">
-              <span className="comparison-card-badge comparison-badge-green">WATCHIFY WORKSPACE</span>
+              <span className="comparison-card-badge comparison-badge-green">WATCHLIFY WORKSPACE</span>
               <h3>Built to finish courses</h3>
               <p>A distraction-free, dedicated environment optimized for deep learning.</p>
             </div>
@@ -274,7 +275,7 @@ export default function Home() {
               <span>Zero friction.</span>
             </h2>
           </div>
-          <p>Every tool in Watchify is designed around one goal: helping you complete what you start.</p>
+          <p>Every tool in Watchlify is designed around one goal: helping you complete what you start.</p>
         </div>
 
         <div className="feature-grid-v2">
@@ -321,7 +322,7 @@ export default function Home() {
         <div className="section-heading text-center">
           <div className="eyebrow"><span className="eyebrow-dot" /> FREQUENTLY ASKED QUESTIONS</div>
           <h2>Got questions? We have answers.</h2>
-          <p>Everything you need to know about learning on Watchify.</p>
+          <p>Everything you need to know about learning on Watchlify.</p>
         </div>
 
         <div className="faq-container">
@@ -347,7 +348,7 @@ export default function Home() {
             <span className="text-gradient-brand"> you will finish the course.</span>
           </h2>
           <p className="closing-cta-sub">
-            Join learners who study with intention on Watchify. Free forever with your Google account.
+            Join learners who study with intention on Watchlify. Free forever with your Google account.
           </p>
         </div>
         <Link href="/login" className="button-primary">
@@ -358,8 +359,11 @@ export default function Home() {
       {/* Footer */}
       <footer className="home-footer">
         <div className="home-footer-brand">
-          <Link href="/" className="brand-link">
-            <span className="brand-mark">W</span> Watchify
+          <Link href="/" className="brand-link" aria-label="Watchlify Home">
+            <WatchlifyIcon size={28} />
+            <span className="brand-name">
+              Watch<span className="text-gradient-brand">lify</span>
+            </span>
           </Link>
           <span>Turn scattered YouTube playlists into distraction-free courses.</span>
         </div>

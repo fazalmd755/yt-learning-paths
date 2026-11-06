@@ -3,6 +3,7 @@ import Link from "next/link";
 import Script from "next/script";
 import SiteHeader from "@/components/SiteHeader";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
+import { WatchlifyIcon } from "@/components/BrandLogo";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
 import "./globals.css";
@@ -17,7 +18,7 @@ function getSiteUrl(): string {
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
-  return "https://watchify.app";
+  return "https://watchlify.app";
 }
 
 const siteUrl = getSiteUrl();
@@ -25,13 +26,13 @@ const siteUrl = getSiteUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Watchify — Turn YouTube Playlists into Structured Courses",
-    template: "%s | Watchify",
+    default: "Watchlify — Turn YouTube Playlists into Structured Courses",
+    template: "%s | Watchlify",
   },
   description:
     "Transform scattered YouTube playlists into organized learning paths. Track video progress, build daily streaks, take timestamped notes, and finish what you start.",
-  applicationName: "Watchify",
-  authors: [{ name: "Watchify" }],
+  applicationName: "Watchlify",
+  authors: [{ name: "Watchlify" }],
   generator: "Next.js",
   keywords: [
     "youtube learning",
@@ -45,8 +46,8 @@ export const metadata: Metadata = {
     "habit tracker",
     "online course",
   ],
-  creator: "Watchify",
-  publisher: "Watchify",
+  creator: "Watchlify",
+  publisher: "Watchlify",
   formatDetection: {
     email: false,
     address: false,
@@ -59,17 +60,17 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    title: "Watchify — Turn YouTube Playlists into Structured Courses",
+    title: "Watchlify — Turn YouTube Playlists into Structured Courses",
     description:
       "Transform scattered YouTube playlists into organized learning paths. Track video progress, build daily streaks, take timestamped notes, and finish what you start.",
-    siteName: "Watchify",
+    siteName: "Watchlify",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Watchify — Turn YouTube Playlists into Structured Courses",
+    title: "Watchlify — Turn YouTube Playlists into Structured Courses",
     description:
       "Turn YouTube playlists into structured learning paths with progress tracking and daily streaks.",
-    creator: "@watchify",
+    creator: "@watchlify",
   },
   robots: {
     index: true,
@@ -157,7 +158,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
-    name: "Watchify",
+    name: "Watchlify",
     url: siteUrl,
     applicationCategory: "EducationalApplication",
     operatingSystem: "All",
@@ -205,9 +206,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="min-h-screen antialiased">
         <header className="site-header">
           <div className="site-header-inner">
-            <Link href="/" className="brand-link">
-              <span className="brand-mark">W</span>
-              <span className="brand-name">Watchify</span>
+            <Link href="/" className="brand-link" aria-label="Watchlify Home">
+              <WatchlifyIcon size={32} />
+              <span className="brand-name">
+                Watch<span className="text-gradient-brand">lify</span>
+              </span>
             </Link>
             <nav className="site-nav">
               <div className="site-nav-links">

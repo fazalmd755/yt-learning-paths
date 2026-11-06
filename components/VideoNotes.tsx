@@ -63,9 +63,12 @@ export default function VideoNotes({
   const [message, setMessage] = useState("");
 
   function captureCurrentTime() {
-    if (typeof window !== "undefined" && typeof (window as any).__watchifyGetCurrentTime === "function") {
-      const pos = (window as any).__watchifyGetCurrentTime();
-      setTimestamp(formatTime(pos));
+    if (typeof window !== "undefined") {
+      const getTime = (window as any).__watchlifyGetCurrentTime || (window as any).__watchifyGetCurrentTime;
+      if (typeof getTime === "function") {
+        const pos = getTime();
+        setTimestamp(formatTime(pos));
+      }
     }
   }
 
@@ -74,7 +77,7 @@ export default function VideoNotes({
     const dateStr = new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
     const contentLines = [
       `# Lesson Notes`,
-      `*Exported from Watchify on ${dateStr}*\n`,
+      `*Exported from Watchlify on ${dateStr}*\n`,
       `---`,
       ...notes.map((note) => `- **[${formatTime(note.timestamp_seconds)}]** ${note.content}`),
       `\n---`,
@@ -83,7 +86,7 @@ export default function VideoNotes({
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `watchify-notes-${videoId.slice(0, 8)}.md`;
+    link.download = `watchlify-notes-${videoId.slice(0, 8)}.md`;
     link.click();
     URL.revokeObjectURL(url);
   }
@@ -216,8 +219,11 @@ export default function VideoNotes({
                 type="button"
                 className="video-note-time"
                 onClick={() => {
-                  if (typeof window !== "undefined" && typeof (window as any).__watchifySeekTo === "function") {
-                    (window as any).__watchifySeekTo(note.timestamp_seconds);
+                  if (typeof window !== "undefined") {
+                    const seekTo = (window as any).__watchlifySeekTo || (window as any).__watchifySeekTo;
+                    if (typeof seekTo === "function") {
+                      seekTo(note.timestamp_seconds);
+                    }
                   }
                 }}
                 title={`Jump video to ${formatTime(note.timestamp_seconds)}`}

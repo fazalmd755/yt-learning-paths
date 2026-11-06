@@ -5,7 +5,7 @@ import { signInWithGoogle } from "./actions";
 export const metadata: Metadata = {
   title: "Log In",
   description:
-    "Log in to Watchify with Google to continue your learning paths, check your daily streak, and pick up where you left off.",
+    "Log in to Watchlify with Google to continue your learning paths, check your daily streak, and pick up where you left off.",
   alternates: {
     canonical: "/login",
   },
@@ -27,7 +27,7 @@ export default async function LoginPage({
       </section>
       <section className="auth-form-side">
         <div className="auth-card">
-          <h2>Welcome to Watchify</h2>
+          <h2>Welcome to Watchlify</h2>
           <p className="auth-intro">Sign in with your Google account to access your courses, streak, and personalized learning paths.</p>
 
           {error && <p role="alert" className="auth-message auth-error">{error}</p>}
@@ -52,7 +52,7 @@ export default async function LoginPage({
             </div>
           </div>
 
-          <p className="auth-footnote">Watchify exclusively uses Google Authentication for safe, hassle-free sign in.</p>
+          <p className="auth-footnote">Watchlify exclusively uses Google Authentication for safe, hassle-free sign in.</p>
         </div>
       </section>
     </main>

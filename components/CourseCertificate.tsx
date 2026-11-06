@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { CheckCircleIcon } from "@/components/Icons";
+import { WatchlifyIcon } from "@/components/BrandLogo";
 
 interface Props {
   courseTitle: string;
@@ -75,8 +76,8 @@ export default function CourseCertificate({
               <div className="certificate-inner-border">
                 {/* Certificate Header */}
                 <div className="certificate-brand-top">
-                  <div className="cert-logo-box">W</div>
-                  <span className="cert-brand-name">WATCHIFY</span>
+                  <WatchlifyIcon size={34} />
+                  <span className="cert-brand-name">WATCHLIFY</span>
                 </div>
 
                 <div className="cert-title-block">
@@ -136,7 +137,7 @@ export default function CourseCertificate({
               </button>
               <a
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  `I just completed "${courseTitle}" on @Watchify! 🎓🔥 Check it out:`
+                  `I just completed "${courseTitle}" on @Watchlify! 🎓🔥 Check it out:`
                 )}`}
                 target="_blank"
                 rel="noreferrer"

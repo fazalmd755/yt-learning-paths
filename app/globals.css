@@ -3063,23 +3063,22 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
 /* Brand icon */
 .brand-mark,
 .mini-logo {
-  display: grid !important;
-  width: 32px !important;
-  height: 32px !important;
-  place-items: center !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   border-radius: 9px !important;
-  background: linear-gradient(135deg, #19202a, #11151d) !important;
-  border: 1px solid #27303f !important;
-  color: #34d399 !important;
-  font-family: var(--font-sans) !important;
-  font-size: 15px !important;
-  font-weight: 800 !important;
-  text-shadow: none !important;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.brand-mark svg,
+.mini-logo svg {
+  display: block;
 }
 
 .brand-name {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 750;
   letter-spacing: -0.02em;
   color: #f8fafc;
@@ -5655,6 +5654,7 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   background: radial-gradient(ellipse at 90% 0%, rgba(239, 68, 68, 0.06), transparent 60%), #1c2025;
 }
 
+.comparison-watchlify,
 .comparison-watchify {
   border-color: rgba(16, 185, 129, 0.4);
   background: radial-gradient(ellipse at 90% 0%, rgba(16, 185, 129, 0.12), transparent 60%), #1c2025;

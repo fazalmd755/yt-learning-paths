@@ -14,7 +14,9 @@ export default function ProfileReminderBanner({ percent, remainingLabels }: Prop
 
   useEffect(() => {
     // Only show if not complete and not dismissed in this session
-    const isDismissed = sessionStorage.getItem("watchify_profile_reminder_dismissed") === "true";
+    const isDismissed =
+      sessionStorage.getItem("watchlify_profile_reminder_dismissed") === "true" ||
+      sessionStorage.getItem("watchify_profile_reminder_dismissed") === "true";
     if (percent < 100 && !isDismissed) {
       setDismissed(false);
     }
@@ -24,7 +26,7 @@ export default function ProfileReminderBanner({ percent, remainingLabels }: Prop
 
   function dismiss() {
     setDismissed(true);
-    sessionStorage.setItem("watchify_profile_reminder_dismissed", "true");
+    sessionStorage.setItem("watchlify_profile_reminder_dismissed", "true");
   }
 
   return (

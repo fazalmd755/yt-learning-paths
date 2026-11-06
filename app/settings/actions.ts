@@ -69,6 +69,6 @@ export async function updatePassword(
 ): Promise<SettingsActionState> {
   return {
     status: "error",
-    message: "Watchify uses secure Google Sign-In. Password management is handled directly through your Google account.",
+    message: "Watchlify uses secure Google Sign-In. Password management is handled directly through your Google account.",
   };
 }

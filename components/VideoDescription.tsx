@@ -55,8 +55,11 @@ export default function VideoDescription({
             type="button"
             className="video-description-time-btn"
             onClick={() => {
-              if (typeof window !== "undefined" && typeof (window as any).__watchifySeekTo === "function") {
-                (window as any).__watchifySeekTo(seconds);
+              if (typeof window !== "undefined") {
+                const seekTo = (window as any).__watchlifySeekTo || (window as any).__watchifySeekTo;
+                if (typeof seekTo === "function") {
+                  seekTo(seconds);
+                }
               }
             }}
             title={`Jump to ${part}`}

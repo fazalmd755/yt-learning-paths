@@ -82,11 +82,11 @@ export default function Player({
 
   useEffect(() => {
     try {
-      const savedSpeed = localStorage.getItem("watchify_speed");
+      const savedSpeed = localStorage.getItem("watchlify_speed") || localStorage.getItem("watchify_speed");
       if (savedSpeed && SPEEDS.includes(Number(savedSpeed))) {
         setSpeed(Number(savedSpeed));
       }
-      const savedAutoplay = localStorage.getItem("watchify_autoplay_next");
+      const savedAutoplay = localStorage.getItem("watchlify_autoplay_next") ?? localStorage.getItem("watchify_autoplay_next");
       if (savedAutoplay !== null) {
         setAutoplayNext(savedAutoplay === "true");
       }
@@ -96,6 +96,7 @@ export default function Player({
   const changeSpeed = useCallback((newSpeed: number) => {
     setSpeed(newSpeed);
     try {
+      localStorage.setItem("watchlify_speed", String(newSpeed));
       localStorage.setItem("watchify_speed", String(newSpeed));
     } catch {}
     const p = playerRef.current;
@@ -108,6 +109,7 @@ export default function Player({
     setAutoplayNext((prev) => {
       const next = !prev;
       try {
+        localStorage.setItem("watchlify_autoplay_next", String(next));
         localStorage.setItem("watchify_autoplay_next", String(next));
       } catch {}
       return next;
@@ -227,13 +229,17 @@ export default function Player({
     });
 
     if (typeof window !== "undefined") {
-      (window as any).__watchifyGetCurrentTime = () => position();
-      (window as any).__watchifySeekTo = (sec: number) => {
+      const getPos = () => position();
+      const seek = (sec: number) => {
         const p = playerRef.current;
         if (p && typeof p.seekTo === "function") {
           p.seekTo(Math.max(0, sec), true);
         }
       };
+      (window as any).__watchlifyGetCurrentTime = getPos;
+      (window as any).__watchifyGetCurrentTime = getPos;
+      (window as any).__watchlifySeekTo = seek;
+      (window as any).__watchifySeekTo = seek;
     }
 
     const onKeyDown = (e: KeyboardEvent) => {
@@ -308,7 +314,9 @@ export default function Player({
       window.removeEventListener("pagehide", onHide);
       window.removeEventListener("keydown", onKeyDown);
       if (typeof window !== "undefined") {
+        delete (window as any).__watchlifyGetCurrentTime;
         delete (window as any).__watchifyGetCurrentTime;
+        delete (window as any).__watchlifySeekTo;
         delete (window as any).__watchifySeekTo;
       }
       if (playingRef.current) tick();
