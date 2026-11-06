@@ -31,6 +31,24 @@ export async function updateSettings(formData: FormData) {
   revalidatePath("/dashboard");
 }
 
+export async function updateDailyGoal(formData: FormData) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return;
+
+  const goal = Math.round(Number(formData.get("daily_goal_minutes")));
+  if (!Number.isFinite(goal) || goal < 1 || goal > 600) return;
+
+  await supabase
+    .from("profiles")
+    .update({ daily_goal_minutes: goal })
+    .eq("id", user.id);
+
+  revalidatePath("/dashboard");
+}
+
 export async function removeCourse(formData: FormData) {
   const supabase = await createClient();
   const {

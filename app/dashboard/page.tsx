@@ -4,6 +4,7 @@ import AddCourseForm from "@/components/AddCourseForm";
 import CourseLibrary from "@/components/CourseLibrary";
 import ProgressBar from "@/components/ProgressBar";
 import StreakCalendar from "@/components/StreakCalendar";
+import CompactDailyGoal from "@/components/CompactDailyGoal";
 import {
   FlameIcon,
   TargetIcon,
@@ -14,7 +15,6 @@ import {
 import { getCourseSummaries } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz, lastNDates } from "@/lib/utils";
-import { updateSettings } from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -40,23 +40,56 @@ export default async function DashboardPage({
   const goalMinutes = profile?.daily_goal_minutes ?? 15;
   const goalSeconds = goalMinutes * 60;
   const today = dateInTz(tz);
-  const dates = lastNDates(35, tz);
 
-  const [courses, { data: activity }, { data: streakData }] = await Promise.all([
-    getCourseSummaries(supabase, user.id),
-    supabase
-      .from("daily_activity")
-      .select("activity_date, seconds_learned")
-      .eq("user_id", user.id)
-      .gte("activity_date", dates[0]),
-    supabase.rpc("current_streak"),
-  ]);
+  // Fetch ~112 days (~16 weeks / 3.5 months) for the contribution heatmap
+  const dates = lastNDates(112, tz);
+
+  const [courses, { data: activity }, { data: streakData }, { data: allActiveActivity }] =
+    await Promise.all([
+      getCourseSummaries(supabase, user.id),
+      supabase
+        .from("daily_activity")
+        .select("activity_date, seconds_learned")
+        .eq("user_id", user.id)
+        .gte("activity_date", dates[0]),
+      supabase.rpc("current_streak"),
+      supabase
+        .from("daily_activity")
+        .select("activity_date, seconds_learned")
+        .eq("user_id", user.id)
+        .gt("seconds_learned", 0)
+        .order("activity_date", { ascending: true }),
+    ]);
 
   const secondsByDate = new Map<string, number>();
-  for (const a of (activity ?? []) as any[]) secondsByDate.set(a.activity_date, a.seconds_learned);
+  for (const a of (activity ?? []) as any[]) {
+    secondsByDate.set(a.activity_date, a.seconds_learned);
+  }
   const days = dates.map((date) => ({ date, seconds: secondsByDate.get(date) ?? 0 }));
   const todaySeconds = secondsByDate.get(today) ?? 0;
   const streak = Number(streakData ?? 0);
+
+  // Accurate total active days & max streak across history
+  const totalActiveDays = allActiveActivity?.length ?? (days.filter((d) => d.seconds > 0).length || 0);
+
+  let calculatedMax = 0;
+  if (allActiveActivity && allActiveActivity.length > 0) {
+    let curRun = 1;
+    calculatedMax = 1;
+    for (let i = 1; i < allActiveActivity.length; i++) {
+      const prev = new Date(allActiveActivity[i - 1].activity_date).getTime();
+      const curr = new Date(allActiveActivity[i].activity_date).getTime();
+      const diff = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
+      if (diff === 1) {
+        curRun++;
+        if (curRun > calculatedMax) calculatedMax = curRun;
+      } else if (diff > 1) {
+        curRun = 1;
+      }
+    }
+  }
+  const maxStreak = Math.max(calculatedMax, streak);
+
   const completedVideos = courses.reduce((total, course) => total + course.completedVideos, 0);
   const totalVideos = courses.reduce((total, course) => total + course.totalVideos, 0);
 
@@ -69,50 +102,80 @@ export default async function DashboardPage({
     <main className="dashboard-shell">
       <section className="dashboard-welcome">
         <div>
-          <div className="pixel-badge">
-            <span className="pixel-badge-dot" /> ACTIVE STUDY SPACE
+          <div className="dashboard-space-badge">
+            <span className="dashboard-badge-dot" /> Study Workspace
           </div>
-          <h1 className="dashboard-display-title">
-            <span className="font-display">MAKE TODAY A</span> <span className="pixel-glow">LEARNING DAY</span>
+          <h1 className="dashboard-heading">
+            Make today a <span className="text-gradient-brand">learning day</span>
           </h1>
-          <p>Every small session builds momentum towards your learning goals.</p>
+          <p>Every focused session builds unstoppable momentum towards your goals.</p>
         </div>
         <div className="welcome-date">
           <span>TODAY</span>
-          <strong>{new Intl.DateTimeFormat("en", { weekday: "long", month: "short", day: "numeric", timeZone: tz }).format(new Date())}</strong>
+          <strong>
+            {new Intl.DateTimeFormat("en", {
+              weekday: "long",
+              month: "short",
+              day: "numeric",
+              timeZone: tz,
+            }).format(new Date())}
+          </strong>
         </div>
       </section>
 
       <section className="dashboard-overview">
         <article className="goal-card">
           <div className="overview-card-top">
-            <span className="overview-icon goal-icon"><TargetIcon size={18} /></span>
+            <span className="overview-icon goal-icon">
+              <TargetIcon size={18} />
+            </span>
             <span className="card-kicker">DAILY FOCUS</span>
           </div>
-          <div className="goal-number">{Math.floor(todaySeconds / 60)}<span> / {goalMinutes} min</span></div>
+          <div className="goal-number">
+            {Math.floor(todaySeconds / 60)}
+            <span> / {goalMinutes} min</span>
+          </div>
           <ProgressBar value={goalPercent} className="goal-progress" />
           <div className="goal-caption">
-            <span>{todaySeconds >= goalSeconds ? "Daily goal reached! Great job." : "A little more to reach your goal."}</span>
+            <span>
+              {todaySeconds >= goalSeconds
+                ? "Daily goal reached! Outstanding work."
+                : `${Math.max(0, goalMinutes - Math.floor(todaySeconds / 60))} min remaining today.`}
+            </span>
             <strong>{Math.round(goalPercent)}%</strong>
           </div>
         </article>
 
-        <article className="streak-card">
+        <article className="streak-card streak-card-fire">
           <div className="overview-card-top">
-            <span className="overview-icon streak-icon"><FlameIcon size={18} /></span>
-            <span className="card-kicker">CURRENT STREAK</span>
+            <span className="overview-icon streak-icon streak-icon-fire">
+              <FlameIcon size={18} />
+            </span>
+            <span className="card-kicker streak-kicker">CURRENT STREAK</span>
           </div>
-          <div className="streak-number">{streak}<span> days</span></div>
-          <p className="overview-caption">{streak > 0 ? "Consistency is your superpower." : "Start your streak today."}</p>
+          <div className="streak-number streak-number-fire">
+            {streak}
+            <span> days</span>
+          </div>
+          <p className="overview-caption">
+            {streak > 0 ? "You're on fire! Keep the momentum going." : "Start your streak with a lesson today."}
+          </p>
         </article>
 
         <article className="library-stat-card">
           <div className="overview-card-top">
-            <span className="overview-icon library-icon"><BookOpenIcon size={18} /></span>
+            <span className="overview-icon library-icon">
+              <BookOpenIcon size={18} />
+            </span>
             <span className="card-kicker">MY LIBRARY</span>
           </div>
-          <div className="library-stat-number">{courses.length}<span> courses</span></div>
-          <p className="overview-caption">{completedVideos} of {totalVideos} lessons completed</p>
+          <div className="library-stat-number">
+            {courses.length}
+            <span> courses</span>
+          </div>
+          <p className="overview-caption">
+            {completedVideos} of {totalVideos} lessons completed
+          </p>
         </article>
       </section>
 
@@ -124,7 +187,10 @@ export default async function DashboardPage({
           </div>
           <div className="resume-copy">
             <h2>{resume.title}</h2>
-            <p>{resume.completedVideos} of {resume.totalVideos} lessons complete{resume.channelTitle ? ` · ${resume.channelTitle}` : ""}</p>
+            <p>
+              {resume.completedVideos} of {resume.totalVideos} lessons complete
+              {resume.channelTitle ? ` · ${resume.channelTitle}` : ""}
+            </p>
           </div>
           <Link href={`/watch/${resume.id}/${resume.continueVideoId}`} className="resume-button">
             Continue learning <ArrowRightIcon size={16} />
@@ -145,48 +211,36 @@ export default async function DashboardPage({
       <section id="courses" className="library-section">
         <div className="section-title-row">
           <div>
-            <h2>Your courses <span className="heading-count">{courses.length}</span></h2>
+            <h2>
+              Your courses <span className="heading-count">{courses.length}</span>
+            </h2>
           </div>
           <span className="section-side-note">Learn at your own pace and track your mastery.</span>
         </div>
         <CourseLibrary courses={courses} initialQuery={search} />
       </section>
 
-      <section id="settings" className="dashboard-lower">
-        <div className="panel-card activity-panel">
+      {/* Consistency Heatmap + Compact Daily Goal */}
+      <section id="consistency" className="dashboard-lower">
+        <div className="panel-card activity-panel flex-1">
           <div className="panel-heading">
             <div>
               <h2>Your consistency</h2>
             </div>
-            <span className="panel-period">LAST 5 WEEKS</span>
+            <span className="panel-period">ACTIVITY HEATMAP</span>
           </div>
-          <StreakCalendar days={days} goalSeconds={goalSeconds} today={today} />
+          <StreakCalendar
+            days={days}
+            goalSeconds={goalSeconds}
+            today={today}
+            totalActiveDays={totalActiveDays}
+            maxStreak={maxStreak}
+          />
         </div>
 
-        <form action={updateSettings} className="panel-card settings-panel">
-          <div className="panel-heading">
-            <div>
-              <h2>Learning preferences</h2>
-            </div>
-          </div>
-          <label className="settings-field">
-            <span>Daily goal <small>Minutes you want to learn each day</small></span>
-            <span className="input-suffix">
-              <input name="daily_goal_minutes" type="number" min={1} max={600} defaultValue={goalMinutes} />
-              <small>min</small>
-            </span>
-          </label>
-          <label className="settings-field">
-            <span>Timezone <small>Used for your streak and reminders</small></span>
-            <input name="timezone" defaultValue={tz} placeholder="Asia/Kolkata" />
-          </label>
-          <label className="reminder-setting">
-            <input name="reminder_enabled" type="checkbox" defaultChecked={profile?.reminder_enabled ?? true} />
-            <span className="custom-check" aria-hidden="true">✓</span>
-            <span>Email reminder<small>Remind me when I miss my daily goal</small></span>
-          </label>
-          <button className="settings-save">Save preferences →</button>
-        </form>
+        <div className="panel-card daily-goal-panel">
+          <CompactDailyGoal initialMinutes={goalMinutes} />
+        </div>
       </section>
     </main>
   );

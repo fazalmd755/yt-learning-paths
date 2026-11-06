@@ -7,7 +7,8 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Watchify | Study with intention",
-  description: "Watchify turns YouTube playlists into learning paths with progress tracking, study planning and timestamped notes.",
+  description:
+    "Watchify turns YouTube playlists into learning paths with progress tracking, study planning and timestamped notes.",
   manifest: "/manifest.json",
   icons: {
     icon: "/icon.svg",
@@ -73,7 +74,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pixelify+Sans:wght@500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -82,7 +83,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <div className="site-header-inner">
             <Link href="/" className="brand-link">
               <span className="brand-mark">W</span>
-              <span>Watchify</span>
+              <span className="brand-name">Watchify</span>
             </Link>
             <nav className="site-nav">
               <div className="site-nav-links">

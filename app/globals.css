@@ -1,19 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Pixelify+Sans:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 :root {
-  --font-display: 'Bebas Neue', Impact, -apple-system, sans-serif;
-  --font-pixel: 'Pixelify Sans', monospace;
-  --background: #ffffff;
-  --foreground: #4b4b4d;
-  --muted: #737376;
-  --line: #e7e7e8;
-  --lime: #a3d12f;
-  --lime-dark: #85b51b;
-  --ink: #4b4b4d;
-  --primary: #ff3e00;
-  --secondary: #00a4d4;
-  --surface: #fff;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-pixel: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --background: #0b0d11;
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --subtle: #64748b;
+  --line: #222734;
+  --lime: #10b981;
+  --lime-dark: #059669;
+  --ink: #0b0d11;
+  --primary: #10b981;
+  --secondary: #38bdf8;
+  --surface: #13161c;
 }
 
 * { box-sizing: border-box; }
@@ -22,7 +25,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-sans);
   caret-color: var(--lime);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -278,7 +281,7 @@ a { color: inherit; text-decoration: none; }
 .hero-content { position: relative; z-index: 1; padding-bottom: 25px; }
 .eyebrow { display: flex; align-items: center; gap: 9px; color: #737b6b; font-size: 9px; font-weight: 800; letter-spacing: .16em; }
 .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: #98bc2d; box-shadow: 0 0 0 4px rgba(152, 188, 45, .13); }
-.hero-content h1 { margin: 27px 0 20px; font-size: clamp(46px, 5.3vw, 72px); font-weight: 760; letter-spacing: -.075em; line-height: .99; }
+
 .hero-content h1 span { color: #7d8d59; }
 .hero-copy { max-width: 485px; margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
 .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-top: 31px; }
@@ -1327,16 +1330,25 @@ body { background: var(--background); color: var(--foreground); }
 
 :root {
   color-scheme: dark;
-  --background: #17191c;
-  --foreground: #f2f3f4;
-  --muted: #b0b3b8;
-  --line: #383b40;
-  --lime: #a3d12f;
-  --lime-dark: #a3d12f;
-  --ink: #4b4b4d;
-  --primary: #ff3e00;
-  --secondary: #00a4d4;
-  --surface: #222529;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-pixel: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --background: #0b0d11;
+  --foreground: #f8fafc;
+  --muted: #94a3b8;
+  --subtle: #64748b;
+  --line: #222734;
+  --line-subtle: #1c202a;
+  --line-hover: #323847;
+  --lime: #10b981;
+  --lime-dark: #059669;
+  --ink: #0b0d11;
+  --primary: #10b981;
+  --secondary: #38bdf8;
+  --surface: #13161c;
+  --surface-raised: #181c24;
+  --surface-hover: #1e232e;
 }
 
 html { background: var(--background); }
@@ -2947,4 +2959,466 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   font-size: 12px;
   font-weight: 700;
   color: #a3d12f;
+}
+
+
+/* ==========================================================================
+   HUMAN-CRAFTED DESIGN SYSTEM: PALETTE, TYPOGRAPHY & REFINED ACCENTS
+   ========================================================================== */
+
+/* Clean, modern typography overrides */
+.font-display {
+  font-family: var(--font-display) !important;
+  letter-spacing: -0.025em;
+  text-transform: none;
+}
+
+.font-pixel {
+  font-family: var(--font-sans) !important;
+  letter-spacing: -0.01em;
+}
+
+/* Elegant non-gimmick gradient accents */
+.pixel-glow {
+  font-family: var(--font-display) !important;
+  color: #38bdf8 !important;
+  background: linear-gradient(135deg, #10b981 0%, #38bdf8 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  text-shadow: none !important;
+  font-weight: 750 !important;
+  letter-spacing: -0.025em !important;
+  padding: 0 !important;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(135deg, #10b981 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-accent-line {
+  display: block;
+  background: linear-gradient(135deg, #34d399 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Handcrafted badges */
+.pixel-badge,
+.dashboard-space-badge,
+.hero-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  font-family: var(--font-sans) !important;
+  font-size: 11px !important;
+  font-weight: 650 !important;
+  letter-spacing: 0.04em !important;
+  color: #94a3b8 !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  padding: 5px 12px !important;
+  border-radius: 9999px !important;
+  text-shadow: none !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) !important;
+  margin-bottom: 14px !important;
+  text-transform: uppercase !important;
+}
+
+.pixel-badge-dot,
+.dashboard-badge-dot,
+.hero-badge-dot {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  background: #10b981 !important;
+  box-shadow: 0 0 6px #10b981 !important;
+}
+
+/* Headings */
+.dashboard-heading,
+.hero-title {
+  font-size: clamp(32px, 4.2vw, 54px) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.15 !important;
+  color: #f8fafc !important;
+  margin: 0 0 12px !important;
+}
+
+.closing-cta-title {
+  font-size: clamp(30px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #f8fafc;
+  line-height: 1.2;
+}
+
+.closing-cta-sub {
+  color: #94a3b8;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+/* Brand icon */
+.brand-mark,
+.mini-logo {
+  display: grid !important;
+  width: 32px !important;
+  height: 32px !important;
+  place-items: center !important;
+  border-radius: 9px !important;
+  background: linear-gradient(135deg, #19202a, #11151d) !important;
+  border: 1px solid #27303f !important;
+  color: #34d399 !important;
+  font-family: var(--font-sans) !important;
+  font-size: 15px !important;
+  font-weight: 800 !important;
+  text-shadow: none !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+.brand-name {
+  font-size: 15px;
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  color: #f8fafc;
+}
+
+/* ==========================================================================
+   FIRE STREAK STYLING (NAVBAR & DASHBOARD)
+   ========================================================================== */
+
+/* Navbar Streak Pill */
+.header-streak,
+.header-streak.header-streak-fire {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.16) 0%, rgba(249, 115, 22, 0.08) 100%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.38) !important;
+  box-shadow: 0 0 14px rgba(249, 115, 22, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  padding: 5px 12px !important;
+  border-radius: 9999px !important;
+  color: #ffedd5 !important;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  text-decoration: none !important;
+}
+
+.header-streak:hover,
+.header-streak.header-streak-fire:hover {
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.28) 0%, rgba(249, 115, 22, 0.18) 100%) !important;
+  border-color: rgba(251, 146, 60, 0.7) !important;
+  box-shadow: 0 0 22px rgba(249, 115, 22, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+.header-streak .streak-count {
+  font-family: var(--font-sans) !important;
+  font-weight: 750 !important;
+  font-size: 13px !important;
+  color: #fb923c !important;
+  letter-spacing: -0.01em !important;
+}
+
+.flame-fire-svg {
+  display: block;
+  overflow: visible;
+  filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.65));
+}
+
+/* Dashboard Streak Overview Card */
+.streak-card-fire {
+  border-color: rgba(249, 115, 22, 0.28) !important;
+  background: linear-gradient(180deg, rgba(234, 88, 12, 0.08) 0%, #13161c 100%) !important;
+  box-shadow: 0 4px 24px -2px rgba(234, 88, 12, 0.14) !important;
+}
+
+.streak-icon-fire {
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.25), rgba(249, 115, 22, 0.15)) !important;
+  border: 1px solid rgba(249, 115, 22, 0.45) !important;
+  box-shadow: 0 0 14px rgba(249, 115, 22, 0.3) !important;
+}
+
+.streak-kicker {
+  color: #fb923c !important;
+}
+
+.streak-number-fire {
+  color: #fb923c !important;
+}
+
+.streak-number-fire span {
+  color: #fdba74 !important;
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   CONSISTENCY HEATMAP & LOWER DASHBOARD LAYOUT
+   ========================================================================== */
+
+.dashboard-lower {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) 300px !important;
+  gap: 20px !important;
+  margin-top: 42px !important;
+  align-items: start !important;
+}
+
+@media (max-width: 960px) {
+  .dashboard-lower {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.activity-panel {
+  min-width: 0 !important;
+  background: #13161c !important;
+  border: 1px solid #222734 !important;
+  border-radius: 12px !important;
+  padding: 22px !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35) !important;
+}
+
+.activity-panel > div:last-child {
+  max-width: none !important;
+  margin: 0 !important;
+}
+
+.streak-heatmap-root {
+  width: 100%;
+}
+
+.streak-months-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #272d3b transparent;
+}
+
+.streak-months-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.streak-months-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.streak-months-scroll::-webkit-scrollbar-thumb {
+  background: #272d3b;
+  border-radius: 3px;
+}
+
+.streak-months-container {
+  display: inline-flex;
+  gap: 22px;
+}
+
+.streak-month-block .month-label {
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   COMPACT DAILY GOAL PANEL
+   ========================================================================== */
+
+.daily-goal-panel {
+  background: #13161c !important;
+  border: 1px solid #222734 !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35) !important;
+}
+
+.compact-daily-goal {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.goal-panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.goal-badge-icon {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(56, 189, 248, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  color: #38bdf8;
+}
+
+.goal-panel-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+  text-transform: uppercase;
+}
+
+.goal-saved-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.14);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.goal-display-row {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.goal-value-display {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.goal-value-num {
+  font-size: 32px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.goal-value-unit {
+  font-size: 13px;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+.goal-panel-hint {
+  margin: 0;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.goal-presets-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+
+.goal-preset-btn {
+  padding: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #272d3b;
+  background: #181d26;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.goal-preset-btn:hover {
+  background: #202734;
+  border-color: #3a4254;
+  color: #ffffff;
+}
+
+.goal-preset-btn.active {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: #10b981;
+  color: #34d399;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+}
+
+.goal-custom-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.goal-custom-input-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.goal-custom-input {
+  width: 100%;
+  padding: 8px 38px 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #272d3b;
+  background: #181d26;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 600;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.goal-custom-input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+}
+
+.goal-custom-suffix {
+  position: absolute;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  pointer-events-none;
+}
+
+.goal-save-btn {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid #10b981;
+  background: #10b981;
+  color: #0b0d11;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.goal-save-btn:hover:not(:disabled) {
+  background: #059669;
+  border-color: #059669;
+}
+
+.goal-save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Base surface styling across cards */
+.panel-card,
+.resume-card,
+.add-course-section,
+.goal-card,
+.streak-card,
+.library-stat-card,
+.feature-card,
+.course-card {
+  background: #13161c !important;
+  border-color: #222734 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.35) !important;
+}
+
+.overview-caption,
+.section-side-note,
+.course-url-hint {
+  color: #94a3b8 !important;
 }
