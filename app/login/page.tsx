@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import GoogleAuthButton from "@/components/GoogleAuthButton";
-import { ArrowRightIcon } from "@/components/Icons";
-import { login, signInWithGoogle } from "./actions";
+import { signInWithGoogle } from "./actions";
 
 export const metadata: Metadata = {
   title: "Log In",
   description:
-    "Log in to Watchify to continue your learning paths, check your daily streak, and pick up where you left off.",
+    "Log in to Watchify with Google to continue your learning paths, check your daily streak, and pick up where you left off.",
   alternates: {
     canonical: "/login",
   },
@@ -29,32 +27,32 @@ export default async function LoginPage({
       </section>
       <section className="auth-form-side">
         <div className="auth-card">
-          <h2>Log in or sign up</h2>
-          <p className="auth-intro">Keep your progress in one place and pick up right where you left off.</p>
+          <h2>Welcome to Watchify</h2>
+          <p className="auth-intro">Sign in with your Google account to access your courses, streak, and personalized learning paths.</p>
 
           {error && <p role="alert" className="auth-message auth-error">{error}</p>}
           {message && <p role="status" className="auth-message auth-success">{message}</p>}
 
-          <form action={signInWithGoogle} className="auth-google-form">
+          <form action={signInWithGoogle} className="auth-google-form mt-4">
             <GoogleAuthButton label="Continue with Google" />
           </form>
 
-          <div className="auth-divider" aria-hidden="true">
-            <span>or continue with email</span>
+          <div className="auth-google-benefits">
+            <div className="benefit-item">
+              <span className="benefit-star">✦</span>
+              <span><strong>Instant 1-Click Access:</strong> No passwords to remember or reset.</span>
+            </div>
+            <div className="benefit-item">
+              <span className="benefit-star">✦</span>
+              <span><strong>Google Verified & Safe:</strong> Your learning data and progress stay completely secure.</span>
+            </div>
+            <div className="benefit-item">
+              <span className="benefit-star">✦</span>
+              <span><strong>Sync Across Devices:</strong> Resume watching and study planning on any screen.</span>
+            </div>
           </div>
 
-          <form className="auth-form">
-            <label>Email address<input name="email" type="email" required placeholder="you@example.com" autoComplete="email" /></label>
-            <label>Password<input name="password" type="password" required minLength={6} placeholder="At least 6 characters" autoComplete="current-password" /></label>
-            <button type="submit" formAction={login} className="auth-submit">
-              Log in <ArrowRightIcon size={14} className="inline-block ml-1" />
-            </button>
-          </form>
-
-          <Link href="/signup" className="auth-signup-link">
-            New here? <strong>Create an account</strong> <ArrowRightIcon size={14} className="inline-block ml-1" />
-          </Link>
-          <p className="auth-footnote">Create an account to save your learning paths and progress.</p>
+          <p className="auth-footnote">Watchify exclusively uses Google Authentication for safe, hassle-free sign in.</p>
         </div>
       </section>
     </main>

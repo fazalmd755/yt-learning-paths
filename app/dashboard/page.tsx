@@ -6,6 +6,8 @@ import ProgressBar from "@/components/ProgressBar";
 import StreakCalendar from "@/components/StreakCalendar";
 import CompactDailyGoal from "@/components/CompactDailyGoal";
 import AchievementsBadges from "@/components/AchievementsBadges";
+import ProfileReminderBanner from "@/components/ProfileReminderBanner";
+import { computeProfileCompletion } from "@/lib/profile";
 import {
   FlameIcon,
   TargetIcon,
@@ -98,6 +100,23 @@ export default async function DashboardPage({
     .sort((a, b) => (b.lastActivity ?? "").localeCompare(a.lastActivity ?? ""))[0];
   const goalPercent = goalSeconds ? Math.min(100, (todaySeconds / goalSeconds) * 100) : 0;
 
+  const displayName = [user.user_metadata?.display_name, user.user_metadata?.full_name, user.user_metadata?.name]
+    .find((value): value is string => typeof value === "string") ?? "";
+  const avatarUrl = [user.user_metadata?.avatar_url, user.user_metadata?.picture]
+    .find((value): value is string => typeof value === "string") ?? "";
+  const learningFocus = (user.user_metadata?.learning_focus as string) ?? "";
+  const collegeOrCompany = (user.user_metadata?.college_or_company as string) ?? "";
+  const bio = (user.user_metadata?.bio as string) ?? "";
+
+  const profileCompletion = computeProfileCompletion({
+    displayName,
+    avatarUrl,
+    learningFocus,
+    collegeOrCompany,
+    bio,
+    dailyGoalMinutes: goalMinutes,
+  });
+
   return (
     <main className="dashboard-shell">
       <section className="dashboard-welcome">
@@ -122,6 +141,11 @@ export default async function DashboardPage({
           </strong>
         </div>
       </section>
+
+      <ProfileReminderBanner
+        percent={profileCompletion.percent}
+        remainingLabels={profileCompletion.remainingSteps.map((s) => s.label)}
+      />
 
       <section className="dashboard-overview">
         <article className="goal-card">
