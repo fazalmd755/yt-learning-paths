@@ -1,24 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import SiteHeader from "@/components/SiteHeader";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
 import "./globals.css";
-
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-mono",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   title: "Watchify | Study with intention",
@@ -51,7 +36,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       user = authUser;
 
       if (user) {
-        // Parallel fetch for profile, streak and today's activity (approx tz fallback to avoid waterfall)
         const [{ data: profile }, { data: streakData }] = await Promise.all([
           supabase
             .from("profiles")
@@ -89,7 +73,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     : "";
 
   return (
-    <html lang="en" className={`${plusJakartaSans.variable} ${jetbrainsMono.variable}`}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="min-h-screen antialiased">
         <header className="site-header">
           <div className="site-header-inner">
