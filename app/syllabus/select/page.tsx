@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import AddCourseForm from "@/components/AddCourseForm";
@@ -6,6 +7,15 @@ import { BookOpenIcon, CheckCircleIcon, PlayIcon } from "@/components/Icons";
 import LearningPathLibrary from "@/components/LearningPathLibrary";
 import { getCourseSummaries } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
+
+export const metadata: Metadata = {
+  title: "My Playlists & Learning Paths",
+  description:
+    "Browse and manage your YouTube playlists, organized courses, and custom learning paths.",
+  alternates: {
+    canonical: "/syllabus/select",
+  },
+};
 
 export const dynamic = "force-dynamic";
 
@@ -36,7 +46,6 @@ export default async function PlaylistLibraryPage() {
     <main className="dashboard-shell">
       <section className="dashboard-welcome">
         <div>
-
           <h1>Your <span>playlists.</span></h1>
           <p>Every YouTube playlist you add, together in one place.</p>
         </div>

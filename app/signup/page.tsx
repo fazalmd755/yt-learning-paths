@@ -1,9 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import GoogleAuthButton from "@/components/GoogleAuthButton";
 import { ArrowRightIcon } from "@/components/Icons";
 import { resendSignupConfirmation, signInWithGoogle, signup } from "../login/actions";
+
+export const metadata: Metadata = {
+  title: "Create Account",
+  description:
+    "Join Watchify for free. Turn YouTube playlists into structured learning paths with progress tracking and daily streaks.",
+  alternates: {
+    canonical: "/signup",
+  },
+};
 
 export default async function SignupPage({
   searchParams,
@@ -29,11 +39,11 @@ export default async function SignupPage({
         <p>Save your learning paths, pick up where you left off, and build a habit that lasts.</p>
         <div className="auth-aside-foot"><span>LEARN WITH INTENTION</span><span>✦ &nbsp; KEEP GOING</span></div>
       </section>
+
       <section className="auth-form-side">
         <div className="auth-card">
-
           <h2>Create your account</h2>
-          <p className="auth-intro">One account keeps all your courses and learning progress together.</p>
+          <p className="auth-intro">Free forever. Start learning with intention in 30 seconds.</p>
 
           {error && <p role="alert" className="auth-message auth-error">{error}</p>}
           {message && <p role="status" className="auth-message auth-success">{message}</p>}
@@ -45,23 +55,28 @@ export default async function SignupPage({
           <div className="auth-divider" aria-hidden="true">
             <span>or sign up with email</span>
           </div>
+
+          <form className="auth-form">
+            <label>Email address<input name="email" type="email" required placeholder="you@example.com" autoComplete="email" /></label>
+            <label>Password<input name="password" type="password" required minLength={6} placeholder="At least 6 characters" autoComplete="new-password" /></label>
+            <button type="submit" formAction={signup} className="auth-submit">
+              Create account <ArrowRightIcon size={14} className="inline-block ml-1" />
+            </button>
+          </form>
+
           {showResendConfirmation && (
-            <form action={resendSignupConfirmation} className="resend-confirmation-form">
-              <label htmlFor="resend-email">Didn’t receive the email? Send it again.</label>
-              <div>
-                <input id="resend-email" name="email" type="email" required placeholder="you@example.com" autoComplete="email" />
-                <button type="submit">Resend</button>
-              </div>
+            <form action={resendSignupConfirmation} className="mt-4 border-t border-[#343a42] pt-4 text-center">
+              <p className="text-xs text-[#aeb2b8] mb-2">Didn’t receive the email? Check spam or resend:</p>
+              <button type="submit" className="button-text text-xs underline font-semibold text-emerald-400">
+                Resend confirmation link
+              </button>
             </form>
           )}
 
-          <form action={signup} className="auth-form">
-            <label htmlFor="signup-email">Email address<input id="signup-email" name="email" type="email" required placeholder="you@example.com" autoComplete="email" /></label>
-            <label htmlFor="signup-password">Password<input id="signup-password" name="password" type="password" required minLength={6} placeholder="At least 6 characters" autoComplete="new-password" /></label>
-            <button type="submit" className="auth-submit">Create account <ArrowRightIcon size={14} className="inline-block ml-1" /></button>
-          </form>
-
-          <p className="auth-footnote">Already have an account? <Link href="/login">Log in</Link></p>
+          <Link href="/login" className="auth-signup-link">
+            Already have an account? <strong>Log in</strong> <ArrowRightIcon size={14} className="inline-block ml-1" />
+          </Link>
+          <p className="auth-footnote">By signing up you agree to learn with intention and finish your courses.</p>
         </div>
       </section>
     </main>

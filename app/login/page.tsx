@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import GoogleAuthButton from "@/components/GoogleAuthButton";
 import { ArrowRightIcon } from "@/components/Icons";
 import { login, signInWithGoogle } from "./actions";
+
+export const metadata: Metadata = {
+  title: "Log In",
+  description:
+    "Log in to Watchify to continue your learning paths, check your daily streak, and pick up where you left off.",
+  alternates: {
+    canonical: "/login",
+  },
+};
 
 export default async function LoginPage({
   searchParams,

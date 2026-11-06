@@ -5,10 +5,81 @@ import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
 import "./globals.css";
 
+function getSiteUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL && !process.env.NEXT_PUBLIC_SITE_URL.includes("localhost")) {
+    return process.env.NEXT_PUBLIC_SITE_URL;
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return "https://watchify.app";
+}
+
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  title: "Watchify | Study with intention",
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: "Watchify — Turn YouTube Playlists into Structured Courses",
+    template: "%s | Watchify",
+  },
   description:
-    "Watchify turns YouTube playlists into learning paths with progress tracking, study planning and timestamped notes.",
+    "Transform scattered YouTube playlists into organized learning paths. Track video progress, build daily streaks, take timestamped notes, and finish what you start.",
+  applicationName: "Watchify",
+  authors: [{ name: "Watchify" }],
+  generator: "Next.js",
+  keywords: [
+    "youtube learning",
+    "course tracker",
+    "playlist to course",
+    "study tracker",
+    "learning paths",
+    "video notes",
+    "youtube study planner",
+    "study streak",
+    "habit tracker",
+    "online course",
+  ],
+  creator: "Watchify",
+  publisher: "Watchify",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    title: "Watchify — Turn YouTube Playlists into Structured Courses",
+    description:
+      "Transform scattered YouTube playlists into organized learning paths. Track video progress, build daily streaks, take timestamped notes, and finish what you start.",
+    siteName: "Watchify",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Watchify — Turn YouTube Playlists into Structured Courses",
+    description:
+      "Turn YouTube playlists into structured learning paths with progress tracking and daily streaks.",
+    creator: "@watchify",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   manifest: "/manifest.json",
   icons: {
     icon: "/icon.svg",
@@ -72,6 +143,29 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         .find((value): value is string => typeof value === "string") ?? ""
     : "";
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Watchify",
+    url: siteUrl,
+    applicationCategory: "EducationalApplication",
+    operatingSystem: "All",
+    description:
+      "Turn YouTube playlists and videos into structured courses with progress tracking, timestamped notes, and daily study streaks.",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    featureList: [
+      "YouTube playlist to course conversion",
+      "Video progress tracking and bookmarking",
+      "Daily study streak and consistency heatmap",
+      "Timestamped rich video notes",
+      "Weekly study planner and scheduling",
+    ],
+  };
+
   return (
     <html lang="en">
       <head>
@@ -80,6 +174,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <link
           href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
           rel="stylesheet"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body className="min-h-screen antialiased">

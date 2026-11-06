@@ -1,9 +1,19 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import StudyPlanner from "@/components/StudyPlanner";
 import { getCourseSummaries } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "Study Planner",
+  description:
+    "Plan your weekly study schedule, organize tasks by subject, and stay on track with your YouTube courses.",
+  alternates: {
+    canonical: "/planner",
+  },
+};
 
 export const dynamic = "force-dynamic";
 
@@ -31,10 +41,20 @@ export default async function PlannerPage() {
   return (
     <main className="product-shell">
       <section className="product-page-heading">
-        <div><h1>Study planner</h1><p>Build a simple plan, make room for breaks, and keep your learning moving.</p></div>
-        <Link className="quiet-link" href="/syllabus/select">Browse my playlists <span aria-hidden="true">↗</span></Link>
+        <div>
+          <h1>Study planner</h1>
+          <p>Build a simple plan, make room for breaks, and keep your learning moving.</p>
+        </div>
+        <Link className="quiet-link" href="/syllabus/select">
+          Browse my playlists <span aria-hidden="true">↗</span>
+        </Link>
       </section>
-      <StudyPlanner userId={user.id} today={today} initialTasks={tasksResult.data ?? []} courses={courses} />
+      <StudyPlanner
+        userId={user.id}
+        today={today}
+        initialTasks={tasksResult.data ?? []}
+        courses={courses}
+      />
     </main>
   );
 }

@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRightIcon, PlayIcon, SparklesIcon } from "@/components/Icons";
+
+export const metadata: Metadata = {
+  title: "Watchify — Turn YouTube Playlists into Structured Courses",
+  description:
+    "Transform scattered YouTube playlists into organized learning paths. Track video progress, build daily study streaks, take timestamped notes, and finish what you start.",
+  alternates: {
+    canonical: "/",
+  },
+};
 
 const highlights = [
   {
