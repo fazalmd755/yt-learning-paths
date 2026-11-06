@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Script from "next/script";
 import SiteHeader from "@/components/SiteHeader";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 import { createClient } from "@/lib/supabase/server";
@@ -179,6 +180,17 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <head>
+        <Script
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-P767SJF7"
+          strategy="afterInteractive"
+        />
+        <Script id="google-gtm-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+          `}
+        </Script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
