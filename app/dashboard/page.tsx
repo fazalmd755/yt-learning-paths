@@ -30,55 +30,53 @@ export default async function DashboardPage({
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("timezone, daily_goal_minutes, reminder_enabled")
-    .eq("id", user.id)
-    .maybeSingle();
+  // Single parallel batch for all dashboard data - avoids database waterfalls
+  const [{ data: profile }, courses, { data: allActivity }, { data: streakData }] =
+    await Promise.all([
+      supabase
+        .from("profiles")
+        .select("timezone, daily_goal_minutes, reminder_enabled")
+        .eq("id", user.id)
+        .maybeSingle(),
+      getCourseSummaries(supabase, user.id),
+      supabase
+        .from("daily_activity")
+        .select("activity_date, seconds_learned")
+        .eq("user_id", user.id)
+        .order("activity_date", { ascending: true }),
+      supabase.rpc("current_streak"),
+    ]);
 
   const tz = profile?.timezone ?? "Asia/Kolkata";
   const goalMinutes = profile?.daily_goal_minutes ?? 15;
   const goalSeconds = goalMinutes * 60;
   const today = dateInTz(tz);
 
-  // Fetch ~112 days (~16 weeks / 3.5 months) for the contribution heatmap
+  // 16 weeks (~3.5 months) for the contribution heatmap
   const dates = lastNDates(112, tz);
 
-  const [courses, { data: activity }, { data: streakData }, { data: allActiveActivity }] =
-    await Promise.all([
-      getCourseSummaries(supabase, user.id),
-      supabase
-        .from("daily_activity")
-        .select("activity_date, seconds_learned")
-        .eq("user_id", user.id)
-        .gte("activity_date", dates[0]),
-      supabase.rpc("current_streak"),
-      supabase
-        .from("daily_activity")
-        .select("activity_date, seconds_learned")
-        .eq("user_id", user.id)
-        .gt("seconds_learned", 0)
-        .order("activity_date", { ascending: true }),
-    ]);
-
   const secondsByDate = new Map<string, number>();
-  for (const a of (activity ?? []) as any[]) {
+  const activeDaysList: { activity_date: string; seconds_learned: number }[] = [];
+
+  for (const a of (allActivity ?? []) as any[]) {
     secondsByDate.set(a.activity_date, a.seconds_learned);
+    if (a.seconds_learned > 0) {
+      activeDaysList.push(a);
+    }
   }
+
   const days = dates.map((date) => ({ date, seconds: secondsByDate.get(date) ?? 0 }));
   const todaySeconds = secondsByDate.get(today) ?? 0;
   const streak = Number(streakData ?? 0);
-
-  // Accurate total active days & max streak across history
-  const totalActiveDays = allActiveActivity?.length ?? (days.filter((d) => d.seconds > 0).length || 0);
+  const totalActiveDays = activeDaysList.length;
 
   let calculatedMax = 0;
-  if (allActiveActivity && allActiveActivity.length > 0) {
+  if (activeDaysList.length > 0) {
     let curRun = 1;
     calculatedMax = 1;
-    for (let i = 1; i < allActiveActivity.length; i++) {
-      const prev = new Date(allActiveActivity[i - 1].activity_date).getTime();
-      const curr = new Date(allActiveActivity[i].activity_date).getTime();
+    for (let i = 1; i < activeDaysList.length; i++) {
+      const prev = new Date(activeDaysList[i - 1].activity_date).getTime();
+      const curr = new Date(activeDaysList[i].activity_date).getTime();
       const diff = Math.round((curr - prev) / (1000 * 60 * 60 * 24));
       if (diff === 1) {
         curRun++;
