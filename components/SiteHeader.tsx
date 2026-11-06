@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   email: string;
   displayName: string;
+  avatarUrl?: string | null;
   streak: number;
   goalMinutes: number;
   todayMinutes: number;
@@ -73,6 +74,7 @@ function FlameIcon({ size = 18 }: { size?: number }) {
 export default function SiteHeader({
   email,
   displayName,
+  avatarUrl,
   streak,
   goalMinutes,
   todayMinutes,
@@ -81,11 +83,13 @@ export default function SiteHeader({
   const [searchOpen, setSearchOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
   const goalReached = todayMinutes >= goalMinutes;
   const remaining = Math.max(0, goalMinutes - todayMinutes);
   const accountName = displayName.trim() || email;
   const initial = accountName.trim().charAt(0).toUpperCase() || "U";
+  const showAvatar = Boolean(avatarUrl && !imageError);
 
   useEffect(() => {
     if (searchOpen) searchRef.current?.focus();
@@ -188,7 +192,7 @@ export default function SiteHeader({
       <div className="header-action-wrap">
         <button
           type="button"
-          className="header-avatar-button"
+          className={`header-avatar-button ${showAvatar ? "has-avatar-img" : ""}`}
           aria-label="Open account menu"
           aria-expanded={profileOpen}
           onClick={() => {
@@ -197,13 +201,42 @@ export default function SiteHeader({
             setNotificationsOpen(false);
           }}
         >
-          <span>{initial}</span>
+          {showAvatar ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={avatarUrl!}
+              alt={accountName}
+              className="header-avatar-img"
+              referrerPolicy="no-referrer"
+              onError={() => setImageError(true)}
+            />
+          ) : (
+            <span>{initial}</span>
+          )}
           <i />
         </button>
         {profileOpen && (
           <div className="header-popover profile-popover">
-            {displayName.trim() && <div className="profile-display-name">{displayName}</div>}
-            <div className="profile-email">{email}</div>
+            <div className="profile-popover-user-row">
+              {showAvatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatarUrl!}
+                  alt=""
+                  className="profile-popover-avatar-img"
+                  referrerPolicy="no-referrer"
+                />
+              ) : (
+                <div className="profile-popover-avatar-placeholder">
+                  {initial}
+                </div>
+              )}
+              <div className="profile-popover-user-meta">
+                {displayName.trim() && <div className="profile-display-name">{displayName}</div>}
+                <div className="profile-email">{email}</div>
+              </div>
+            </div>
+            <div className="profile-popover-divider" />
             <Link href="/dashboard" onClick={() => setProfileOpen(false)}>
               My learning
             </Link>

@@ -144,6 +144,15 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         .find((value): value is string => typeof value === "string") ?? ""
     : "";
 
+  const avatarUrl = user
+    ? [
+        user.user_metadata?.avatar_url,
+        user.user_metadata?.picture,
+        user.identities?.[0]?.identity_data?.avatar_url,
+        user.identities?.[0]?.identity_data?.picture,
+      ].find((value): value is string => typeof value === "string" && value.trim().length > 0) ?? ""
+    : "";
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebApplication",
@@ -198,6 +207,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <SiteHeader
                   email={user.email ?? ""}
                   displayName={displayName}
+                  avatarUrl={avatarUrl}
                   streak={headerData.streak}
                   goalMinutes={headerData.goalMinutes}
                   todayMinutes={headerData.todayMinutes}

@@ -5334,3 +5334,85 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
     align-items: flex-start;
   }
 }
+
+/* ==========================================================================
+   Header Profile Photo / Avatar Styling
+   ========================================================================== */
+
+.header-avatar-button {
+  overflow: hidden !important;
+}
+
+.header-avatar-button.has-avatar-img {
+  padding: 0 !important;
+  border-color: #4b5563 !important;
+  background: transparent !important;
+}
+
+.header-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.profile-popover-user-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 8px 10px;
+  min-width: 0;
+}
+
+.profile-popover-avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1.5px solid #4b5563;
+  flex-shrink: 0;
+}
+
+.profile-popover-avatar-placeholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #374151;
+  color: #f3f4f6;
+  font-weight: 750;
+  font-size: 14px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.profile-popover-user-meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.profile-popover-user-meta .profile-display-name {
+  color: #f3f4f6;
+  font-size: 13px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-popover-user-meta .profile-email {
+  color: #9ca3af;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-bottom: none;
+  padding: 2px 0 0;
+}
+
+.profile-popover-divider {
+  height: 1px;
+  background: #2e343b;
+  margin: 4px 0 6px;
+}
