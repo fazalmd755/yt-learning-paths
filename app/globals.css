@@ -7351,5 +7351,420 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   .hub-cards-grid {
     grid-template-columns: 1fr;
   }
+  .public-hub-hero {
+    flex-direction: column;
+    padding: 24px;
+  }
+  .public-hero-action-card {
+    width: 100%;
+  }
 }
+
+/* ==========================================================================
+   Study Hubs Share Modal & Public View
+   ========================================================================== */
+
+.hub-card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hub-share-icon-btn {
+  background: transparent;
+  border: 1px solid #28303e;
+  color: #94a3b8;
+  padding: 4px 7px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.hub-share-icon-btn:hover {
+  background: #1e2430;
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--lime);
+}
+
+.workspace-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1e2430;
+  color: #e2e8f0;
+  border: 1px solid #333d4e;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.workspace-share-btn:hover {
+  background: #2a3342;
+  border-color: rgba(16, 185, 129, 0.4);
+  color: var(--lime);
+}
+
+/* Share Modal Elements */
+.share-modal-content {
+  max-width: 480px;
+}
+
+.share-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.share-hub-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #171b23;
+  border: 1px solid #252b38;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.preview-icon {
+  font-size: 26px;
+}
+
+.preview-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.preview-text strong {
+  font-size: 14px;
+  color: #f1f5f9;
+}
+
+.preview-text span {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.share-link-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.share-link-group label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.share-link-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.share-url-input {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  background: #101319;
+  border-color: #262c3a;
+  color: #cbd5e1;
+}
+
+.copy-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.copy-btn.copied {
+  background: #059669;
+}
+
+.share-apps-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.share-app-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.15s;
+}
+
+.share-native {
+  background: #1c222e;
+  border-color: #2f384a;
+  color: #e2e8f0;
+}
+
+.share-whatsapp {
+  background: rgba(37, 211, 102, 0.12);
+  border-color: rgba(37, 211, 102, 0.3);
+  color: #4ade80;
+}
+
+.share-whatsapp:hover {
+  background: rgba(37, 211, 102, 0.22);
+}
+
+.share-telegram {
+  background: rgba(34, 158, 217, 0.12);
+  border-color: rgba(34, 158, 217, 0.3);
+  color: #38bdf8;
+}
+
+.share-telegram:hover {
+  background: rgba(34, 158, 217, 0.22);
+}
+
+.share-x {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+}
+
+.share-x:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.share-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #171b23;
+  border: 1px solid #232936;
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.share-toggle-row strong {
+  display: block;
+  font-size: 13px;
+  color: #f1f5f9;
+}
+
+.share-toggle-row p {
+  font-size: 11.5px;
+  color: #94a3b8;
+  margin: 2px 0 0;
+}
+
+.switch-label {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.switch-label input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.switch-slider {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background-color: #2b3240;
+  border-radius: 24px;
+  transition: 0.2s;
+}
+
+.switch-slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+.switch-label input:checked + .switch-slider {
+  background-color: var(--lime);
+}
+
+.switch-label input:checked + .switch-slider:before {
+  transform: translateX(20px);
+}
+
+/* ==========================================================================
+   Public Shared Study Hub Page (/study-hubs/share/[id])
+   ========================================================================== */
+
+.public-hub-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.public-hub-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.shared-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--lime);
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.hub-category-pill {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #93c5fd;
+  background: rgba(59, 130, 246, 0.12);
+  border: 1px solid rgba(59, 130, 246, 0.25);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.public-hub-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 28px;
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(56, 189, 248, 0.06) 50%, rgba(19, 22, 28, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  padding: 32px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
+}
+
+.public-hero-copy {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.public-hero-title {
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin: 0 0 8px;
+  line-height: 1.25;
+}
+
+.public-hero-desc {
+  font-size: 15px;
+  color: #94a3b8;
+  max-width: 620px;
+  line-height: 1.55;
+  margin: 0 0 20px;
+}
+
+.public-hero-meta {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: #94a3b8;
+  background: #141820;
+  border: 1px solid #232936;
+  padding: 5px 12px;
+  border-radius: 8px;
+}
+
+.meta-item strong {
+  color: #f1f5f9;
+}
+
+/* 1-Click Save to My Hubs Action Card */
+.public-hero-action-card {
+  width: 320px;
+  background: #0f1218;
+  border: 1px solid #262e3d;
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.action-card-header h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+.action-card-header p {
+  font-size: 12px;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.hero-cta-btn {
+  width: 100%;
+  justify-content: center;
+  padding: 12px 18px;
+  font-size: 14px;
+}
+
+.action-card-perks {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  border-top: 1px solid #1c222c;
+  padding-top: 10px;
+  font-size: 11.5px;
+  color: #94a3b8;
+}
+
+.public-subjects-section {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
 

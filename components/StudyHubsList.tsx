@@ -10,7 +10,9 @@ import {
   PlayIcon,
   ArrowRightIcon,
   SparklesIcon,
+  ShareIcon,
 } from "@/components/Icons";
+import ShareStudyHubModal from "./ShareStudyHubModal";
 import type { HubType, StudyHubSummary } from "@/lib/hubs";
 import { formatDuration } from "@/lib/utils";
 import ProgressBar from "./ProgressBar";
@@ -64,6 +66,7 @@ export default function StudyHubsList({
   const [errorMsg, setErrorMsg] = useState("");
   const [isPending, startTransition] = useTransition();
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [sharingHub, setSharingHub] = useState<StudyHubSummary | null>(null);
 
   const filteredHubs = hubs.filter((hub) =>
     filter === "all" ? true : hub.hubType === filter
@@ -277,15 +280,25 @@ export default function StudyHubsList({
                       </span>
                     )}
                   </div>
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(hub.id, hub.title)}
-                    className="hub-delete-btn"
-                    disabled={deletingId === hub.id}
-                    title="Delete Hub"
-                  >
-                    ×
-                  </button>
+                  <div className="hub-card-header-actions">
+                    <button
+                      type="button"
+                      onClick={() => setSharingHub(hub)}
+                      className="hub-share-icon-btn"
+                      title="Share Hub with friends"
+                    >
+                      <ShareIcon size={14} />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(hub.id, hub.title)}
+                      className="hub-delete-btn"
+                      disabled={deletingId === hub.id}
+                      title="Delete Hub"
+                    >
+                      ×
+                    </button>
+                  </div>
                 </div>
 
                 <div className="hub-card-body">
@@ -442,6 +455,18 @@ export default function StudyHubsList({
             </form>
           </div>
         </div>
+      )}
+      {/* Share Modal */}
+      {sharingHub && (
+        <ShareStudyHubModal
+          hubId={sharingHub.id}
+          title={sharingHub.title}
+          subjectCount={sharingHub.totalSubjects}
+          totalVideos={sharingHub.totalVideos}
+          isPublic={sharingHub.isPublic}
+          isOpen={true}
+          onClose={() => setSharingHub(null)}
+        />
       )}
     </div>
   );

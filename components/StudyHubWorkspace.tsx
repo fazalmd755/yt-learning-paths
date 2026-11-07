@@ -13,7 +13,9 @@ import {
   ChevronDownIcon,
   ChevronRightIcon,
   SparklesIcon,
+  ShareIcon,
 } from "@/components/Icons";
+import ShareStudyHubModal from "./ShareStudyHubModal";
 import type { CourseSummary } from "@/lib/data";
 import type { HubSubjectSummary, StudyHubSummary, HubType } from "@/lib/hubs";
 import { formatDuration } from "@/lib/utils";
@@ -56,6 +58,7 @@ export default function StudyHubWorkspace({
   const router = useRouter();
   const [selectedSubjectId, setSelectedSubjectId] = useState<string>("all");
   const [expandedLectures, setExpandedLectures] = useState<Record<string, boolean>>({});
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
 
   // Add Subject Modal State
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -255,6 +258,13 @@ export default function StudyHubWorkspace({
               className="workspace-add-btn"
             >
               <span>+</span> Add Subject
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsShareModalOpen(true)}
+              className="workspace-share-btn"
+            >
+              <ShareIcon size={14} /> Share Hub
             </button>
             <button
               type="button"
@@ -808,6 +818,16 @@ export default function StudyHubWorkspace({
           </div>
         </div>
       )}
+      {/* Share Modal */}
+      <ShareStudyHubModal
+        hubId={hub.id}
+        title={hub.title}
+        subjectCount={hub.totalSubjects}
+        totalVideos={hub.totalVideos}
+        isPublic={hub.isPublic}
+        isOpen={isShareModalOpen}
+        onClose={() => setIsShareModalOpen(false)}
+      />
     </div>
   );
 }

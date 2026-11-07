@@ -235,3 +235,108 @@ export async function removeSubjectFromHub(subjectId: string, hubId: string) {
   revalidatePath("/study-hubs");
   return { success: true };
 }
+
+export async function cloneStudyHub(sourceHubId: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Please sign in to save this Study Hub to your account." };
+
+  // Fetch the source hub (either public or owned)
+  const { data: sourceHub, error: sourceErr } = await supabase
+    .from("user_study_hubs")
+    .select("id, title, hub_type, description, target_date")
+    .eq("id", sourceHubId)
+    .single();
+
+  if (sourceErr || !sourceHub) {
+    return { error: "Could not find the Study Hub to clone." };
+  }
+
+  // Create new hub for the current user
+  const { data: newHub, error: createErr } = await supabase
+    .from("user_study_hubs")
+    .insert({
+      user_id: user.id,
+      title: sourceHub.title,
+      hub_type: sourceHub.hub_type,
+      description: sourceHub.description,
+      target_date: sourceHub.target_date,
+      cloned_from_id: sourceHub.id,
+      is_public: true,
+    })
+    .select("id")
+    .single();
+
+  if (createErr || !newHub) {
+    return { error: createErr?.message || "Failed to create your copy of the hub." };
+  }
+
+  // Fetch subjects of source hub
+  const { data: sourceSubjects } = await supabase
+    .from("study_hub_subjects")
+    .select("name, code, color, playlist_id, position")
+    .eq("hub_id", sourceHubId)
+    .order("position", { ascending: true });
+
+  for (const s of sourceSubjects ?? []) {
+    let userCourseId: string | null = null;
+
+    if (s.playlist_id) {
+      // Enroll in user_courses so they can track progress
+      await supabase
+        .from("user_courses")
+        .upsert(
+          { user_id: user.id, playlist_id: s.playlist_id },
+          { onConflict: "user_id,playlist_id", ignoreDuplicates: true }
+        );
+
+      const { data: courseRow } = await supabase
+        .from("user_courses")
+        .select("id")
+        .eq("user_id", user.id)
+        .eq("playlist_id", s.playlist_id)
+        .single();
+
+      if (courseRow) {
+        userCourseId = courseRow.id;
+      }
+    }
+
+    await supabase.from("study_hub_subjects").insert({
+      hub_id: newHub.id,
+      user_id: user.id,
+      name: s.name,
+      code: s.code || "",
+      color: s.color || "blue",
+      course_id: userCourseId,
+      playlist_id: s.playlist_id,
+      position: s.position,
+    });
+  }
+
+  revalidatePath("/study-hubs");
+  revalidatePath(`/study-hubs/${newHub.id}`);
+  return { success: true, newHubId: newHub.id };
+}
+
+export async function toggleHubPublic(hubId: string, isPublic: boolean) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Please sign in first." };
+
+  const { error } = await supabase
+    .from("user_study_hubs")
+    .update({ is_public: isPublic, updated_at: new Date().toISOString() })
+    .eq("id", hubId)
+    .eq("user_id", user.id);
+
+  if (error) return { error: error.message };
+
+  revalidatePath(`/study-hubs/${hubId}`);
+  revalidatePath("/study-hubs");
+  return { success: true };
+}

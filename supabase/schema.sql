@@ -324,10 +324,13 @@ create table if not exists public.user_study_hubs (
   hub_type text not null default 'semester' check (hub_type in ('semester', 'class', 'exam', 'custom')),
   description text not null default '',
   target_date date,
+  is_public boolean not null default true,
+  cloned_from_id uuid references public.user_study_hubs(id) on delete set null,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
 );
 create index if not exists user_study_hubs_user_idx on public.user_study_hubs (user_id, updated_at desc);
+create index if not exists idx_user_study_hubs_public on public.user_study_hubs(is_public);
 
 create table if not exists public.study_hub_subjects (
   id uuid primary key default gen_random_uuid(),
@@ -346,11 +349,33 @@ create index if not exists study_hub_subjects_hub_idx on public.study_hub_subjec
 alter table public.user_study_hubs enable row level security;
 alter table public.study_hub_subjects enable row level security;
 
+-- Public sharing & ownership RLS policies
 drop policy if exists "own study hubs" on public.user_study_hubs;
-create policy "own study hubs" on public.user_study_hubs
-  for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists "public read study hubs" on public.user_study_hubs;
+create policy "public read study hubs" on public.user_study_hubs
+  for select to anon, authenticated
+  using (is_public = true or user_id = auth.uid());
+
+drop policy if exists "manage own study hubs" on public.user_study_hubs;
+create policy "manage own study hubs" on public.user_study_hubs
+  for all to authenticated
+  using (user_id = auth.uid())
+  with check (user_id = auth.uid());
 
 drop policy if exists "own study hub subjects" on public.study_hub_subjects;
-create policy "own study hub subjects" on public.study_hub_subjects
-  for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists "public read study hub subjects" on public.study_hub_subjects;
+create policy "public read study hub subjects" on public.study_hub_subjects
+  for select to anon, authenticated
+  using (
+    exists (
+      select 1 from public.user_study_hubs
+      where id = hub_id and (is_public = true or user_id = auth.uid())
+    )
+  );
+
+drop policy if exists "manage own study hub subjects" on public.study_hub_subjects;
+create policy "manage own study hub subjects" on public.study_hub_subjects
+  for all to authenticated
+  using (user_id = auth.uid())
+  with check (user_id = auth.uid());
 
