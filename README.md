@@ -1,6 +1,6 @@
-# Watchify
+# Watchlify
 
-Turn YouTube playlists and videos into structured courses with progress tracking, daily goals, streaks, and email reminders.
+Turn YouTube playlists and videos into distraction-free, structured courses with progress tracking, daily goals, streaks, public shareable roadmaps, and AI study assist.
 
 **Stack:** Next.js 15 (App Router) + TypeScript, Tailwind CSS v4, Supabase (Postgres + Auth), YouTube Data API v3 + IFrame Player API.
 

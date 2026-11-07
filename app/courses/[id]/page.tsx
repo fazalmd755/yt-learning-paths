@@ -7,6 +7,7 @@ import { ArrowRightIcon, PlayIcon, TargetIcon } from "@/components/Icons";
 import ProgressBar from "@/components/ProgressBar";
 import SyncPlaylistButton from "@/components/SyncPlaylistButton";
 import CourseCertificate from "@/components/CourseCertificate";
+import ShareRoadmapButton from "@/components/ShareRoadmapButton";
 import { createClient } from "@/lib/supabase/server";
 import { formatDuration } from "@/lib/utils";
 
@@ -193,6 +194,12 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
 
           {/* Course Utilities Toolbar */}
           <div className="course-utilities-toolbar">
+            <ShareRoadmapButton
+              roadmapId={playlist.youtube_playlist_id || id}
+              title={playlist.title}
+              totalDuration={formatDuration(totalSeconds)}
+              lessonCount={videos.length}
+            />
             <CourseCertificate
               courseTitle={playlist.title}
               channelTitle={playlist.channel_title}

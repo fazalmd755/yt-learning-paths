@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRightIcon, PlayIcon, SparklesIcon, CheckIcon } from "@/components/Icons";
 import { WatchlifyIcon } from "@/components/BrandLogo";
+import HeroUrlInput from "@/components/HeroUrlInput";
+import FeaturedRoadmaps from "@/components/FeaturedRoadmaps";
 
 export const metadata: Metadata = {
   title: "Watchlify — Turn YouTube Playlists into Distraction-Free Courses",
@@ -84,6 +86,9 @@ export default function Home() {
             Paste any playlist URL to turn it into an ad-free, trackable course with timestamped notes,
             auto-resume at the exact second, and daily study streaks.
           </p>
+
+          {/* Frictionless Try-It-Now URL Input */}
+          <HeroUrlInput />
 
           <div className="hero-actions">
             <Link href="/login" className="button-primary">
@@ -173,6 +178,9 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Popular Curated Community Roadmaps Showcase */}
+      <FeaturedRoadmaps />
+
       {/* Comparison Section: YouTube Native vs Watchlify */}
       <section id="comparison" className="home-comparison-section">
         <div className="section-heading text-center">
@@ -225,7 +233,7 @@ export default function Home() {
           </div>
 
           {/* Side B: Watchlify */}
-          <div className="comparison-card comparison-watchify">
+          <div className="comparison-card comparison-watchlify comparison-watchify">
             <div className="comparison-card-header">
               <span className="comparison-card-badge comparison-badge-green">WATCHLIFY WORKSPACE</span>
               <h3>Built to finish courses</h3>

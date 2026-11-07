@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { ArrowRightIcon } from "@/components/Icons";
+import ShareRoadmapButton from "@/components/ShareRoadmapButton";
 import LearningPathEditor, { type LearningPathVideo } from "@/components/LearningPathEditor";
 import { createClient } from "@/lib/supabase/server";
 
@@ -101,11 +102,19 @@ export default async function LearningPathPage({ params }: { params: Promise<{ i
           <span><strong>{duration}</strong> total</span><i />
           <span><strong>{completed}</strong> complete</span>
         </div>
-        {videos[0] && (
-          <Link className="detail-start-button" href={`/learning-paths/${id}/watch/${videos.find((video) => video.status !== "completed")?.id ?? videos[0].id}`}>
-            {completed ? "Continue learning" : "Start learning"} <ArrowRightIcon size={14} className="inline-block ml-1" />
-          </Link>
-        )}
+        <div className="flex flex-wrap items-center gap-3 mt-4">
+          {videos[0] && (
+            <Link className="detail-start-button" href={`/learning-paths/${id}/watch/${videos.find((video) => video.status !== "completed")?.id ?? videos[0].id}`}>
+              {completed ? "Continue learning" : "Start learning"} <ArrowRightIcon size={14} className="inline-block ml-1" />
+            </Link>
+          )}
+          <ShareRoadmapButton
+            roadmapId={id}
+            title={path.title}
+            totalDuration={duration}
+            lessonCount={videos.length}
+          />
+        </div>
       </section>
       <LearningPathEditor pathId={id} initialTitle={path.title} videos={videos} />
     </main>

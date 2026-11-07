@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { BookOpenIcon, ArrowRightIcon, PlayIcon } from "@/components/Icons";
+import Link from "next/link";
+import { BookOpenIcon, ArrowRightIcon, PlayIcon, ShareIcon } from "@/components/Icons";
 import type { CuratedTrack } from "@/lib/roadmaps";
 
 const CATEGORIES = [
@@ -107,7 +108,14 @@ export default function RoadmapsClient({ tracks }: { tracks: CuratedTrack[] }) {
                 ))}
               </div>
 
-              <div className="roadmap-card-footer">
+              <div className="roadmap-card-footer flex items-center justify-between gap-2 mt-4 pt-3 border-t border-white/5">
+                <Link
+                  href={`/roadmap/${track.id}`}
+                  className="text-xs text-zinc-400 hover:text-white flex items-center gap-1 transition"
+                >
+                  <BookOpenIcon size={14} />
+                  <span>Syllabus & Share</span>
+                </Link>
                 <button
                   type="button"
                   disabled={isLoading}
@@ -118,7 +126,7 @@ export default function RoadmapsClient({ tracks }: { tracks: CuratedTrack[] }) {
                     "Adding to library..."
                   ) : (
                     <>
-                      Add to My Library <ArrowRightIcon size={14} />
+                      Add to Library <ArrowRightIcon size={14} />
                     </>
                   )}
                 </button>

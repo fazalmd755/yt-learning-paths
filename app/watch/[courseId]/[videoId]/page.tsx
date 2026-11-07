@@ -4,7 +4,7 @@ import Player from "@/components/Player";
 import VideoDescription from "@/components/VideoDescription";
 import VideoNotes from "@/components/VideoNotes";
 import PomodoroTimer from "@/components/PomodoroTimer";
-import AiLessonTutor from "@/components/AiLessonTutor";
+import AiStudyAssist from "@/components/AiStudyAssist";
 import { createClient } from "@/lib/supabase/server";
 import { fetchVideoDescription } from "@/lib/youtube";
 
@@ -137,10 +137,11 @@ export default async function WatchPage({
             courseTitle={one<any>(course?.playlist)?.title ?? "Course"}
           />
           <VideoDescription description={description} />
-          <AiLessonTutor
+          <AiStudyAssist
+            videoId={video.id}
             videoTitle={video.title}
             description={description}
-            notes={notes ?? []}
+            userId={user.id}
           />
         </div>
         <VideoNotes

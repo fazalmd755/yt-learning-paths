@@ -25,7 +25,11 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) return NextResponse.redirect(`${origin}/dashboard`);
+    if (!error) {
+      const nextParam = requestUrl.searchParams.get("next");
+      const dest = nextParam && nextParam.startsWith("/") ? nextParam : "/dashboard";
+      return NextResponse.redirect(`${origin}${dest}`);
+    }
   }
   return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent("Sign-in could not be completed. Please try again.")}`);
 }

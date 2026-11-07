@@ -22,13 +22,25 @@ async function siteOrigin(): Promise<string> {
   );
 }
 
-export async function signInWithGoogle() {
+export async function signInWithGoogle(formDataOrNext?: FormData | string) {
+  let nextPath = "";
+  if (typeof formDataOrNext === "string") {
+    nextPath = formDataOrNext;
+  } else if (formDataOrNext && typeof (formDataOrNext as FormData).get === "function") {
+    nextPath = String((formDataOrNext as FormData).get("next") ?? "");
+  }
+
   const supabase = await createClient();
   const origin = await siteOrigin();
+  const callbackUrl =
+    nextPath && nextPath.startsWith("/")
+      ? `${origin}/auth/callback?next=${encodeURIComponent(nextPath)}`
+      : `${origin}/auth/callback`;
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
-      redirectTo: `${origin}/auth/callback`,
+      redirectTo: callbackUrl,
       queryParams: {
         access_type: "offline",
         prompt: "consent",

@@ -3,6 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import Player from "@/components/Player";
 import VideoDescription from "@/components/VideoDescription";
 import VideoNotes from "@/components/VideoNotes";
+import AiStudyAssist from "@/components/AiStudyAssist";
 import { createClient } from "@/lib/supabase/server";
 import { fetchVideoDescription } from "@/lib/youtube";
 
@@ -114,6 +115,12 @@ export default async function LearningPathWatchPage({
             courseTitle={path.title}
           />
           <VideoDescription description={description} />
+          <AiStudyAssist
+            videoId={video.id}
+            videoTitle={video.title}
+            description={description}
+            userId={user.id}
+          />
         </div>
         <VideoNotes
           userId={user.id}
