@@ -215,6 +215,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <nav className="site-nav">
               <div className="site-nav-links">
                 <Link href="/roadmaps">Roadmaps</Link>
+                <Link href="/study-hubs">Study Hubs</Link>
                 <Link href="/syllabus/select">My playlists</Link>
                 <Link href="/planner">Planner</Link>
               </div>

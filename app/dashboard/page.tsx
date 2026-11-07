@@ -222,6 +222,22 @@ export default async function DashboardPage({
         </section>
       )}
 
+      {/* Study Hubs Shortcut Banner */}
+      <section className="study-hubs-banner-wrap">
+        <Link href="/study-hubs" className="study-hubs-banner">
+          <div className="banner-left">
+            <span className="banner-icon">🎓</span>
+            <div>
+              <strong>Study Hubs (Semester & Class Bundles)</strong>
+              <p>Group all your subjects & playlists into one unified screen. Switch between subjects with one click.</p>
+            </div>
+          </div>
+          <span className="banner-cta">
+            Open Study Hubs <ArrowRightIcon size={14} />
+          </span>
+        </Link>
+      </section>
+
       <section className="add-course-section">
         <div className="section-title-row">
           <div>
