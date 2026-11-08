@@ -150,7 +150,7 @@ export default function SiteHeader({
               }}
             />
             <button type="button" onClick={() => setSearchOpen(false)} aria-label="Close search">
-              Esc
+              ✕
             </button>
           </form>
         )}

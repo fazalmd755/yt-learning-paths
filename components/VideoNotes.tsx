@@ -186,7 +186,7 @@ export default function VideoNotes({
         </div>
 
         <label className="video-note-content">
-          <span>Note <small>(Press Ctrl+Enter to save)</small></span>
+          <span>Note</span>
           <textarea
             value={content}
             onChange={(event) => setContent(event.target.value)}

@@ -77,7 +77,6 @@ export default function Player({
   autoplayNextRef.current = autoplayNext;
 
   const [autoplayCountdown, setAutoplayCountdown] = useState<number | null>(null);
-  const [showShortcuts, setShowShortcuts] = useState(false);
   const [showSchedule, setShowSchedule] = useState(false);
 
   useEffect(() => {
@@ -248,13 +247,7 @@ export default function Player({
         return;
       }
 
-      if (e.key === "?" || (e.shiftKey && e.key === "/")) {
-        e.preventDefault();
-        setShowShortcuts((prev) => !prev);
-        return;
-      }
       if (e.key === "Escape") {
-        setShowShortcuts(false);
         setAutoplayCountdown(null);
         return;
       }
@@ -439,74 +432,11 @@ export default function Player({
             <span>Autoplay</span>
           </button>
 
-          {/* Shortcuts Help Button */}
-          <button
-            type="button"
-            onClick={() => setShowShortcuts(true)}
-            className="player-shortcuts-modal-btn"
-            title="Keyboard shortcuts (?)"
-            aria-label="View keyboard shortcuts"
-          >
-            ?
-          </button>
+
         </div>
       </div>
 
-      <div className="player-shortcuts-hint">
-        <span><kbd>Space</kbd> Play/Pause</span>
-        <span><kbd>←</kbd> <kbd>→</kbd> Seek 5s</span>
-        <span><kbd>&lt;</kbd> <kbd>&gt;</kbd> Speed</span>
-        <span><kbd>M</kbd> Mute</span>
-        <span><kbd>?</kbd> All Shortcuts</span>
-      </div>
 
-      {/* Keyboard Shortcuts Dialog */}
-      {showShortcuts && (
-        <div className="shortcuts-modal-backdrop" onClick={() => setShowShortcuts(false)}>
-          <div className="shortcuts-modal-card" onClick={(e) => e.stopPropagation()}>
-            <div className="shortcuts-modal-header">
-              <h3>Keyboard Shortcuts</h3>
-              <button
-                type="button"
-                onClick={() => setShowShortcuts(false)}
-                className="shortcuts-modal-close"
-              >
-                ✕
-              </button>
-            </div>
-            <div className="shortcuts-modal-grid">
-              <div className="shortcut-row">
-                <span>Play / Pause</span>
-                <span><kbd>Space</kbd> or <kbd>K</kbd></span>
-              </div>
-              <div className="shortcut-row">
-                <span>Rewind 5 seconds</span>
-                <span><kbd>←</kbd> or <kbd>J</kbd></span>
-              </div>
-              <div className="shortcut-row">
-                <span>Fast-forward 5 seconds</span>
-                <span><kbd>→</kbd> or <kbd>L</kbd></span>
-              </div>
-              <div className="shortcut-row">
-                <span>Increase Playback Speed</span>
-                <span><kbd>&gt;</kbd> (Shift + .)</span>
-              </div>
-              <div className="shortcut-row">
-                <span>Decrease Playback Speed</span>
-                <span><kbd>&lt;</kbd> (Shift + ,)</span>
-              </div>
-              <div className="shortcut-row">
-                <span>Mute / Unmute</span>
-                <span><kbd>M</kbd></span>
-              </div>
-              <div className="shortcut-row">
-                <span>Toggle Shortcuts Help</span>
-                <span><kbd>?</kbd></span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Schedule Lesson Modal */}
       <ScheduleLessonModal
