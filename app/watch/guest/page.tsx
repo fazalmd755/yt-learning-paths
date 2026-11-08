@@ -111,7 +111,7 @@ function GuestWatchContent() {
           >
             <span>←</span> Exit Guest Mode
           </Link>
-          <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-400">
+          <span className="rounded-full bg-[#CEF432]/15 border border-[#CEF432]/30 px-2.5 py-0.5 text-[11px] font-semibold text-[#CEF432]">
             DEMO / GUEST SESSION
           </span>
         </div>
@@ -153,9 +153,9 @@ function GuestWatchContent() {
           </div>
 
           {/* Quick controls bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl border border-white/5 bg-zinc-900/60">
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl border border-white/5 bg-[#0e1017]">
             <div className="flex items-center gap-2 text-xs text-zinc-400">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="h-2 w-2 rounded-full bg-[#CEF432] animate-pulse" />
               <span>Distraction-free environment (zero recommendations, no shorts)</span>
             </div>
 
@@ -170,9 +170,9 @@ function GuestWatchContent() {
           </div>
 
           {/* Guest AI Quick Assist preview */}
-          <div className="rounded-xl border border-white/10 bg-zinc-900/40 p-4">
+          <div className="rounded-xl border border-white/10 bg-[#0e1017] p-4">
             <div className="flex items-center gap-2 mb-2">
-              <SparklesIcon size={16} className="text-emerald-400" />
+              <SparklesIcon size={16} className="text-[#CEF432]" />
               <h3 className="text-xs font-semibold text-zinc-200">
                 AI Study Assist
               </h3>
@@ -202,11 +202,11 @@ function GuestWatchContent() {
                 onChange={(e) => setNewNoteText(e.target.value)}
                 placeholder="Take a timestamped note (e.g. key insight, code snippet)..."
                 rows={3}
-                className="w-full rounded-xl border border-white/10 bg-zinc-950/80 p-2.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 resize-none"
+                className="w-full rounded-xl border border-white/10 bg-[#08080C] p-2.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-[#CEF432] resize-none"
               />
               <button
                 type="submit"
-                className="w-full rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black py-2 text-xs font-bold transition flex items-center justify-center gap-1.5"
+                className="w-full rounded-lg bg-[#CEF432] hover:bg-[#dbfa50] text-[#08080C] py-2 text-xs font-bold transition flex items-center justify-center gap-1.5"
               >
                 <span>Add Note</span>
               </button>
@@ -222,9 +222,9 @@ function GuestWatchContent() {
                 guestNotes.map((n) => (
                   <div
                     key={n.id}
-                    className="rounded-lg border border-white/5 bg-zinc-950/50 p-2.5 text-xs"
+                    className="rounded-lg border border-white/5 bg-[#08080C]/70 p-2.5 text-xs"
                   >
-                    <div className="flex items-center gap-1.5 text-emerald-400 font-mono text-[10px] mb-1">
+                    <div className="flex items-center gap-1.5 text-[#CEF432] font-mono text-[10px] mb-1">
                       <span>⏱</span>
                       <span>{formatSeconds(n.time)}</span>
                     </div>
@@ -246,10 +246,10 @@ function GuestWatchContent() {
           onClick={() => setShowGentleModal(false)}
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-white/10 bg-zinc-950 p-6 shadow-2xl text-center"
+            className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0e1017] p-6 shadow-2xl text-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400 mb-4">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#CEF432]/15 text-[#CEF432] mb-4">
               <SparklesIcon size={24} />
             </div>
 

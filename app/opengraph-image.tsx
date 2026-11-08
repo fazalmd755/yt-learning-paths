@@ -19,10 +19,10 @@ export default async function Image() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "70px 80px",
-          backgroundColor: "#0b0d11",
+          backgroundColor: "#08080C",
           backgroundImage:
-            "radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.15), transparent 50%), radial-gradient(circle at 15% 85%, rgba(249, 115, 22, 0.12), transparent 50%)",
-          color: "#f8fafc",
+            "radial-gradient(circle at 85% 15%, rgba(206, 244, 50, 0.18), transparent 50%), radial-gradient(circle at 15% 85%, rgba(206, 244, 50, 0.08), transparent 50%)",
+          color: "#FFFFFF",
           fontFamily: "system-ui, -apple-system, sans-serif",
         }}
       >
@@ -33,19 +33,19 @@ export default async function Image() {
               width: "56px",
               height: "56px",
               borderRadius: "14px",
-              background: "#0B0D10",
-              border: "1px solid rgba(34, 211, 238, 0.3)",
+              background: "#08080C",
+              border: "1px solid rgba(206, 244, 50, 0.4)",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              boxShadow: "0 0 24px rgba(16, 185, 129, 0.35)",
+              boxShadow: "0 0 24px rgba(206, 244, 50, 0.35)",
             }}
           >
             <svg width="44" height="44" viewBox="0 0 512 512">
               <defs>
                 <linearGradient id="og-grad" x1="80" y1="100" x2="440" y2="400" gradientUnits="userSpaceOnUse">
-                  <stop offset="0" stopColor="#10B981" />
-                  <stop offset="1" stopColor="#22D3EE" />
+                  <stop offset="0" stopColor="#CEF432" />
+                  <stop offset="1" stopColor="#E2FF66" />
                 </linearGradient>
               </defs>
               <g transform="translate(0,14)">

@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
     <linearGradient id="g" x1="80" y1="100" x2="440" y2="400" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#10B981"/>
-      <stop offset="1" stop-color="#22D3EE"/>
+      <stop offset="0" stop-color="#CEF432"/>
+      <stop offset="1" stop-color="#E2FF66"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="112" fill="#0B0D10"/>
+  <rect width="512" height="512" rx="112" fill="#08080C"/>
   <g transform="translate(0,14)">
     <!-- W = two open book pages meeting at the spine -->
     <path d="M96 150 L176 366 L256 226 L336 366 L416 150" fill="none" stroke="url(#g)" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>

@@ -70,7 +70,7 @@ export default function ShareRoadmapButton({
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className={`inline-flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400 transition hover:bg-emerald-500/20 hover:border-emerald-500/50 ${className}`}
+        className={`inline-flex items-center gap-1.5 rounded-lg border border-[#CEF432]/30 bg-[#CEF432]/10 px-3 py-1.5 text-xs font-semibold text-[#CEF432] transition hover:bg-[#CEF432]/20 hover:border-[#CEF432]/50 ${className}`}
         aria-label="Share this roadmap"
       >
         <ShareIcon size={14} />
@@ -85,13 +85,13 @@ export default function ShareRoadmapButton({
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-white/10 bg-zinc-950 p-6 shadow-2xl transition-all"
+            className="w-full max-w-md rounded-2xl border border-white/10 bg-[#0e1017] p-6 shadow-2xl transition-all"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between border-b border-white/10 pb-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#CEF432]/20 text-[#CEF432]">
                   <ShareIcon size={18} />
                 </div>
                 <div>
@@ -109,8 +109,8 @@ export default function ShareRoadmapButton({
             </div>
 
             {/* Preview Card */}
-            <div className="my-4 rounded-xl border border-white/10 bg-zinc-900/50 p-3.5">
-              <div className="flex items-center justify-between text-[11px] text-emerald-400 font-mono font-semibold">
+            <div className="my-4 rounded-xl border border-white/10 bg-[#141720]/80 p-3.5">
+              <div className="flex items-center justify-between text-[11px] text-[#CEF432] font-mono font-semibold">
                 <span>WATCHLIFY PUBLIC ROADMAP</span>
                 <span>{lessonCount ? `${lessonCount} Lessons` : "Curated Path"}</span>
               </div>
@@ -128,12 +128,12 @@ export default function ShareRoadmapButton({
                   type="text"
                   readOnly
                   value={publicUrl}
-                  className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-xs font-mono text-zinc-200 focus:outline-none focus:border-emerald-500"
+                  className="w-full rounded-lg border border-white/10 bg-[#08080C] px-3 py-2 text-xs font-mono text-zinc-200 focus:outline-none focus:border-[#CEF432]"
                 />
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="flex shrink-0 items-center gap-1.5 rounded-lg bg-emerald-500 px-3.5 py-2 text-xs font-semibold text-black transition hover:bg-emerald-400"
+                  className="flex shrink-0 items-center gap-1.5 rounded-lg bg-[#CEF432] hover:bg-[#dbfa50] px-3.5 py-2 text-xs font-semibold text-[#08080C] transition"
                 >
                   {copied ? <CheckIcon size={14} /> : <LinkIcon size={14} />}
                   <span>{copied ? "Copied!" : "Copy"}</span>

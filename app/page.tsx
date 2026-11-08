@@ -100,9 +100,9 @@ export default function Home() {
           </div>
 
           <div className="hero-trust-bullets">
-            <span><CheckIcon size={14} className="text-emerald-400 inline mr-1" /> 100% Free forever</span>
-            <span><CheckIcon size={14} className="text-emerald-400 inline mr-1" /> No credit card needed</span>
-            <span><CheckIcon size={14} className="text-emerald-400 inline mr-1" /> Zero algorithmic traps</span>
+            <span><CheckIcon size={14} className="text-[#CEF432] inline mr-1" /> 100% Free forever</span>
+            <span><CheckIcon size={14} className="text-[#CEF432] inline mr-1" /> No credit card needed</span>
+            <span><CheckIcon size={14} className="text-[#CEF432] inline mr-1" /> Zero algorithmic traps</span>
           </div>
 
           <div className="home-quick-links">

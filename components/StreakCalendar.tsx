@@ -157,16 +157,16 @@ export default function StreakCalendar({
   const getCellColor = (slot: CalendarSlot) => {
     switch (slot.level) {
       case 4:
-        return "bg-[#86efac] border-[#86efac]"; // Bright mint green
+        return "bg-[#CEF432] border-[#CEF432]"; // Pure bright neon lime
       case 3:
-        return "bg-[#22c55e] border-[#22c55e]"; // Vibrant green
+        return "bg-[#a8dc1e] border-[#a8dc1e]"; // Vibrant lime
       case 2:
-        return "bg-[#16a34a] border-[#16a34a]"; // Medium emerald
+        return "bg-[#7aa612] border-[#7aa612]"; // Medium olive-lime
       case 1:
-        return "bg-[#15803d] border-[#15803d]"; // Deep forest green
+        return "bg-[#496608] border-[#496608]"; // Deep muted lime
       case 0:
       default:
-        return "bg-[#23272e] border-transparent"; // Inactive dark slate
+        return "bg-[#161a22] border-transparent"; // Inactive midnight slate
     }
   };
 
@@ -215,7 +215,7 @@ export default function StreakCalendar({
                             slot
                           )} ${
                             slot.isToday
-                              ? "ring-1.5 ring-emerald-400 ring-offset-1 ring-offset-[#13161c]"
+                              ? "ring-1.5 ring-[#CEF432] ring-offset-1 ring-offset-[#08080C]"
                               : ""
                           }`}
                           onMouseEnter={(e) => {
@@ -264,7 +264,7 @@ export default function StreakCalendar({
           </div>
           <div className="text-slate-400 mt-0.5">
             {hovered.seconds > 0 ? (
-              <span className="text-emerald-400 font-medium">
+              <span className="text-[#CEF432] font-medium">
                 {formatDuration(hovered.seconds)} learned
               </span>
             ) : (

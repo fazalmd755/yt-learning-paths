@@ -242,7 +242,7 @@ export default function AiLessonTutor({ videoTitle, description, notes }: Props)
                   </div>
                   {submitted && (
                     <div className="quiz-explanation">
-                      <span className="font-semibold text-emerald-400">Explanation:</span> {q.explanation}
+                      <span className="font-semibold text-[#CEF432]">Explanation:</span> {q.explanation}
                     </div>
                   )}
                 </div>

@@ -189,7 +189,7 @@ export default function AiStudyAssist({
       {/* Header bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
         <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#CEF432]/15 text-[#CEF432]">
             <SparklesIcon size={18} />
           </div>
           <div>
@@ -207,7 +207,7 @@ export default function AiStudyAssist({
             type="button"
             onClick={handleGenerate}
             disabled={loading}
-            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-lg border border-[#CEF432]/30 bg-[#CEF432]/10 px-3 py-1.5 text-xs font-medium text-[#CEF432] transition hover:bg-[#CEF432]/20 disabled:opacity-50"
           >
             <SparklesIcon size={14} className={loading ? "animate-spin" : ""} />
             {loading ? "Analyzing..." : "Regenerate for this segment"}
@@ -364,7 +364,7 @@ export default function AiStudyAssist({
                   type="button"
                   onClick={() => setShowResults(true)}
                   disabled={Object.keys(selectedAnswers).length === 0}
-                  className="rounded-md bg-emerald-500 px-3 py-1.5 text-xs font-medium text-black transition hover:bg-emerald-400 disabled:opacity-40"
+                  className="rounded-md bg-[#CEF432] px-3 py-1.5 text-xs font-semibold text-[#08080C] transition hover:bg-[#dbfa50] disabled:opacity-40"
                 >
                   Check Answers
                 </button>
@@ -388,7 +388,7 @@ export default function AiStudyAssist({
               disabled={savingNote}
               className="flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/20 disabled:opacity-50"
             >
-              <CheckCircleIcon size={14} className="text-emerald-400" />
+              <CheckCircleIcon size={14} className="text-[#CEF432]" />
               {savingNote ? "Saving..." : "Save Quiz to Notes (1-Click)"}
             </button>
           </div>

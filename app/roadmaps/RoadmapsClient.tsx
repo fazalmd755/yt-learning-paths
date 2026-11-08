@@ -145,7 +145,7 @@ export default function RoadmapsClient({ tracks }: { tracks: CuratedTrack[] }) {
               setSelectedCat("all");
               setSearchQuery("");
             }}
-            className="button-text underline text-emerald-400"
+            className="button-text underline text-[#CEF432]"
           >
             Reset all filters
           </button>
