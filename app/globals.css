@@ -8244,11 +8244,11 @@ main,
 .daily-goal-panel,
 .panel-card,
 .closing-cta {
-  background: rgba(255, 255, 255, 0.035) !important;
-  backdrop-filter: blur(18px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.09) !important;
-  box-shadow: 0 10px 32px 0 rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  background: rgba(10, 15, 22, 0.58) !important;
+  backdrop-filter: blur(18px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 32px 0 rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
   border-radius: 14px !important;
   color: inherit !important;
 }
@@ -8267,9 +8267,9 @@ main,
 .resume-card:hover,
 .planner-task:hover,
 .planner-course-link:hover {
-  background: rgba(255, 255, 255, 0.075) !important;
+  background: rgba(16, 24, 34, 0.72) !important;
   border-color: rgba(16, 185, 129, 0.45) !important;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.48), 0 0 24px rgba(16, 185, 129, 0.18) !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.55), 0 0 24px rgba(16, 185, 129, 0.18) !important;
   transform: translateY(-2px) !important;
 }
 
@@ -8527,95 +8527,22 @@ textarea::placeholder {
   color: #94a3b8 !important;
 }
 
-/* Unified blue-slate glass surfaces; keep the existing emerald actions. */
-:root {
-  --background: #111b25;
-  --ink: #111b25;
-  --line: rgba(203, 224, 240, 0.14);
-  --line-subtle: rgba(203, 224, 240, 0.09);
-  --line-hover: rgba(203, 224, 240, 0.24);
-  --surface: rgba(196, 220, 238, 0.075);
-  --surface-raised: rgba(196, 220, 238, 0.11);
-  --surface-hover: rgba(196, 220, 238, 0.15);
-}
+/* ==========================================================================
+   ADDITIONAL GLASS SURFACES (Certificate, AI Tutor, Modals)
+   ========================================================================== */
 
-html,
-body {
-  background-color: var(--background);
-  overflow-x: clip !important;
-}
-
-.site-header {
-  background: rgba(28, 42, 55, 0.72) !important;
-  border-bottom-color: rgba(203, 224, 240, 0.14) !important;
-  box-shadow: 0 4px 24px rgba(4, 12, 20, 0.2) !important;
-}
-
-.header-popover,
-.header-search-form {
-  background: rgba(31, 46, 60, 0.88) !important;
-  box-shadow: 0 20px 48px rgba(4, 12, 20, 0.28) !important;
-}
-
-[class*="-card"]:not([class*="-card-"]),
-[class~="card"],
-.feature-card-v2,
-.comparison-card,
 .ai-tutor-container,
 .certificate-modal-content,
 .certificate-frame,
-.modal-card,
-.header-popover,
-.header-search-form {
-  background-color: rgba(194, 219, 238, 0.085) !important;
-  border-color: rgba(203, 224, 240, 0.17) !important;
+.modal-card {
+  background: rgba(10, 15, 22, 0.72) !important;
   backdrop-filter: blur(20px) saturate(155%) !important;
   -webkit-backdrop-filter: blur(20px) saturate(155%) !important;
-  box-shadow:
-    0 12px 32px rgba(4, 12, 20, 0.22),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-}
-
-[class*="bg-zinc-950"],
-[class*="bg-zinc-900"],
-[class*="bg-gray-950"],
-[class*="bg-gray-900"],
-[class*="bg-slate-950"],
-[class*="bg-slate-900"] {
-  background-color: rgba(194, 219, 238, 0.085) !important;
-  border-color: rgba(203, 224, 240, 0.17) !important;
-  backdrop-filter: blur(16px) saturate(150%) !important;
-  -webkit-backdrop-filter: blur(16px) saturate(150%) !important;
-}
-
-button:not([class*="bg-emerald-"]):not(.course-add-button):not(.settings-save):not(.profile-save-btn):not(.profile-save-button):not(.button-primary):not(.hub-primary-btn):not(.roadmap-enroll-btn):not(.hero-cta-btn):not(.planner-add-footer button):not(.learning-path-create > button):not(.learning-path-rename button):not(.learning-path-add-videos form button),
-a[class*="button"]:not(.button-primary):not(.nav-login):not(.button-text) {
-  background-color: rgba(194, 219, 238, 0.09) !important;
-  border: 1px solid rgba(203, 224, 240, 0.18) !important;
-  color: #e8f1f8 !important;
-  backdrop-filter: blur(14px) saturate(150%) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(150%) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
-}
-
-button:not([class*="bg-emerald-"]):not(.course-add-button):not(.settings-save):not(.profile-save-btn):not(.profile-save-button):not(.button-primary):not(.hub-primary-btn):not(.roadmap-enroll-btn):not(.hero-cta-btn):not(.planner-add-footer button):not(.learning-path-create > button):not(.learning-path-rename button):not(.learning-path-add-videos form button):hover,
-a[class*="button"]:not(.button-primary):not(.nav-login):not(.button-text):hover {
-  background-color: rgba(194, 219, 238, 0.16) !important;
-  border-color: rgba(203, 224, 240, 0.3) !important;
-}
-
-.feature-card-v2:hover,
-.comparison-card:hover,
-[class*="-card"]:not([class*="-card-"]):hover {
-  background-color: rgba(194, 219, 238, 0.13) !important;
-  border-color: rgba(16, 185, 129, 0.42) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
 }
 
 @media (max-width: 640px) {
-  [class*="-card"]:not([class*="-card-"]),
-  [class~="card"],
-  .feature-card-v2,
-  .comparison-card,
   .ai-tutor-container,
   .certificate-modal-content,
   .certificate-frame,
@@ -8627,11 +8554,5 @@ a[class*="button"]:not(.button-primary):not(.nav-login):not(.button-text):hover 
   .certificate-modal-content {
     max-height: calc(100dvh - 24px);
     overflow-y: auto;
-  }
-
-  .comparison-card,
-  .feature-card-v2,
-  .usecase-card {
-    padding: 18px !important;
   }
 }
