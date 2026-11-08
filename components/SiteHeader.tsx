@@ -85,6 +85,9 @@ export default function SiteHeader({
   const [profileOpen, setProfileOpen] = useState(false);
   const [imageError, setImageError] = useState(false);
   const searchRef = useRef<HTMLInputElement>(null);
+  const searchWrapRef = useRef<HTMLDivElement>(null);
+  const notifWrapRef = useRef<HTMLDivElement>(null);
+  const profileWrapRef = useRef<HTMLDivElement>(null);
   const goalReached = todayMinutes >= goalMinutes;
   const remaining = Math.max(0, goalMinutes - todayMinutes);
   const accountName = displayName.trim() || email;
@@ -95,41 +98,79 @@ export default function SiteHeader({
     if (searchOpen) searchRef.current?.focus();
   }, [searchOpen]);
 
+  // Close popovers when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      const target = event.target as Node;
+
+      if (
+        searchOpen &&
+        searchWrapRef.current &&
+        !searchWrapRef.current.contains(target)
+      ) {
+        setSearchOpen(false);
+      }
+
+      if (
+        notificationsOpen &&
+        notifWrapRef.current &&
+        !notifWrapRef.current.contains(target)
+      ) {
+        setNotificationsOpen(false);
+      }
+
+      if (
+        profileOpen &&
+        profileWrapRef.current &&
+        !profileWrapRef.current.contains(target)
+      ) {
+        setProfileOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [searchOpen, notificationsOpen, profileOpen]);
+
   return (
     <div className={`header-actions ${searchOpen ? "search-open" : ""}`}>
-      {searchOpen && (
-        <form action="/dashboard#courses" method="get" className="header-search-form">
+      {/* Search — wrapped in ref div so click-outside works */}
+      <div ref={searchWrapRef} style={{ display: "contents" }}>
+        {searchOpen && (
+          <form action="/dashboard#courses" method="get" className="header-search-form">
+            <SearchIcon />
+            <input
+              ref={searchRef}
+              name="search"
+              type="search"
+              placeholder="Search your courses..."
+              aria-label="Search your courses"
+              onKeyDown={(event) => {
+                if (event.key === "Escape") setSearchOpen(false);
+              }}
+            />
+            <button type="button" onClick={() => setSearchOpen(false)} aria-label="Close search">
+              Esc
+            </button>
+          </form>
+        )}
+        <button
+          type="button"
+          className={`header-icon-button ${searchOpen ? "header-icon-active" : ""}`}
+          aria-label={searchOpen ? "Close search" : "Search courses"}
+          aria-expanded={searchOpen}
+          onClick={() => {
+            setSearchOpen((open) => !open);
+            setNotificationsOpen(false);
+            setProfileOpen(false);
+          }}
+        >
           <SearchIcon />
-          <input
-            ref={searchRef}
-            name="search"
-            type="search"
-            placeholder="Search your courses..."
-            aria-label="Search your courses"
-            onKeyDown={(event) => {
-              if (event.key === "Escape") setSearchOpen(false);
-            }}
-          />
-          <button type="button" onClick={() => setSearchOpen(false)} aria-label="Close search">
-            Esc
-          </button>
-        </form>
-      )}
-      <button
-        type="button"
-        className={`header-icon-button ${searchOpen ? "header-icon-active" : ""}`}
-        aria-label={searchOpen ? "Close search" : "Search courses"}
-        aria-expanded={searchOpen}
-        onClick={() => {
-          setSearchOpen((open) => !open);
-          setNotificationsOpen(false);
-          setProfileOpen(false);
-        }}
-      >
-        <SearchIcon />
-      </button>
+        </button>
+      </div>
 
-      <div className="header-action-wrap">
+      {/* Notifications */}
+      <div ref={notifWrapRef} className="header-action-wrap">
         <button
           type="button"
           className="header-icon-button"
@@ -189,7 +230,8 @@ export default function SiteHeader({
         <span className="streak-count">{streak}</span>
       </Link>
 
-      <div className="header-action-wrap">
+      {/* Profile */}
+      <div ref={profileWrapRef} className="header-action-wrap">
         <button
           type="button"
           className={`header-avatar-button ${showAvatar ? "has-avatar-img" : ""}`}
