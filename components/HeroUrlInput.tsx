@@ -39,10 +39,10 @@ export default function HeroUrlInput() {
     <div className="w-full max-w-2xl mx-auto my-6">
       <form
         onSubmit={handleSubmit}
-        className="relative flex flex-col sm:flex-row items-stretch gap-2 rounded-2xl border border-white/15 bg-[#0e1017]/90 p-2 shadow-2xl backdrop-blur-xl focus-within:border-[#CEF432]/80 focus-within:ring-2 focus-within:ring-[#CEF432]/20 transition-all"
+        className="relative flex flex-col sm:flex-row items-stretch gap-2 rounded-2xl border border-white/15 bg-zinc-900/80 p-2 shadow-2xl backdrop-blur-xl focus-within:border-emerald-500/80 focus-within:ring-2 focus-within:ring-emerald-500/20 transition-all"
       >
         <div className="flex flex-1 items-center gap-3 px-3 py-1">
-          <PlayIcon size={18} className="text-[#CEF432] shrink-0" />
+          <PlayIcon size={18} className="text-emerald-400 shrink-0" />
           <input
             type="text"
             value={url}
@@ -59,7 +59,7 @@ export default function HeroUrlInput() {
         <button
           type="submit"
           disabled={loading || !url.trim()}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#CEF432] hover:bg-[#dbfa50] text-[#08080C] px-5 py-3 text-xs md:text-sm font-bold shadow-lg shadow-[#CEF432]/20 transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+          className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black px-5 py-3 text-xs md:text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
         >
           <span>{loading ? "Opening..." : "Open in Workspace"}</span>
           <ArrowRightIcon size={14} />

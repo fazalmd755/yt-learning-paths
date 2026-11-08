@@ -36,11 +36,11 @@ export function WatchlifyIcon({
           y2="400"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0" stopColor="#CEF432" />
-          <stop offset="1" stopColor="#E2FF66" />
+          <stop offset="0" stopColor="#10B981" />
+          <stop offset="1" stopColor="#22D3EE" />
         </linearGradient>
       </defs>
-      {!transparent && <rect width="512" height="512" rx="112" fill="#08080C" />}
+      {!transparent && <rect width="512" height="512" rx="112" fill="#0B0D10" />}
       <g transform="translate(0,14)">
         {/* W = two open book pages meeting at the spine */}
         <path

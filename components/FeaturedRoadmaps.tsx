@@ -16,7 +16,7 @@ export default function FeaturedRoadmaps() {
     <section className="featured-roadmaps-section my-16 px-4 max-w-6xl mx-auto">
       {/* Section Header */}
       <div className="text-center mb-10">
-        <div className="inline-flex items-center gap-1.5 rounded-full bg-[#CEF432]/10 border border-[#CEF432]/30 px-3 py-1 text-xs font-semibold text-[#CEF432] mb-3">
+        <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 text-xs font-semibold text-emerald-400 mb-3">
           <SparklesIcon size={12} />
           <span>CURATED COMMUNITY ROADMAPS</span>
         </div>
@@ -33,12 +33,12 @@ export default function FeaturedRoadmaps() {
         {topTracks.map((track) => (
           <article
             key={track.id}
-            className="group relative rounded-2xl border border-white/10 bg-[#0e1017]/70 p-6 backdrop-blur-sm hover:border-[#CEF432]/40 hover:bg-[#0e1017]/95 transition-all duration-300 flex flex-col justify-between shadow-xl"
+            className="group relative rounded-2xl border border-white/10 bg-zinc-900/50 p-6 backdrop-blur-sm hover:border-emerald-500/40 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col justify-between shadow-xl"
           >
             <div>
               {/* Badges & Meta */}
               <div className="flex items-center justify-between gap-2 mb-3">
-                <span className="rounded-full bg-[#CEF432]/15 border border-[#CEF432]/30 px-2.5 py-0.5 text-[11px] font-semibold text-[#CEF432]">
+                <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-300">
                   {track.level}
                 </span>
                 <span className="text-xs font-medium text-zinc-400">
@@ -47,7 +47,7 @@ export default function FeaturedRoadmaps() {
               </div>
 
               {/* Title & Creator */}
-              <h3 className="text-lg font-bold text-white group-hover:text-[#CEF432] transition-colors line-clamp-1">
+              <h3 className="text-lg font-bold text-white group-hover:text-emerald-400 transition-colors line-clamp-1">
                 {track.title}
               </h3>
               <p className="mt-1 text-xs text-zinc-400 font-medium">
@@ -64,7 +64,7 @@ export default function FeaturedRoadmaps() {
                 {track.tags.slice(0, 3).map((tag) => (
                   <span
                     key={tag}
-                    className="rounded bg-[#141720] px-2 py-0.5 text-[10px] text-zinc-400 border border-white/5"
+                    className="rounded bg-zinc-800/80 px-2 py-0.5 text-[10px] text-zinc-400"
                   >
                     #{tag}
                   </span>
@@ -84,7 +84,7 @@ export default function FeaturedRoadmaps() {
 
               <Link
                 href={`/roadmap/${track.id}`}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-[#CEF432] hover:bg-[#dbfa50] text-[#08080C] px-4 py-2 text-xs font-bold transition shadow-md shadow-[#CEF432]/20 group-hover:scale-105"
+                className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black px-4 py-2 text-xs font-bold transition shadow-md shadow-emerald-500/10 group-hover:scale-105"
               >
                 <PlayIcon size={12} />
                 <span>Start Track</span>
@@ -99,7 +99,7 @@ export default function FeaturedRoadmaps() {
       <div className="text-center mt-8">
         <Link
           href="/roadmaps"
-          className="inline-flex items-center gap-1.5 text-xs text-[#CEF432] hover:underline font-semibold underline-offset-4 transition"
+          className="inline-flex items-center gap-1.5 text-xs text-emerald-400 hover:text-emerald-300 font-semibold underline underline-offset-4 transition"
         >
           <span>Explore all 10+ community curated paths & playlists</span>
           <ArrowRightIcon size={12} />
