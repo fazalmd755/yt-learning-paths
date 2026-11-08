@@ -3,6 +3,7 @@ import Link from "next/link";
 import Script from "next/script";
 import SiteHeader from "@/components/SiteHeader";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
+import AnimatedBackground from "@/components/AnimatedBackground";
 import { WatchlifyIcon } from "@/components/BrandLogo";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
@@ -203,7 +204,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen antialiased">
+      <body className="min-h-screen antialiased relative overflow-x-hidden">
+        <AnimatedBackground />
         <header className="site-header">
           <div className="site-header-inner">
             <Link href="/" className="brand-link" aria-label="Watchlify Home">
