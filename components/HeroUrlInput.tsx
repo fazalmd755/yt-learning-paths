@@ -51,7 +51,7 @@ export default function HeroUrlInput() {
               if (error) setError(null);
             }}
             placeholder="Paste any YouTube playlist or video URL..."
-            className="w-full bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none"
+            className="hero-url-raw-input w-full bg-transparent text-sm text-white placeholder-zinc-500 focus:outline-none"
             aria-label="YouTube playlist or video URL"
           />
         </div>

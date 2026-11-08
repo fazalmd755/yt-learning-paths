@@ -39,25 +39,25 @@ export default function AnimatedBackground() {
           top: "-180px",
           left: "50%",
           transform: "translateX(-50%)",
-          width: "950px",
-          height: "550px",
+          width: "980px",
+          height: "560px",
           borderRadius: "50%",
-          background: "radial-gradient(ellipse at center, rgba(16, 185, 129, 0.35) 0%, rgba(56, 189, 248, 0.15) 40%, transparent 70%)",
+          background: "radial-gradient(ellipse at center, rgba(16, 185, 129, 0.38) 0%, rgba(200, 255, 50, 0.16) 28%, rgba(56, 189, 248, 0.12) 50%, transparent 72%)",
           filter: "blur(80px)",
         }}
       />
 
-      {/* 3. Floating Animated Emerald Orb (Drifting on the left) */}
+      {/* 3. Floating Animated Emerald & Lime Orb (Drifting on the left) */}
       <div
         className="anim-orb-left"
         style={{
           position: "absolute",
           top: "80px",
-          left: "5%",
-          width: "650px",
-          height: "650px",
+          left: "4%",
+          width: "680px",
+          height: "680px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(16, 185, 129, 0.34) 0%, rgba(5, 150, 105, 0.12) 45%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(16, 185, 129, 0.38) 0%, rgba(200, 255, 50, 0.14) 32%, rgba(5, 150, 105, 0.1) 50%, transparent 70%)",
           filter: "blur(95px)",
         }}
       />
@@ -68,26 +68,26 @@ export default function AnimatedBackground() {
         style={{
           position: "absolute",
           top: "100px",
-          right: "5%",
-          width: "660px",
-          height: "660px",
+          right: "4%",
+          width: "680px",
+          height: "680px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(56, 189, 248, 0.3) 0%, rgba(37, 99, 235, 0.12) 45%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(56, 189, 248, 0.32) 0%, rgba(16, 185, 129, 0.14) 38%, transparent 70%)",
           filter: "blur(100px)",
         }}
       />
 
-      {/* 5. Center Radiant Glow (Between sections) */}
+      {/* 5. Center Radiant Lime Glow (Between sections) */}
       <div
         className="anim-orb-center"
         style={{
           position: "absolute",
           top: "260px",
           left: "40%",
-          width: "580px",
-          height: "580px",
+          width: "620px",
+          height: "620px",
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(16, 185, 129, 0.28) 0%, rgba(56, 189, 248, 0.12) 40%, transparent 70%)",
+          background: "radial-gradient(circle, rgba(200, 255, 50, 0.22) 0%, rgba(16, 185, 129, 0.3) 30%, rgba(56, 189, 248, 0.1) 55%, transparent 70%)",
           filter: "blur(85px)",
         }}
       />
@@ -99,10 +99,10 @@ export default function AnimatedBackground() {
           position: "absolute",
           top: "820px",
           left: "25%",
-          width: "720px",
-          height: "520px",
+          width: "740px",
+          height: "540px",
           borderRadius: "50%",
-          background: "radial-gradient(ellipse, rgba(56, 189, 248, 0.2) 0%, rgba(16, 185, 129, 0.1) 45%, transparent 70%)",
+          background: "radial-gradient(ellipse, rgba(16, 185, 129, 0.22) 0%, rgba(56, 189, 248, 0.16) 40%, transparent 70%)",
           filter: "blur(110px)",
         }}
       />
