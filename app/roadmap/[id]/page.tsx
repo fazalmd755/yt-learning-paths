@@ -191,7 +191,7 @@ export default async function RoadmapPublicPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-[#090A0E] text-zinc-100">
+    <main className="min-h-screen bg-transparent text-zinc-100">
       <RoadmapPublicClient
         roadmapId={id}
         title={title}

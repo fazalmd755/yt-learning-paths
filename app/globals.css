@@ -3179,6 +3179,96 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   }
 }
 
+.site-nav-links a {
+  border: 1px solid rgba(203, 224, 240, 0.1);
+  border-radius: 999px;
+  background: rgba(194, 219, 238, 0.045);
+  padding: 8px 11px;
+  color: #d3e1ec !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.site-nav-links a:hover {
+  border-color: rgba(203, 224, 240, 0.22);
+  background: rgba(194, 219, 238, 0.12);
+  color: #ffffff !important;
+}
+
+.profile-popover form {
+  border-top: 1px solid rgba(203, 224, 240, 0.12) !important;
+  background: transparent !important;
+}
+
+.profile-popover form button {
+  background: rgba(248, 113, 113, 0.08) !important;
+  border: 1px solid rgba(248, 113, 113, 0.16) !important;
+  color: #fca5a5 !important;
+}
+
+.profile-popover form button:hover {
+  background: rgba(248, 113, 113, 0.16) !important;
+  border-color: rgba(248, 113, 113, 0.3) !important;
+  color: #fecaca !important;
+}
+
+.planner-view-switch,
+.planner-month-calendar {
+  border: 1px solid rgba(203, 224, 240, 0.17) !important;
+  background: rgba(194, 219, 238, 0.075) !important;
+  backdrop-filter: blur(18px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%) !important;
+}
+
+.planner-view-switch button {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: #c4d2de !important;
+}
+
+.planner-view-switch button.active,
+.planner-month-day.selected {
+  background: rgba(16, 185, 129, 0.18) !important;
+  border-color: rgba(16, 185, 129, 0.42) !important;
+  color: #6ee7b7 !important;
+}
+
+.planner-date-navigation button,
+.planner-month-day:not(.outside-month),
+.planner-month-day small,
+.profile-chip-btn,
+.profile-goal-box,
+.profile-reminder-toggle,
+.profile-input-readonly {
+  background: rgba(194, 219, 238, 0.075) !important;
+  border-color: rgba(203, 224, 240, 0.17) !important;
+  color: #dce8f1 !important;
+  backdrop-filter: blur(14px) saturate(145%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(145%) !important;
+}
+
+.profile-chip-btn:hover {
+  background: rgba(194, 219, 238, 0.15) !important;
+  border-color: rgba(56, 189, 248, 0.45) !important;
+  color: #bae6fd !important;
+}
+
+.profile-goal-number-input {
+  background: transparent !important;
+  color: #f1f7fb !important;
+}
+
+.profile-goal-unit,
+.planner-month-weekday {
+  color: #a9bdcc !important;
+}
+
+@media (max-width: 640px) {
+  .site-nav-links a {
+    padding: 7px 9px;
+  }
+}
+
 .activity-panel {
   min-width: 0 !important;
   border-radius: 12px !important;
@@ -8435,4 +8525,113 @@ textarea::placeholder {
 .roadmap-desc,
 .planner-focus-card > p {
   color: #94a3b8 !important;
+}
+
+/* Unified blue-slate glass surfaces; keep the existing emerald actions. */
+:root {
+  --background: #111b25;
+  --ink: #111b25;
+  --line: rgba(203, 224, 240, 0.14);
+  --line-subtle: rgba(203, 224, 240, 0.09);
+  --line-hover: rgba(203, 224, 240, 0.24);
+  --surface: rgba(196, 220, 238, 0.075);
+  --surface-raised: rgba(196, 220, 238, 0.11);
+  --surface-hover: rgba(196, 220, 238, 0.15);
+}
+
+html,
+body {
+  background-color: var(--background);
+  overflow-x: clip !important;
+}
+
+.site-header {
+  background: rgba(28, 42, 55, 0.72) !important;
+  border-bottom-color: rgba(203, 224, 240, 0.14) !important;
+  box-shadow: 0 4px 24px rgba(4, 12, 20, 0.2) !important;
+}
+
+.header-popover,
+.header-search-form {
+  background: rgba(31, 46, 60, 0.88) !important;
+  box-shadow: 0 20px 48px rgba(4, 12, 20, 0.28) !important;
+}
+
+[class*="-card"]:not([class*="-card-"]),
+[class~="card"],
+.feature-card-v2,
+.comparison-card,
+.ai-tutor-container,
+.certificate-modal-content,
+.certificate-frame,
+.modal-card,
+.header-popover,
+.header-search-form {
+  background-color: rgba(194, 219, 238, 0.085) !important;
+  border-color: rgba(203, 224, 240, 0.17) !important;
+  backdrop-filter: blur(20px) saturate(155%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(155%) !important;
+  box-shadow:
+    0 12px 32px rgba(4, 12, 20, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+}
+
+[class*="bg-zinc-950"],
+[class*="bg-zinc-900"],
+[class*="bg-gray-950"],
+[class*="bg-gray-900"],
+[class*="bg-slate-950"],
+[class*="bg-slate-900"] {
+  background-color: rgba(194, 219, 238, 0.085) !important;
+  border-color: rgba(203, 224, 240, 0.17) !important;
+  backdrop-filter: blur(16px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(150%) !important;
+}
+
+button:not([class*="bg-emerald-"]):not(.course-add-button):not(.settings-save):not(.profile-save-btn):not(.profile-save-button):not(.button-primary):not(.hub-primary-btn):not(.roadmap-enroll-btn):not(.hero-cta-btn):not(.planner-add-footer button):not(.learning-path-create > button):not(.learning-path-rename button):not(.learning-path-add-videos form button),
+a[class*="button"]:not(.button-primary):not(.nav-login):not(.button-text) {
+  background-color: rgba(194, 219, 238, 0.09) !important;
+  border: 1px solid rgba(203, 224, 240, 0.18) !important;
+  color: #e8f1f8 !important;
+  backdrop-filter: blur(14px) saturate(150%) !important;
+  -webkit-backdrop-filter: blur(14px) saturate(150%) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+}
+
+button:not([class*="bg-emerald-"]):not(.course-add-button):not(.settings-save):not(.profile-save-btn):not(.profile-save-button):not(.button-primary):not(.hub-primary-btn):not(.roadmap-enroll-btn):not(.hero-cta-btn):not(.planner-add-footer button):not(.learning-path-create > button):not(.learning-path-rename button):not(.learning-path-add-videos form button):hover,
+a[class*="button"]:not(.button-primary):not(.nav-login):not(.button-text):hover {
+  background-color: rgba(194, 219, 238, 0.16) !important;
+  border-color: rgba(203, 224, 240, 0.3) !important;
+}
+
+.feature-card-v2:hover,
+.comparison-card:hover,
+[class*="-card"]:not([class*="-card-"]):hover {
+  background-color: rgba(194, 219, 238, 0.13) !important;
+  border-color: rgba(16, 185, 129, 0.42) !important;
+}
+
+@media (max-width: 640px) {
+  [class*="-card"]:not([class*="-card-"]),
+  [class~="card"],
+  .feature-card-v2,
+  .comparison-card,
+  .ai-tutor-container,
+  .certificate-modal-content,
+  .certificate-frame,
+  .modal-card {
+    border-radius: 12px !important;
+  }
+
+  [role="dialog"],
+  .certificate-modal-content {
+    max-height: calc(100dvh - 24px);
+    overflow-y: auto;
+  }
+
+  .comparison-card,
+  .feature-card-v2,
+  .usecase-card {
+    padding: 18px !important;
+  }
 }

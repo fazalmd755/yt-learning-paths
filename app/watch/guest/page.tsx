@@ -101,7 +101,7 @@ function GuestWatchContent() {
   };
 
   return (
-    <main className="min-h-screen bg-[#090A0E] text-zinc-100 p-4 md:p-6 max-w-7xl mx-auto">
+    <main className="min-h-screen bg-transparent text-zinc-100 p-4 md:p-6 max-w-7xl mx-auto">
       {/* Top Navbar */}
       <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10 mb-6">
         <div className="flex items-center gap-3">

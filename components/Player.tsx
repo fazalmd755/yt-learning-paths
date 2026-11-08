@@ -363,7 +363,7 @@ export default function Player({
       )}
 
       {embeddable ? (
-        <div className="aspect-video w-full overflow-hidden rounded-lg bg-black" ref={mountRef} />
+        <div className="aspect-video w-full overflow-hidden rounded-lg bg-white/5 backdrop-blur-md" ref={mountRef} />
       ) : (
         <div className="watch-embed-fallback">
           <p>
