@@ -33,7 +33,7 @@ export default function FeaturedRoadmaps() {
         {topTracks.map((track) => (
           <article
             key={track.id}
-            className="group relative rounded-2xl border border-white/10 bg-zinc-900/50 p-6 backdrop-blur-sm hover:border-emerald-500/40 hover:bg-zinc-900/80 transition-all duration-300 flex flex-col justify-between shadow-xl"
+            className="group relative rounded-2xl border border-white/10 bg-white/[0.04] p-6 backdrop-blur-2xl hover:border-emerald-500/50 hover:bg-white/[0.08] transition-all duration-300 flex flex-col justify-between shadow-xl"
           >
             <div>
               {/* Badges & Meta */}

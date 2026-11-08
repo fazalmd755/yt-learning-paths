@@ -8411,3 +8411,157 @@ textarea::placeholder {
   font-weight: 700 !important;
   font-size: 11px !important;
 }
+
+
+/* ==========================================================================
+   PURE TRANSLUCENT FROSTED GLASS FOR ALL CARDS, FORMS, PANELS & CONTAINERS
+   ========================================================================== */
+
+.usecase-card,
+.faq-item,
+.resume-card,
+.study-hubs-banner,
+.planner-empty,
+.planner-add-form,
+.planner-courses-card,
+.planner-course-link,
+.planner-task,
+.exam-date-card,
+.tracker-empty,
+.tracker-progress-card,
+.tracker-add-form,
+.tracker-tip-card,
+.notes-empty,
+.video-notes-panel,
+.video-note-form,
+.video-row,
+.watch-player,
+.add-course-form,
+.learning-path-create,
+.learning-path-rename,
+.learning-path-hero,
+.learning-path-card,
+.learning-path-empty,
+.goal-card,
+.streak-card,
+.library-stat-card,
+.playlist-stat-card,
+.course-card,
+.course-detail-hero,
+.hub-hero,
+.public-hub-hero,
+.hub-empty-state,
+.hub-card,
+.hub-preset-card,
+.activity-panel,
+.daily-goal-panel,
+.panel-card,
+.article-card,
+.directory-card,
+.preview-card,
+.feature-card,
+.feature-card-v2,
+.comparison-card,
+.comparison-watchlify,
+.comparison-youtube,
+.workspace-header-card,
+.public-hero-action-card,
+.study-hub-card,
+.modal-card,
+.auth-card,
+.closing-cta {
+  background: rgba(255, 255, 255, 0.035) !important;
+  backdrop-filter: blur(18px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(190%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 10px 32px 0 rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.08) !important;
+  border-radius: 14px !important;
+  color: inherit !important;
+}
+
+/* Hover state on clickable glass cards */
+.usecase-card:hover,
+.course-card:hover,
+.hub-card:hover,
+.hub-preset-card:hover,
+.learning-path-card:hover,
+.feature-card:hover,
+.directory-card:hover,
+.study-hubs-banner:hover,
+.resume-card:hover {
+  background: rgba(255, 255, 255, 0.07) !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45), 0 0 24px rgba(16, 185, 129, 0.18) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* All inputs, form fields, and search bars */
+.course-url-input,
+.learning-path-create input,
+.learning-path-rename input,
+.learning-path-add-videos input,
+.header-search-form input,
+.tracker-add-form input,
+.tracker-search,
+.planner-form-grid input,
+.video-note-form input,
+.video-note-form textarea,
+.settings-field > input,
+.input-suffix input,
+.auth-form input,
+.resend-confirmation-form input,
+.custom-exam-form input,
+.exam-date-card input,
+input[type="text"],
+input[type="url"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+}
+
+/* FAQ Accordion Details Glass */
+.faq-item {
+  background: rgba(255, 255, 255, 0.035) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.09) !important;
+  border-radius: 12px !important;
+  margin-bottom: 10px !important;
+  transition: all 0.2s ease !important;
+}
+
+.faq-item[open] {
+  background: rgba(255, 255, 255, 0.06) !important;
+  border-color: rgba(16, 185, 129, 0.4) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), 0 0 16px rgba(16, 185, 129, 0.12) !important;
+}
+
+/* Dashed Empty states */
+.learning-path-empty,
+.library-empty,
+.hub-empty-state,
+.roadmaps-empty,
+.planner-empty {
+  background: rgba(255, 255, 255, 0.02) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+  border: 1px dashed rgba(255, 255, 255, 0.14) !important;
+  border-radius: 14px !important;
+  color: #94a3b8 !important;
+}
+
+/* Top Stats Cards in Dashboard */
+.dashboard-overview article {
+  background: rgba(255, 255, 255, 0.035) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}

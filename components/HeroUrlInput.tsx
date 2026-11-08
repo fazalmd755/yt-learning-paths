@@ -39,7 +39,7 @@ export default function HeroUrlInput() {
     <div className="w-full max-w-2xl mx-auto my-6">
       <form
         onSubmit={handleSubmit}
-        className="relative flex flex-col sm:flex-row items-stretch gap-2 rounded-2xl border border-white/15 bg-zinc-900/80 p-2 shadow-2xl backdrop-blur-xl focus-within:border-emerald-500/80 focus-within:ring-2 focus-within:ring-emerald-500/20 transition-all"
+        className="relative flex flex-col sm:flex-row items-stretch gap-2 rounded-2xl border border-white/20 bg-white/[0.04] p-2 shadow-2xl backdrop-blur-2xl focus-within:border-emerald-500/80 focus-within:ring-2 focus-within:ring-emerald-500/25 transition-all"
       >
         <div className="flex flex-1 items-center gap-3 px-3 py-1">
           <PlayIcon size={18} className="text-emerald-400 shrink-0" />
