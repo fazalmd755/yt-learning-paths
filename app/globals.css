@@ -2122,30 +2122,7 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
 }
 
 
-/* Player shortcuts hint */
-.player-shortcuts-hint {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #2f343a;
-  color: #8c9298;
-  font-size: 11px;
-}
-.player-shortcuts-hint kbd {
-  display: inline-block;
-  padding: 1px 5px;
-  border: 1px solid #454b51;
-  border-radius: 4px;
-  background: #1a1d21;
-  color: #cfd2d6;
-  font-family: inherit;
-  font-size: 10px;
-  font-weight: 600;
-  margin-right: 4px;
-}
+
 
 /* Video notes enhanced tools */
 .video-note-tools {
@@ -2526,26 +2503,6 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   box-shadow: 0 0 8px rgba(163, 209, 47, .7);
 }
 
-/* Shortcuts Modal Button */
-.player-shortcuts-modal-btn {
-  display: grid;
-  place-items: center;
-  width: 28px;
-  height: 28px;
-  border: 1px solid #343a42;
-  border-radius: 50%;
-  background: #16181b;
-  color: #aeb2b8;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: pointer;
-  transition: all .15s ease;
-}
-.player-shortcuts-modal-btn:hover {
-  border-color: #a3d12f;
-  background: #242930;
-  color: #a3d12f;
-}
 
 /* Autoplay Countdown Toast Banner */
 .autoplay-countdown-banner {
@@ -2668,7 +2625,6 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
 }
 
 /* Modals Backdrop & Card */
-.shortcuts-modal-backdrop,
 .schedule-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -2684,7 +2640,6 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   from { opacity: 0; }
   to { opacity: 1; }
 }
-.shortcuts-modal-card,
 .schedule-modal-card {
   width: min(450px, 100%);
   background: #202328;
@@ -2694,7 +2649,6 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   padding: 24px;
   color: #f2f3f4;
 }
-.shortcuts-modal-header,
 .schedule-modal-header {
   display: flex;
   align-items: center;
@@ -2703,7 +2657,6 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   border-bottom: 1px solid #2f353d;
   padding-bottom: 14px;
 }
-.shortcuts-modal-header h3,
 .schedule-modal-header h3 {
   margin: 0;
   font-size: 17px;
@@ -2722,7 +2675,6 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   font-size: 12px;
   color: #a2a7af;
 }
-.shortcuts-modal-close,
 .schedule-modal-close {
   border: 0;
   background: transparent;
@@ -2732,35 +2684,8 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   padding: 4px;
   line-height: 1;
 }
-.shortcuts-modal-close:hover,
 .schedule-modal-close:hover {
   color: #ffffff;
-}
-.shortcuts-modal-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-}
-.shortcut-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 4px;
-  border-bottom: 1px dashed #2d333b;
-  font-size: 13px;
-  color: #d2d5da;
-}
-.shortcut-row kbd {
-  display: inline-block;
-  padding: 3px 8px;
-  border: 1px solid #3a414b;
-  border-radius: 5px;
-  background: #16181b;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, .3);
-  font-family: inherit;
-  font-size: 11px;
-  font-weight: 800;
-  color: #a3d12f;
 }
 
 /* Schedule Form */
