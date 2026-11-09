@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createClient } from "@/lib/supabase/server";
 
 export interface StudyAssistResponse {
   title: string;
@@ -115,6 +116,18 @@ function generateContextualFallback(
 
 export async function POST(req: Request) {
   try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Authentication required to use AI Study Assist." },
+        { status: 401 }
+      );
+    }
+
     const body = await req.json().catch(() => ({}));
     const videoTitle = String(body?.videoTitle ?? "Lesson Topic").trim();
     const description = String(body?.description ?? "").trim();

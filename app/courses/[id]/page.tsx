@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { removeCourse } from "@/app/dashboard/actions";
 import CourseLessonScheduleButton from "@/components/CourseLessonScheduleButton";
+import CourseLessonList, { type CourseLessonItem } from "@/components/CourseLessonList";
 import CourseNotesExport, { type ExportableNote } from "@/components/CourseNotesExport";
 import { ArrowRightIcon, PlayIcon, TargetIcon } from "@/components/Icons";
 import ProgressBar from "@/components/ProgressBar";
@@ -220,49 +221,26 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
       </section>
 
       <section className="video-list-section">
-        <div className="video-list-heading">
+        <div className="video-list-heading mb-4">
           <div>
             <h2>Video lessons</h2>
           </div>
           <span>{videos.length} lessons</span>
         </div>
-        <ol className="video-list">
-          {videos.map((v, i) => (
-            <li key={v.id} className="video-list-item">
-              <div className="video-row">
-                <Link href={`/watch/${id}/${v.id}`} className="video-row-link">
-                  <span className="video-index">{String(i + 1).padStart(2, "0")}</span>
-                  {v.thumbnail_url ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={v.thumbnail_url} alt="" className="video-thumbnail" loading="lazy" decoding="async" />
-                  ) : (
-                    <div className="video-thumbnail video-thumbnail-empty"><PlayIcon size={16} /></div>
-                  )}
-                  <div className="video-row-copy">
-                    <p>{v.title}</p>
-                    <span>{formatDuration(v.duration_seconds ?? 0)}{v.embeddable === false && " · Watch on YouTube"}</span>
-                  </div>
-                </Link>
-                <div className="video-row-actions">
-                  <CourseLessonScheduleButton
-                    userId={user.id}
-                    videoTitle={v.title}
-                    courseTitle={playlist.title}
-                    watchUrl={`/watch/${id}/${v.id}`}
-                  />
-                  <Link href={`/watch/${id}/${v.id}`} className={`video-status video-status-${v.status}`}>
-                    {v.status === "completed"
-                      ? "Complete"
-                      : v.status === "in_progress"
-                        ? "In progress"
-                        : "Not started"}
-                  </Link>
-                  <Link href={`/watch/${id}/${v.id}`} className="video-row-arrow" aria-hidden="true">→</Link>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <CourseLessonList
+          courseId={id}
+          courseTitle={playlist.title}
+          userId={user.id}
+          lessons={videos.map((v, i) => ({
+            id: v.id,
+            title: v.title,
+            thumbnail_url: v.thumbnail_url,
+            duration_seconds: v.duration_seconds,
+            embeddable: v.embeddable,
+            status: v.status,
+            originalIndex: i,
+          }))}
+        />
       </section>
     </main>
   );

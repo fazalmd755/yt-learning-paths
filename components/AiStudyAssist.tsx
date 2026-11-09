@@ -184,6 +184,8 @@ export default function AiStudyAssist({
     setSelectedAnswers((prev) => ({ ...prev, [questionId]: optionIdx }));
   };
 
+  const correctCount = mcqs.filter((q) => selectedAnswers[q.id] === q.correct).length;
+
   return (
     <section className="ai-tutor-container mt-4 rounded-xl border border-white/10 bg-zinc-900/60 p-4 md:p-5 backdrop-blur-md">
       {/* Header bar */}
@@ -285,6 +287,33 @@ export default function AiStudyAssist({
       {/* Tab 2: Practice Quiz (3 MCQs) */}
       {activeTab === "quiz" && (
         <div className="mt-3 space-y-4">
+          {showResults && (
+            <div
+              className={`rounded-lg border p-3 flex items-center justify-between gap-3 ${
+                correctCount === mcqs.length
+                  ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
+                  : correctCount > 0
+                  ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
+                  : "border-red-500/40 bg-red-500/10 text-red-300"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                <span className="text-xl">
+                  {correctCount === mcqs.length ? "🎉" : correctCount > 0 ? "⚡" : "📚"}
+                </span>
+                <div>
+                  <p className="text-xs font-semibold">
+                    Score: {correctCount} / {mcqs.length} correct
+                  </p>
+                  <p className="text-[11px] opacity-80">
+                    {correctCount === mcqs.length
+                      ? "Awesome job! You nailed all questions for this lesson."
+                      : "Review the explanations below to solidify the concept."}
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           {mcqs.map((q, qIndex) => {
             const chosen = selectedAnswers[q.id];
             const hasChosen = chosen !== undefined;

@@ -66,6 +66,10 @@ as $$
 declare
   v_course_id uuid;
 begin
+  if auth.uid() is null or auth.uid() != p_user_id then
+    raise exception 'Unauthorized';
+  end if;
+
   insert into public.user_courses (user_id, playlist_id)
   values (p_user_id, p_playlist_id)
   on conflict (user_id, playlist_id) do update set created_at = now()

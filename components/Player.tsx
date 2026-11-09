@@ -78,6 +78,7 @@ export default function Player({
 
   const [autoplayCountdown, setAutoplayCountdown] = useState<number | null>(null);
   const [showSchedule, setShowSchedule] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
 
   useEffect(() => {
     try {
@@ -432,11 +433,79 @@ export default function Player({
             <span>Autoplay</span>
           </button>
 
-
+          {/* Keyboard Shortcuts Helper Button */}
+          <button
+            type="button"
+            onClick={() => setShowShortcuts(true)}
+            className="player-schedule-btn !px-2.5"
+            title="View keyboard shortcuts"
+            aria-label="View keyboard shortcuts"
+          >
+            <span className="text-xs">⌨️ Keys</span>
+          </button>
         </div>
       </div>
 
-
+      {/* Keyboard Shortcuts Modal */}
+      {showShortcuts && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
+          onClick={() => setShowShortcuts(false)}
+        >
+          <div
+            className="w-full max-w-sm rounded-xl border border-white/10 bg-zinc-900 p-5 shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+              <h3 className="text-sm font-semibold text-zinc-100 flex items-center gap-2">
+                <span>⌨️</span> Keyboard Shortcuts
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowShortcuts(false)}
+                className="text-sm text-zinc-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="mt-4 space-y-2.5 text-xs text-zinc-300">
+              <div className="flex items-center justify-between">
+                <span>Play / Pause</span>
+                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">Space / K</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Rewind 5 seconds</span>
+                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">← / J</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Forward 5 seconds</span>
+                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">→ / L</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Mute / Unmute</span>
+                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">M</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Speed Up / Slow Down</span>
+                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">&gt; / &lt;</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span>Cancel Autoplay / Close</span>
+                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">Esc</span>
+              </div>
+            </div>
+            <div className="mt-5 text-center">
+              <button
+                type="button"
+                onClick={() => setShowShortcuts(false)}
+                className="w-full rounded-lg bg-white/10 py-1.5 text-xs font-medium text-white hover:bg-white/20 transition"
+              >
+                Got it
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Schedule Lesson Modal */}
       <ScheduleLessonModal
