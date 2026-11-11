@@ -3,7 +3,6 @@ import Link from "next/link";
 import { ArrowRightIcon, PlayIcon, SparklesIcon, CheckIcon } from "@/components/Icons";
 import { WatchlifyIcon } from "@/components/BrandLogo";
 import HeroUrlInput from "@/components/HeroUrlInput";
-import FeaturedRoadmaps from "@/components/FeaturedRoadmaps";
 
 export const metadata: Metadata = {
   title: "Watchlify — Turn YouTube Playlists into Distraction-Free Courses",
@@ -108,7 +107,6 @@ export default function Home() {
           <div className="home-quick-links">
             <Link href="/syllabus/select">Explore playlists <span aria-hidden="true">↗</span></Link>
             <Link href="/planner">Plan your week <span aria-hidden="true">↗</span></Link>
-            <Link href="/roadmaps">View roadmaps <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
 
@@ -177,9 +175,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* Popular Curated Community Roadmaps Showcase */}
-      <FeaturedRoadmaps />
 
       {/* Comparison Section: YouTube Native vs Watchlify */}
       <section id="comparison" className="home-comparison-section">
@@ -378,7 +373,6 @@ export default function Home() {
         <div className="home-footer-links">
           <Link href="/syllabus/select">Playlists</Link>
           <Link href="/planner">Planner</Link>
-          <Link href="/roadmaps">Roadmaps</Link>
           <Link href="/settings">Settings</Link>
         </div>
       </footer>

@@ -217,7 +217,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <nav className="site-nav">
               <div className="site-nav-links">
                 {user ? <Link href="/dashboard">Dashboard</Link> : null}
-                <Link href="/roadmaps">Roadmaps</Link>
                 <Link href="/study-hubs">Study Hubs</Link>
                 <Link href="/planner">Planner</Link>
               </div>
