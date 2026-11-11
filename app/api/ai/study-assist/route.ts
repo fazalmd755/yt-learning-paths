@@ -24,10 +24,16 @@ function cleanMarkdown(raw: string): string {
 }
 
 /**
- * 1. Google Gemini (2.0 Flash / 1.5 Flash)
+ * 1. Google Gemini
  */
 async function callGemini(prompt: string, apiKey: string, jsonMode = true): Promise<string> {
-  const models = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"];
+  const models = [
+    "gemini-3.5-flash-lite",
+    "gemini-3.8-flash",
+    "gemini-flash-latest",
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+  ];
   let lastErrorMessage = "";
 
   for (const model of models) {
