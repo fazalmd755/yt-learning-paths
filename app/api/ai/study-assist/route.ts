@@ -23,6 +23,20 @@ function cleanMarkdown(raw: string): string {
     .trim();
 }
 
+function cleanAiAnswerText(raw: string): string {
+  if (!raw) return "";
+  return raw
+    // Remove markdown headers: #, ##, ###, ####
+    .replace(/^#{1,6}\s+/gm, "")
+    // Remove horizontal separator rules: ---, ***, ___
+    .replace(/^[-*_]{3,}\s*$/gm, "")
+    // Standardize bullet points
+    .replace(/^\s*[-*]\s+/gm, "• ")
+    // Clean excessive empty lines
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 /**
  * 1. Google Gemini
  */
@@ -229,7 +243,7 @@ export async function POST(req: Request) {
         );
       }
 
-      const askPrompt = `You are an expert, encouraging AI Study Tutor in Watchlify.
+      const askPrompt = `You are a friendly, expert AI Study Tutor in Watchlify.
 The student is watching an educational video:
 - Title: "${videoTitle}"
 - Video Context: "${description.slice(0, 1800)}"
@@ -238,23 +252,24 @@ The student is watching an educational video:
 Student's Question:
 "${userQuestion}"
 
-Provide a clear, engaging, easy-to-understand response:
-1. Direct answer to their question with an intuitive explanation.
-2. If relevant, include a practical code snippet or real-world example.
-3. 1 key memory tip or common mistake to avoid.
-
-Keep the tone helpful, structured in markdown, and concise.`;
+Formatting Rules:
+- Write in clean, conversational prose without messy symbols.
+- NEVER use markdown header tags like '#', '##', or '###'.
+- NEVER use horizontal divider lines like '---' or '***'.
+- Use clean bullet points ('•') and backticks for code identifiers (\`code\`).
+- If you share code, use clean fenced code blocks.
+- Provide a direct answer, a short practical example, and 1 important tip. Keep it crisp.`;
 
       let answerText = "";
       try {
         answerText = await callAI(askPrompt, false);
       } catch (e) {
         console.warn("AI Ask failed:", e);
-        answerText = `### 💡 Quick Tutor Guidance for "${videoTitle}"\n\n**Regarding:** *${userQuestion}*\n\n1. **Core Concept:** In this lesson, make sure you understand the foundational patterns and data structures shown around \`${timeStr}\`.\n2. **Best Practice:** Keep functions modular, test individual components with edge cases, and avoid hardcoding values.\n3. **Pro Tip:** Check the official documentation and run the code locally to cement your understanding!`;
+        answerText = `Quick Guidance for "${videoTitle}":\n\nRegarding: ${userQuestion}\n\n• Core Concept: Make sure you understand the foundational architecture and flow demonstrated around ${timeStr}.\n• Best Practice: Keep code modular, test edge cases, and avoid hardcoding values.\n• Pro Tip: Try running the code locally to reinforce your understanding!`;
       }
 
       return NextResponse.json({
-        answer: answerText,
+        answer: cleanAiAnswerText(answerText),
         timeStr,
       });
     }

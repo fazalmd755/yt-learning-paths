@@ -27,6 +27,119 @@ interface AiChatMessage {
   timeStr: string;
 }
 
+function formatCleanText(raw: string): string {
+  if (!raw) return "";
+  return raw
+    // Remove markdown headers: #, ##, ###, ####
+    .replace(/^#{1,6}\s*/gm, "")
+    // Remove horizontal separator rules: ---, ***, ___
+    .replace(/^[-*_]{3,}\s*$/gm, "")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function renderFormattedParagraph(text: string, pKey: number) {
+  const clean = formatCleanText(text);
+  if (!clean) return null;
+
+  const lines = clean.split("\n");
+
+  return (
+    <div key={pKey} className="space-y-1.5">
+      {lines.map((line, lIdx) => {
+        const trimmed = line.trim();
+        if (!trimmed) return null;
+
+        // Check if bullet point
+        const isBullet = trimmed.startsWith("•") || trimmed.startsWith("-") || trimmed.startsWith("*");
+        const content = isBullet ? trimmed.replace(/^[•\-*]\s*/, "") : trimmed;
+
+        // Parse inline **bold** and `code`
+        const parts = content.split(/(\*\*.*?\*\*|`.*?`)/g);
+
+        const renderedLine = parts.map((part, partIdx) => {
+          if (part.startsWith("**") && part.endsWith("**")) {
+            return (
+              <strong key={partIdx} className="font-semibold text-zinc-100">
+                {part.slice(2, -2)}
+              </strong>
+            );
+          }
+          if (part.startsWith("`") && part.endsWith("`")) {
+            return (
+              <code
+                key={partIdx}
+                className="rounded bg-zinc-800/90 px-1.5 py-0.5 font-mono text-[11px] text-emerald-300 border border-white/5"
+              >
+                {part.slice(1, -1)}
+              </code>
+            );
+          }
+          return part;
+        });
+
+        if (isBullet) {
+          return (
+            <div key={lIdx} className="flex items-start gap-2 pt-0.5">
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
+              <p className="flex-1 text-xs text-zinc-300 leading-relaxed">{renderedLine}</p>
+            </div>
+          );
+        }
+
+        return (
+          <p key={lIdx} className="text-xs text-zinc-300 leading-relaxed">
+            {renderedLine}
+          </p>
+        );
+      })}
+    </div>
+  );
+}
+
+function CleanAiMessageView({ text }: { text: string }) {
+  // Split by code fences ```
+  const codeBlockRegex = /```([a-zA-Z]*)\n?([\s\S]*?)```/g;
+  const blocks: Array<{ type: "code" | "text"; content: string; lang?: string }> = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = codeBlockRegex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      blocks.push({ type: "text", content: text.substring(lastIndex, match.index) });
+    }
+    blocks.push({ type: "code", content: match[2], lang: match[1] });
+    lastIndex = match.index + match[0].length;
+  }
+  if (lastIndex < text.length) {
+    blocks.push({ type: "text", content: text.substring(lastIndex) });
+  }
+
+  return (
+    <div className="space-y-2.5">
+      {blocks.map((block, idx) => {
+        if (block.type === "code") {
+          return (
+            <div key={idx} className="overflow-hidden rounded-lg border border-white/10 bg-zinc-950">
+              {block.lang && (
+                <div className="border-b border-white/5 bg-zinc-900/60 px-3 py-1 text-[10px] font-mono text-zinc-400">
+                  {block.lang}
+                </div>
+              )}
+              <pre className="p-3 font-mono text-[11px] text-emerald-300 overflow-x-auto leading-relaxed">
+                <code>{block.content.trim()}</code>
+              </pre>
+            </div>
+          );
+        }
+
+        const paragraphs = block.content.split(/\n\s*\n/);
+        return paragraphs.map((para, pIdx) => renderFormattedParagraph(para, idx * 100 + pIdx));
+      })}
+    </div>
+  );
+}
+
 export default function AiStudyAssist({
   videoId,
   videoTitle,
@@ -230,7 +343,7 @@ export default function AiStudyAssist({
           `💬 **Q&A with AI Tutor (${chatItem.timeStr})**`,
           `**Q:** ${chatItem.question}`,
           "",
-          `**A:** ${chatItem.answer}`,
+          `**A:** ${formatCleanText(chatItem.answer)}`,
         ].join("\n");
       }
 
@@ -609,8 +722,8 @@ export default function AiStudyAssist({
                     <span>Save to Notes</span>
                   </button>
                 </div>
-                <div className="whitespace-pre-wrap text-xs text-zinc-300 leading-relaxed font-sans">
-                  {msg.answer}
+                <div className="pt-1">
+                  <CleanAiMessageView text={msg.answer} />
                 </div>
               </div>
             ))}
