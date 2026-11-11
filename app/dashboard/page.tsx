@@ -44,11 +44,10 @@ export default async function DashboardPage({
 
   const tz = profile?.timezone ?? "Asia/Kolkata";
   const goalMinutes = profile?.daily_goal_minutes ?? 15;
-  const goalSeconds = goalMinutes * 60;
   const today = dateInTz(tz);
 
-  // 16 weeks (~3.5 months) for the contribution heatmap
-  const dates = lastNDates(112, tz);
+  // 6 months (180 days) for the LeetCode-style activity heatmap
+  const dates = lastNDates(180, tz);
 
   const secondsByDate = new Map<string, number>();
   const activeDaysList: { activity_date: string; seconds_learned: number }[] = [];
@@ -63,6 +62,7 @@ export default async function DashboardPage({
   const days = dates.map((date) => ({ date, seconds: secondsByDate.get(date) ?? 0 }));
   const streak = Number(streakData ?? 0);
   const totalActiveDays = activeDaysList.length;
+  const totalSecondsLearned = Array.from(secondsByDate.values()).reduce((a, b) => a + b, 0);
 
   let calculatedMax = 0;
   if (activeDaysList.length > 0) {
@@ -161,6 +161,17 @@ export default async function DashboardPage({
         </section>
       )}
 
+      {/* LeetCode-style Consistency Heatmap (Placed prominently near top, not wide, no future days) */}
+      <section id="consistency" className="mb-3.5">
+        <StreakCalendar
+          days={days}
+          today={today}
+          totalActiveDays={totalActiveDays}
+          maxStreak={maxStreak}
+          totalSecondsLearned={totalSecondsLearned}
+        />
+      </section>
+
       {/* Compact Quick-Add Bar */}
       <section className="add-course-bar-wrap">
         <AddCourseForm />
@@ -186,25 +197,6 @@ export default async function DashboardPage({
           totalCourses={courses.length}
           finishedCourses={finishedCourses}
         />
-      </section>
-
-      {/* Consistency Heatmap */}
-      <section id="consistency" className="dashboard-lower">
-        <div className="panel-card activity-panel w-full">
-          <div className="panel-heading">
-            <div>
-              <h2>Consistency Heatmap</h2>
-            </div>
-            <span className="panel-period">LAST 16 WEEKS</span>
-          </div>
-          <StreakCalendar
-            days={days}
-            goalSeconds={goalSeconds}
-            today={today}
-            totalActiveDays={totalActiveDays}
-            maxStreak={maxStreak}
-          />
-        </div>
       </section>
     </main>
   );
