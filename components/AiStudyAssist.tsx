@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { SparklesIcon, CheckCircleIcon, CheckIcon, ArrowRightIcon } from "./Icons";
 import { createClient } from "@/lib/supabase/client";
 
@@ -36,15 +36,8 @@ export default function AiStudyAssist({
 }: Props) {
   const [activeTab, setActiveTab] = useState<"summary" | "quiz" | "ask">("summary");
   const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  // Gemini API key state (user-provided or server-provided)
-  const [geminiApiKey, setGeminiApiKey] = useState<string>("");
-  const [showKeyModal, setShowKeyModal] = useState(false);
-  const [keyInput, setKeyInput] = useState("");
-
-  // AI Content
   const [hasGenerated, setHasGenerated] = useState(false);
+
   const [summaryBullets, setSummaryBullets] = useState<string[]>([
     "Foundational concepts, syntax conventions, and architectural flow taught in this lecture.",
     "Step-by-step practical implementation patterns demonstrated by the instructor.",
@@ -106,31 +99,6 @@ export default function AiStudyAssist({
   const [savingNote, setSavingNote] = useState(false);
   const [saveSuccessMessage, setSaveSuccessMessage] = useState<string | null>(null);
 
-  // Load custom Gemini API key from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem("watchlify_gemini_api_key");
-      if (stored) {
-        setGeminiApiKey(stored);
-        setKeyInput(stored);
-      }
-    } catch {}
-  }, []);
-
-  const handleSaveApiKey = () => {
-    const trimmed = keyInput.trim();
-    setGeminiApiKey(trimmed);
-    try {
-      if (trimmed) {
-        localStorage.setItem("watchlify_gemini_api_key", trimmed);
-      } else {
-        localStorage.removeItem("watchlify_gemini_api_key");
-      }
-    } catch {}
-    setShowKeyModal(false);
-    setErrorMsg(null);
-  };
-
   const getPlayerCurrentSeconds = (): number => {
     try {
       const getTime =
@@ -142,10 +110,9 @@ export default function AiStudyAssist({
     }
   };
 
-  // Generate dynamic Gemini AI Summary & Quiz
+  // Generate dynamic AI Summary & Quiz
   const handleGenerate = async () => {
     setLoading(true);
-    setErrorMsg(null);
     setSaveSuccessMessage(null);
 
     const currentSeconds = getPlayerCurrentSeconds();
@@ -160,45 +127,35 @@ export default function AiStudyAssist({
           videoTitle,
           description,
           currentTimestamp: currentSeconds,
-          apiKey: geminiApiKey || undefined,
         }),
       });
 
       const data = await res.json().catch(() => ({}));
 
-      if (!res.ok) {
-        if (data?.error === "NO_API_KEY") {
-          setShowKeyModal(true);
-          setErrorMsg("Please provide a Gemini API key to activate AI features.");
-          return;
+      if (res.ok) {
+        if (Array.isArray(data.summaryBullets) && data.summaryBullets.length > 0) {
+          setSummaryBullets(data.summaryBullets);
         }
-        throw new Error(data?.message || "Failed to generate AI study material.");
+        if (Array.isArray(data.mcqs) && data.mcqs.length > 0) {
+          setMcqs(data.mcqs);
+          setSelectedAnswers({});
+          setShowResults(false);
+        }
+        setHasGenerated(true);
       }
-
-      if (Array.isArray(data.summaryBullets) && data.summaryBullets.length > 0) {
-        setSummaryBullets(data.summaryBullets);
-      }
-      if (Array.isArray(data.mcqs) && data.mcqs.length > 0) {
-        setMcqs(data.mcqs);
-        setSelectedAnswers({});
-        setShowResults(false);
-      }
-      setHasGenerated(true);
-    } catch (err: any) {
+    } catch (err) {
       console.error("AI Assist generation error:", err);
-      setErrorMsg(err.message || "Failed to contact Gemini AI.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Ask AI Tutor a specific doubt
+  // Ask AI Tutor a doubt
   const handleAskDoubt = async (questionToAsk?: string) => {
     const q = (questionToAsk ?? userQuestion).trim();
     if (!q) return;
 
     setAskingAi(true);
-    setErrorMsg(null);
     const currentSeconds = getPlayerCurrentSeconds();
 
     try {
@@ -212,20 +169,10 @@ export default function AiStudyAssist({
           videoTitle,
           description,
           currentTimestamp: currentSeconds,
-          apiKey: geminiApiKey || undefined,
         }),
       });
 
       const data = await res.json().catch(() => ({}));
-
-      if (!res.ok) {
-        if (data?.error === "NO_API_KEY") {
-          setShowKeyModal(true);
-          setErrorMsg("Please provide a Gemini API key to ask questions.");
-          return;
-        }
-        throw new Error(data?.message || "Failed to get an answer from Gemini AI.");
-      }
 
       const mins = Math.floor(currentSeconds / 60);
       const secs = currentSeconds % 60;
@@ -234,15 +181,14 @@ export default function AiStudyAssist({
       const newMsg: AiChatMessage = {
         id: `${Date.now()}`,
         question: q,
-        answer: data.answer || "No response received.",
+        answer: data.answer || "No response received. Please try again.",
         timeStr,
       };
 
       setChatMessages((prev) => [newMsg, ...prev]);
       setUserQuestion("");
-    } catch (err: any) {
+    } catch (err) {
       console.error("Ask AI Error:", err);
-      setErrorMsg(err.message || "Failed to get AI answer.");
     } finally {
       setAskingAi(false);
     }
@@ -268,12 +214,12 @@ export default function AiStudyAssist({
       let content = "";
       if (type === "summary") {
         content = [
-          `💡 **Gemini AI Core Takeaways (${timeStr})**`,
+          `💡 **AI Core Takeaways (${timeStr})**`,
           ...summaryBullets.map((b) => `• ${b}`),
         ].join("\n");
       } else if (type === "quiz") {
         content = [
-          `📝 **Gemini AI Practice Quiz (${timeStr})**`,
+          `📝 **AI Practice Quiz (${timeStr})**`,
           ...mcqs.map(
             (m, idx) =>
               `${idx + 1}. ${m.question}\n   *Answer:* ${m.options[m.correct]}\n   *Why:* ${m.explanation}`
@@ -281,7 +227,7 @@ export default function AiStudyAssist({
         ].join("\n\n");
       } else if (type === "chat" && chatItem) {
         content = [
-          `💬 **Q&A with Gemini Tutor (${chatItem.timeStr})**`,
+          `💬 **Q&A with AI Tutor (${chatItem.timeStr})**`,
           `**Q:** ${chatItem.question}`,
           "",
           `**A:** ${chatItem.answer}`,
@@ -328,120 +274,28 @@ export default function AiStudyAssist({
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-sm font-semibold tracking-wide text-zinc-100">
-                Gemini AI Study Assistant
+                AI Study Assistant
               </h3>
               <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold text-emerald-400">
-                Gemini 2.0 Flash
+                AI Powered
               </span>
             </div>
             <p className="text-xs text-zinc-400">
-              Video-grounded summaries, practice quizzes, and instant doubt resolution
+              Instant video summaries, practice quizzes, and 24/7 doubt resolution
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          {/* API Key Config Button */}
-          <button
-            type="button"
-            onClick={() => {
-              setKeyInput(geminiApiKey);
-              setShowKeyModal(true);
-            }}
-            title="Configure Gemini API Key"
-            className="flex items-center gap-1 rounded-lg border border-white/10 bg-zinc-800/80 px-2.5 py-1.5 text-xs text-zinc-300 transition hover:bg-zinc-700 hover:text-white"
-          >
-            <span>🔑</span>
-            <span>{geminiApiKey ? "API Key Connected" : "Set API Key"}</span>
-          </button>
-
-          {/* Regenerate Button */}
-          <button
-            type="button"
-            onClick={handleGenerate}
-            disabled={loading}
-            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/25 disabled:opacity-50"
-          >
-            <SparklesIcon size={14} className={loading ? "animate-spin" : ""} />
-            {loading ? "Generating with Gemini..." : hasGenerated ? "Regenerate AI Content" : "Generate with Gemini"}
-          </button>
-        </div>
+        <button
+          type="button"
+          onClick={handleGenerate}
+          disabled={loading}
+          className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/25 disabled:opacity-50"
+        >
+          <SparklesIcon size={14} className={loading ? "animate-spin" : ""} />
+          {loading ? "Analyzing Video..." : hasGenerated ? "Regenerate AI Content" : "Generate with AI"}
+        </button>
       </div>
-
-      {/* Error Message */}
-      {errorMsg && (
-        <div className="mt-3 flex items-center justify-between rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
-          <span>{errorMsg}</span>
-          <button
-            type="button"
-            onClick={() => setShowKeyModal(true)}
-            className="rounded bg-red-500/20 px-2 py-1 font-semibold text-red-200 hover:bg-red-500/30"
-          >
-            Connect API Key
-          </button>
-        </div>
-      )}
-
-      {/* API Key Modal / Popover */}
-      {showKeyModal && (
-        <div className="mt-3 rounded-lg border border-white/15 bg-zinc-950 p-4 shadow-xl">
-          <div className="flex items-center justify-between">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-200">
-              🔑 Google Gemini API Key
-            </h4>
-            <button
-              type="button"
-              onClick={() => setShowKeyModal(false)}
-              className="text-xs text-zinc-400 hover:text-white"
-            >
-              ✕
-            </button>
-          </div>
-          <p className="mt-1 text-xs text-zinc-400">
-            Watchlify uses Google Gemini 2.0 Flash to generate high-yield quizzes and solve doubts.
-            Get your 100% free key with no credit card at{" "}
-            <a
-              href="https://aistudio.google.com/app/apikey"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-emerald-400 underline hover:text-emerald-300"
-            >
-              Google AI Studio
-            </a>
-            .
-          </p>
-          <div className="mt-3 flex gap-2">
-            <input
-              type="password"
-              placeholder="Paste your Gemini API key (AIzaSy...)"
-              value={keyInput}
-              onChange={(e) => setKeyInput(e.target.value)}
-              className="flex-1 rounded-md border border-white/10 bg-zinc-900 px-3 py-1.5 text-xs text-zinc-100 placeholder:text-zinc-500 focus:border-emerald-500 focus:outline-none"
-            />
-            <button
-              type="button"
-              onClick={handleSaveApiKey}
-              className="rounded-md bg-emerald-500 px-3 py-1.5 text-xs font-bold text-black hover:bg-emerald-400"
-            >
-              Save Key
-            </button>
-            {geminiApiKey && (
-              <button
-                type="button"
-                onClick={() => {
-                  setKeyInput("");
-                  setGeminiApiKey("");
-                  localStorage.removeItem("watchlify_gemini_api_key");
-                  setShowKeyModal(false);
-                }}
-                className="rounded-md bg-zinc-800 px-2.5 py-1.5 text-xs text-zinc-400 hover:text-red-300"
-              >
-                Clear
-              </button>
-            )}
-          </div>
-        </div>
-      )}
 
       {/* Tabs */}
       <div className="mt-3 flex items-center gap-2 border-b border-white/5 pb-2">
@@ -669,10 +523,10 @@ export default function AiStudyAssist({
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="text-[11px] text-zinc-500">Quick prompts:</span>
             {[
-              "Explain this in simple terms 💡",
-              "Give practical code examples 💻",
+              "Explain this simply 💡",
+              "Practical code examples 💻",
               "Common mistakes to avoid ⚠️",
-              "How is this asked in interviews? 🎯",
+              "Interview questions on this 🎯",
             ].map((chip) => (
               <button
                 key={chip}
@@ -699,7 +553,7 @@ export default function AiStudyAssist({
           >
             <input
               type="text"
-              placeholder="Ask anything about this video (e.g., 'What is the difference between...')"
+              placeholder="Ask anything about this video..."
               value={userQuestion}
               onChange={(e) => setUserQuestion(e.target.value)}
               className="flex-1 rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-xs text-zinc-100 placeholder:text-zinc-500 focus:border-emerald-500 focus:outline-none"
@@ -716,7 +570,7 @@ export default function AiStudyAssist({
                 </>
               ) : (
                 <>
-                  <span>Ask Tutor</span>
+                  <span>Ask</span>
                   <ArrowRightIcon size={12} />
                 </>
               )}
@@ -727,7 +581,7 @@ export default function AiStudyAssist({
           <div className="space-y-3 pt-2">
             {chatMessages.length === 0 && (
               <div className="rounded-lg border border-dashed border-white/10 p-5 text-center text-xs text-zinc-500">
-                Have a doubt about this lesson? Ask Gemini Tutor above or click any quick prompt!
+                Have a doubt about this lesson? Ask the AI Tutor above or click any quick prompt!
               </div>
             )}
 

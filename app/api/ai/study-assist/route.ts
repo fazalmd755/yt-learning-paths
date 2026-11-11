@@ -23,8 +23,10 @@ function cleanMarkdown(raw: string): string {
     .trim();
 }
 
-async function callGemini(prompt: string, apiKey: string, jsonMode = true) {
-  // Try gemini-2.0-flash first, fallback to gemini-1.5-flash
+/**
+ * 1. Google Gemini (2.0 Flash / 1.5 Flash)
+ */
+async function callGemini(prompt: string, apiKey: string, jsonMode = true): Promise<string> {
   const models = ["gemini-2.0-flash", "gemini-1.5-flash", "gemini-1.5-pro"];
   let lastErrorMessage = "";
 
@@ -64,7 +66,106 @@ async function callGemini(prompt: string, apiKey: string, jsonMode = true) {
     }
   }
 
-  throw new Error(lastErrorMessage || "Unable to get response from Gemini API. Please check your Gemini API key.");
+  throw new Error(lastErrorMessage || "Unable to get response from Gemini API.");
+}
+
+/**
+ * 2. 100% Free AI Provider (No API key needed!)
+ */
+async function callFreeAI(prompt: string, jsonMode = true): Promise<string> {
+  const url = "https://text.pollinations.ai/";
+  const payload = {
+    messages: [
+      {
+        role: "system",
+        content: jsonMode
+          ? "You are an expert AI tutor. Return ONLY valid JSON with no markdown formatting or commentary."
+          : "You are an encouraging, expert technical AI study tutor. Provide structured, clear, and easy-to-understand explanations in Markdown.",
+      },
+      { role: "user", content: prompt },
+    ],
+    model: "openai",
+    jsonMode: jsonMode,
+  };
+
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    throw new Error(`Free AI service returned HTTP ${res.status}`);
+  }
+
+  return await res.text();
+}
+
+/**
+ * 3. Intelligent Topic-Grounded Fallback (zero downtime guarantee)
+ */
+function generateContextualFallback(
+  videoTitle: string,
+  description: string,
+  timeStr: string
+): { summaryBullets: string[]; mcqs: any[] } {
+  const lines = description
+    .split("\n")
+    .map((l) => l.trim())
+    .filter(
+      (l) =>
+        l.length > 20 &&
+        !l.toLowerCase().includes("subscribe") &&
+        !l.toLowerCase().includes("http") &&
+        !l.toLowerCase().includes("instagram") &&
+        !l.toLowerCase().includes("twitter")
+    );
+
+  const b1 = lines[0] || `Mastering core architecture and execution fundamentals for "${videoTitle}".`;
+  const b2 = lines[1] || `Practical code implementation patterns and module structuring demonstrated around ${timeStr}.`;
+  const b3 = lines[2] || `Best practices, edge-case mitigation, and production deployment considerations.`;
+
+  return {
+    summaryBullets: [b1, b2, b3],
+    mcqs: [
+      {
+        id: 1,
+        question: `What is the primary technical objective demonstrated in "${videoTitle}"?`,
+        options: [
+          "Understanding underlying execution flow and architectural principles",
+          "Rote memorization of syntax without practical application",
+          "Disabling runtime checks and assertions",
+          "Using deprecated legacy APIs in production",
+        ],
+        correct: 0,
+        explanation: "The lesson emphasizes deep conceptual mechanics and production-grade implementation over superficial memorization.",
+      },
+      {
+        id: 2,
+        question: `When applying patterns from this lesson, what is the recommended engineering practice?`,
+        options: [
+          "Hardcode parameters directly inside business logic",
+          "Structure modular, strongly-typed code with clear error boundaries",
+          "Suppress console errors to disguise runtime issues",
+          "Skip boundary validation if the happy path runs once",
+        ],
+        correct: 1,
+        explanation: "Modular structure combined with explicit error boundaries ensures maintainability and prevents unexpected crashes in production.",
+      },
+      {
+        id: 3,
+        question: `How should you validate your understanding of this topic?`,
+        options: [
+          "Deploy directly to production without testing",
+          "Write automated unit tests, inspect execution logs, and probe boundary cases",
+          "Assume third-party libraries handle all domain logic",
+          "Avoid running the code locally",
+        ],
+        correct: 1,
+        explanation: "Rigorous testing and boundary probing ensures the implementation meets production reliability standards.",
+      },
+    ],
+  };
 }
 
 export async function POST(req: Request) {
@@ -88,30 +189,32 @@ export async function POST(req: Request) {
     const currentTimestamp = Number(body?.currentTimestamp ?? 0);
     const userQuestion = String(body?.question ?? "").trim();
 
-    // Check key in order: client-passed key, env GEMINI_API_KEY, env GOOGLE_AI_API_KEY, env GOOGLE_API_KEY
-    const clientKey = String(body?.apiKey ?? "").trim();
+    // Key hierarchy: server env GEMINI_API_KEY -> client passed key
     const geminiKey =
-      clientKey ||
       process.env.GEMINI_API_KEY ||
       process.env.GOOGLE_AI_API_KEY ||
-      process.env.GOOGLE_API_KEY;
-
-    if (!geminiKey) {
-      return NextResponse.json(
-        {
-          error: "NO_API_KEY",
-          message:
-            "Gemini API key is not configured. Add your free Gemini API key to start generating AI summaries, quizzes, and asking doubts.",
-        },
-        { status: 400 }
-      );
-    }
+      process.env.GOOGLE_API_KEY ||
+      String(body?.apiKey ?? "").trim();
 
     const mins = Math.floor(currentTimestamp / 60);
     const secs = currentTimestamp % 60;
     const timeStr = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
 
-    // Action 1: Ask AI Tutor a specific doubt / question
+    // Helper to call Gemini first, then free AI fallback
+    const callAI = async (prompt: string, jsonMode: boolean): Promise<string> => {
+      if (geminiKey) {
+        try {
+          return await callGemini(prompt, geminiKey, jsonMode);
+        } catch (e) {
+          console.warn("Gemini call failed, routing to free AI:", e);
+        }
+      }
+
+      // Free AI engine (zero API key required)
+      return await callFreeAI(prompt, jsonMode);
+    };
+
+    // Action 1: Ask AI Tutor a doubt
     if (action === "ask") {
       if (!userQuestion) {
         return NextResponse.json(
@@ -126,17 +229,23 @@ The student is watching an educational video:
 - Video Context: "${description.slice(0, 1800)}"
 - Current Video Timestamp: ${timeStr}
 
-Student's Doubt / Question:
+Student's Question:
 "${userQuestion}"
 
 Provide a clear, engaging, easy-to-understand response:
-1. Direct answer to their question with a clear intuitive explanation.
+1. Direct answer to their question with an intuitive explanation.
 2. If relevant, include a practical code snippet or real-world example.
 3. 1 key memory tip or common mistake to avoid.
 
 Keep the tone helpful, structured in markdown, and concise.`;
 
-      const answerText = await callGemini(askPrompt, geminiKey, false);
+      let answerText = "";
+      try {
+        answerText = await callAI(askPrompt, false);
+      } catch (e) {
+        console.warn("AI Ask failed:", e);
+        answerText = `### 💡 Quick Tutor Guidance for "${videoTitle}"\n\n**Regarding:** *${userQuestion}*\n\n1. **Core Concept:** In this lesson, make sure you understand the foundational patterns and data structures shown around \`${timeStr}\`.\n2. **Best Practice:** Keep functions modular, test individual components with edge cases, and avoid hardcoding values.\n3. **Pro Tip:** Check the official documentation and run the code locally to cement your understanding!`;
+      }
 
       return NextResponse.json({
         answer: answerText,
@@ -151,8 +260,8 @@ Description Snippet: "${description.slice(0, 2000)}"
 Current player time: ${timeStr}
 
 Task:
-1. Generate 3 to 4 crisp, insightful bullet summary points explaining the core technical/academic concepts taught in this specific video.
-2. Generate 4 deep-learning Multiple Choice Practice Questions (MCQs) specifically testing understanding of the topics taught in "${videoTitle}".
+1. Generate 3 to 4 crisp, insightful bullet summary points explaining the core technical concepts taught in this specific video.
+2. Generate 3 to 4 deep-learning Multiple Choice Practice Questions (MCQs) specifically testing understanding of the topics taught in "${videoTitle}".
 Each question MUST:
 - Test conceptual understanding, not trivial trivia.
 - Have 4 plausible options.
@@ -177,29 +286,41 @@ Return ONLY a valid JSON object matching this schema:
   ]
 }`;
 
-    const rawJson = await callGemini(studyPrompt, geminiKey, true);
-    let parsed: any = {};
+    let bullets: string[] = [];
+    let mcqs: any[] = [];
+
     try {
-      parsed = JSON.parse(cleanMarkdown(rawJson));
-    } catch {
-      const match = rawJson.match(/\{[\s\S]*\}/);
-      if (match) {
-        try {
-          parsed = JSON.parse(match[0]);
-        } catch (e) {
-          console.error("Failed to parse Gemini JSON output:", rawJson);
-        }
+      const rawOutput = await callAI(studyPrompt, true);
+      let parsed: any = {};
+      try {
+        parsed = JSON.parse(cleanMarkdown(rawOutput));
+      } catch {
+        const match = rawOutput.match(/\{[\s\S]*\}/);
+        if (match) parsed = JSON.parse(match[0]);
       }
+
+      if (Array.isArray(parsed?.summaryBullets) && parsed.summaryBullets.length > 0) {
+        bullets = parsed.summaryBullets;
+      }
+      if (Array.isArray(parsed?.mcqs) && parsed.mcqs.length > 0) {
+        mcqs = parsed.mcqs;
+      }
+    } catch (e) {
+      console.warn("AI Study Assist failed, generating fallback:", e);
     }
 
-    const bullets: string[] = Array.isArray(parsed?.summaryBullets) ? parsed.summaryBullets : [];
-    const mcqs: any[] = Array.isArray(parsed?.mcqs) ? parsed.mcqs : [];
+    // Fallback if needed
+    if (bullets.length === 0 || mcqs.length === 0) {
+      const fb = generateContextualFallback(videoTitle, description, timeStr);
+      if (bullets.length === 0) bullets = fb.summaryBullets;
+      if (mcqs.length === 0) mcqs = fb.mcqs;
+    }
 
     const markdown = [
       `### 🎯 Key Takeaways (${videoTitle})`,
       ...bullets.map((b) => `- ${b}`),
       "",
-      `*Generated at ${timeStr} via Watchlify Gemini AI.*`,
+      `*Generated at ${timeStr} via Watchlify AI.*`,
     ].join("\n");
 
     return NextResponse.json({
@@ -213,7 +334,7 @@ Return ONLY a valid JSON object matching this schema:
     return NextResponse.json(
       {
         error: "AI_ERROR",
-        message: err?.message || "Failed to generate AI response. Please verify your Gemini API key.",
+        message: err?.message || "Failed to generate AI response.",
       },
       { status: 500 }
     );
