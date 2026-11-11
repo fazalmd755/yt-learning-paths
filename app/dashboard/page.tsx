@@ -165,10 +165,9 @@ export default async function DashboardPage({
       <section className="dashboard-leetcode-row">
         <AchievementsBadges
           streak={streak}
-          totalActiveDays={totalActiveDays}
-          completedVideos={completedVideos}
-          totalCourses={courses.length}
+          maxStreak={maxStreak}
           finishedCourses={finishedCourses}
+          totalSecondsLearned={totalSecondsLearned}
         />
         <StreakCalendar
           days={days}

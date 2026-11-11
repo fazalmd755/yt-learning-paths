@@ -6,6 +6,7 @@ interface Badge {
   id: string;
   icon: string;
   title: string;
+  shortTitle: string;
   description: string;
   current: number;
   target: number;
@@ -14,165 +15,142 @@ interface Badge {
 
 interface Props {
   streak: number;
-  totalActiveDays: number;
-  completedVideos: number;
-  totalCourses: number;
+  maxStreak?: number;
   finishedCourses: number;
+  totalSecondsLearned?: number;
 }
 
 export default function AchievementsBadges({
   streak,
-  totalActiveDays,
-  completedVideos,
-  totalCourses,
+  maxStreak = 0,
   finishedCourses,
+  totalSecondsLearned = 0,
 }: Props) {
   const [modalOpen, setModalOpen] = useState(false);
 
+  const bestStreak = Math.max(streak, maxStreak);
+  const totalHours = Math.floor(totalSecondsLearned / 3600);
+
+  // Exactly the 5 requested badges
   const badges: Badge[] = useMemo(
     () => [
       {
-        id: "streak_7",
+        id: "streak_30",
         icon: "🔥",
-        title: "7-Day Flame",
-        description: "Build a consistent 7-day learning streak",
-        current: streak,
-        target: 7,
+        title: "30-Day Flame",
+        shortTitle: "30d Flame",
+        description: "Maintain a continuous 30-day learning streak",
+        current: bestStreak,
+        target: 30,
         unit: "days",
       },
       {
-        id: "first_course",
+        id: "courses_5",
         icon: "🎓",
-        title: "First Finisher",
-        description: "Complete 100% of any video course",
+        title: "5 Courses Completed",
+        shortTitle: "5 Courses",
+        description: "Complete 100% of 5 video courses or playlists",
         current: finishedCourses,
-        target: 1,
-        unit: "course",
-      },
-      {
-        id: "curator",
-        icon: "📚",
-        title: "Library Curator",
-        description: "Add 3 or more courses to your library",
-        current: totalCourses,
-        target: 3,
+        target: 5,
         unit: "courses",
       },
       {
-        id: "active_14",
+        id: "courses_10",
+        icon: "🏆",
+        title: "10 Courses Completed",
+        shortTitle: "10 Courses",
+        description: "Complete 100% of 10 video courses or playlists",
+        current: finishedCourses,
+        target: 10,
+        unit: "courses",
+      },
+      {
+        id: "study_50h",
         icon: "⚡",
-        title: "Momentum",
-        description: "Log learning activity across 14 days",
-        current: totalActiveDays,
-        target: 14,
-        unit: "days",
-      },
-      {
-        id: "lessons_15",
-        icon: "🚀",
-        title: "Fast Learner",
-        description: "Complete 15 video lessons",
-        current: completedVideos,
-        target: 15,
-        unit: "lessons",
-      },
-      {
-        id: "mastery_50",
-        icon: "👑",
-        title: "Course Master",
-        description: "Complete 50 video lessons",
-        current: completedVideos,
+        title: "50 Hours Study",
+        shortTitle: "50h Study",
+        description: "Complete 50 hours of total focused video study time",
+        current: totalHours,
         target: 50,
-        unit: "lessons",
+        unit: "hours",
+      },
+      {
+        id: "study_100h",
+        icon: "👑",
+        title: "100 Hours Study",
+        shortTitle: "100h Study",
+        description: "Complete 100 hours of total focused video study time",
+        current: totalHours,
+        target: 100,
+        unit: "hours",
       },
     ],
-    [streak, finishedCourses, totalCourses, totalActiveDays, completedVideos]
+    [bestStreak, finishedCourses, totalHours]
   );
 
-  const unlockedBadges = useMemo(
-    () => badges.filter((b) => b.current >= b.target),
-    [badges]
-  );
-  const unlockedCount = unlockedBadges.length;
-
-  // Recent or featured badge: either highest unlocked badge or first badge to unlock
-  const featuredBadge = useMemo(() => {
-    if (unlockedBadges.length > 0) {
-      return {
-        badge: unlockedBadges[unlockedBadges.length - 1],
-        isUnlocked: true,
-      };
-    }
-    return {
-      badge: badges[0],
-      isUnlocked: false,
-    };
-  }, [unlockedBadges, badges]);
+  const unlockedCount = badges.filter((b) => b.current >= b.target).length;
 
   return (
     <>
-      {/* LeetCode-style Badges Widget */}
+      {/* LeetCode-style Badges Widget with Exactly 5 Badges */}
       <div className="leetcode-badges-card">
         <div className="leetcode-badges-header">
           <div className="flex items-center gap-1.5">
             <span className="leetcode-badges-title">Badges</span>
-            <span className="leetcode-badges-count">{unlockedCount}</span>
+            <span className="leetcode-badges-count">
+              {unlockedCount} / {badges.length}
+            </span>
           </div>
           <button
             type="button"
             onClick={() => setModalOpen(true)}
             className="leetcode-badges-all-btn"
           >
-            All Badges ↗
+            Details ↗
           </button>
         </div>
 
-        {/* Featured Badge Spotlight */}
-        <div
-          className="leetcode-featured-badge-row cursor-pointer"
-          onClick={() => setModalOpen(true)}
-          title="Click to view all badges"
-        >
-          <div
-            className={`leetcode-badge-circle ${
-              featuredBadge.isUnlocked ? "unlocked" : "locked"
-            }`}
-          >
-            <span className="leetcode-badge-emoji">{featuredBadge.badge.icon}</span>
-          </div>
-
-          <div className="leetcode-featured-info">
-            <strong className="leetcode-featured-name">
-              {featuredBadge.badge.title}
-            </strong>
-            <span className="leetcode-featured-caption">
-              {featuredBadge.isUnlocked
-                ? "Most Recent Badge"
-                : `${featuredBadge.badge.current}/${featuredBadge.badge.target} ${featuredBadge.badge.unit} to unlock`}
-            </span>
-          </div>
-        </div>
-
-        {/* Mini Preview of other Badges */}
-        <div className="leetcode-badges-tray">
+        {/* 5 Badges Grid: Earned are fully unlocked, unearned are locked */}
+        <div className="badges-five-grid">
           {badges.map((b) => {
             const isUnlocked = b.current >= b.target;
+            const progress = Math.min(100, Math.round((b.current / b.target) * 100));
+
             return (
-              <button
+              <div
                 key={b.id}
-                type="button"
                 onClick={() => setModalOpen(true)}
-                className={`leetcode-tray-icon ${isUnlocked ? "unlocked" : "locked"}`}
-                title={`${b.title}: ${b.description} (${isUnlocked ? "Unlocked ✓" : `${b.current}/${b.target}`})`}
+                className={`badge-five-item cursor-pointer ${
+                  isUnlocked ? "unlocked" : "locked"
+                }`}
+                title={`${b.title}: ${b.description} (${
+                  isUnlocked ? "Unlocked ✓" : `${b.current}/${b.target} ${b.unit}`
+                })`}
               >
-                {b.icon}
-              </button>
+                <div className="badge-five-icon-wrap">
+                  <span className="badge-five-icon">{b.icon}</span>
+                  {!isUnlocked && <span className="badge-lock-icon">🔒</span>}
+                </div>
+
+                <span className="badge-five-label">{b.shortTitle}</span>
+
+                {isUnlocked ? (
+                  <span className="badge-status-tag unlocked">✓</span>
+                ) : (
+                  <div className="badge-mini-bar" title={`${b.current}/${b.target} ${b.unit}`}>
+                    <div
+                      className="badge-mini-bar-fill"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
       </div>
 
-      {/* Modal Dialog for All Badges */}
+      {/* Modal Dialog Showing Details of All 5 Badges */}
       {modalOpen && (
         <div
           className="modal-overlay"
@@ -190,7 +168,7 @@ export default function AchievementsBadges({
                 <div>
                   <h3 className="text-base font-bold text-white">Achievements & Badges</h3>
                   <p className="text-xs text-zinc-400">
-                    {unlockedCount} of {badges.length} badges unlocked
+                    {unlockedCount} of {badges.length} badges earned
                   </p>
                 </div>
               </div>
@@ -204,7 +182,7 @@ export default function AchievementsBadges({
               </button>
             </div>
 
-            <div className="achievements-grid mt-4">
+            <div className="achievements-modal-list mt-4 flex flex-col gap-3">
               {badges.map((b) => {
                 const isUnlocked = b.current >= b.target;
                 const progress = Math.min(100, Math.round((b.current / b.target) * 100));
@@ -216,22 +194,32 @@ export default function AchievementsBadges({
                       isUnlocked ? "unlocked" : "locked"
                     }`}
                   >
-                    <div className="badge-card-top">
-                      <span className="badge-emoji">{b.icon}</span>
+                    <div className="badge-card-top flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="badge-emoji text-2xl">{b.icon}</span>
+                        <div>
+                          <strong className="badge-title text-sm text-white block">
+                            {b.title}
+                          </strong>
+                          <span className="text-[11px] text-zinc-400">
+                            {b.description}
+                          </span>
+                        </div>
+                      </div>
+
                       {isUnlocked ? (
-                        <span className="badge-status-pill unlocked">✓ Unlocked</span>
+                        <span className="badge-status-pill unlocked text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">
+                          ✓ Earned
+                        </span>
                       ) : (
-                        <span className="badge-status-pill locked">
-                          {b.current} / {b.target} {b.unit}
+                        <span className="badge-status-pill locked text-xs px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400 font-medium border border-zinc-700">
+                          🔒 {b.current} / {b.target} {b.unit}
                         </span>
                       )}
                     </div>
 
-                    <strong className="badge-title">{b.title}</strong>
-                    <p className="badge-desc">{b.description}</p>
-
                     {!isUnlocked && (
-                      <div className="badge-progress-track">
+                      <div className="badge-progress-track mt-2.5">
                         <div
                           className="badge-progress-fill"
                           style={{ width: `${progress}%` }}
