@@ -31,7 +31,9 @@ function cleanAiAnswerText(raw: string): string {
     // Remove horizontal separator rules: ---, ***, ___
     .replace(/^[-*_]{3,}\s*$/gm, "")
     // Standardize bullet points
-    .replace(/^\s*[-*]\s+/gm, "• ")
+    .replace(/\*+/g, "")
+    .replace(/^[-–—]\s*/gm, "")
+    .replace(/[-–—]{2,}/g, " ")
     // Clean excessive empty lines
     .replace(/\n{3,}/g, "\n\n")
     .trim();
@@ -253,11 +255,12 @@ Student's Question:
 "${userQuestion}"
 
 Formatting Rules:
-- Write in clean, conversational prose without messy symbols.
-- NEVER use markdown header tags like '#', '##', or '###'.
-- NEVER use horizontal divider lines like '---' or '***'.
-- Use clean bullet points ('•') and backticks for code identifiers (\`code\`).
-- If you share code, use clean fenced code blocks.
+- Write in clean, conversational prose without any markdown formatting symbols.
+- NEVER use asterisks (NO '*', NO '**'). Do not use asterisks for bold or lists.
+- NEVER use dashes (NO '-'). Do not use dash symbols.
+- NEVER use hash symbols (NO '#', NO '##', NO '###').
+- NEVER use divider lines (NO '---', NO '***').
+- Use numbered points (1., 2., 3.) if listing steps.
 - Provide a direct answer, a short practical example, and 1 important tip. Keep it crisp.`;
 
       let answerText = "";

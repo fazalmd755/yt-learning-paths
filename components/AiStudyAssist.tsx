@@ -34,6 +34,10 @@ function formatCleanText(raw: string): string {
     .replace(/^#{1,6}\s*/gm, "")
     // Remove horizontal separator rules: ---, ***, ___
     .replace(/^[-*_]{3,}\s*$/gm, "")
+    // Remove ALL asterisks (*, **, ***)
+    .replace(/\*+/g, "")
+    // Remove all leading dashes
+    .replace(/^[-–—]\s*/gm, "")
     .replace(/\n{3,}/g, "\n\n")
     .trim();
 }
@@ -47,25 +51,20 @@ function renderFormattedParagraph(text: string, pKey: number) {
   return (
     <div key={pKey} className="space-y-1.5">
       {lines.map((line, lIdx) => {
-        const trimmed = line.trim();
+        let trimmed = line.trim();
         if (!trimmed) return null;
 
-        // Check if bullet point
+        // Check if list item
         const isBullet = trimmed.startsWith("•") || trimmed.startsWith("-") || trimmed.startsWith("*");
-        const content = isBullet ? trimmed.replace(/^[•\-*]\s*/, "") : trimmed;
+        trimmed = trimmed.replace(/^[•\-*–—\s]+/, "").replace(/\*+/g, "").trim();
 
-        // Parse inline **bold** and `code`
-        const parts = content.split(/(\*\*.*?\*\*|`.*?`)/g);
+        if (!trimmed) return null;
+
+        // Parse inline code
+        const parts = trimmed.split(/(`.*?`)/g);
 
         const renderedLine = parts.map((part, partIdx) => {
-          if (part.startsWith("**") && part.endsWith("**")) {
-            return (
-              <strong key={partIdx} className="font-semibold text-zinc-100">
-                {part.slice(2, -2)}
-              </strong>
-            );
-          }
-          if (part.startsWith("`") && part.endsWith("`")) {
+          if (part.startsWith("`") && part.endsWith("`") && part.length > 2) {
             return (
               <code
                 key={partIdx}
@@ -247,7 +246,10 @@ export default function AiStudyAssist({
 
       if (res.ok) {
         if (Array.isArray(data.summaryBullets) && data.summaryBullets.length > 0) {
-          setSummaryBullets(data.summaryBullets);
+          const sanitizedBullets = data.summaryBullets.map((b: string) =>
+            b.replace(/^[•\-*–—\s]+/, "").replace(/\*+/g, "").replace(/^#{1,6}\s*/, "").trim()
+          );
+          setSummaryBullets(sanitizedBullets);
         }
         if (Array.isArray(data.mcqs) && data.mcqs.length > 0) {
           setMcqs(data.mcqs);
