@@ -46,8 +46,8 @@ export default async function DashboardPage({
   const goalMinutes = profile?.daily_goal_minutes ?? 15;
   const today = dateInTz(tz);
 
-  // 6 months (180 days) for the LeetCode-style activity heatmap
-  const dates = lastNDates(180, tz);
+  // 12 months (365 days) for the LeetCode-style activity heatmap
+  const dates = lastNDates(365, tz);
 
   const secondsByDate = new Map<string, number>();
   const activeDaysList: { activity_date: string; seconds_learned: number }[] = [];

@@ -82,7 +82,7 @@ export default function StreakCalendar({
     const todayYear = todayDate.getFullYear();
     const todayMonth = todayDate.getMonth();
 
-    const monthsToShow = 6;
+    const monthsToShow = 12;
     const groups: MonthGroup[] = [];
 
     for (let m = monthsToShow - 1; m >= 0; m--) {
@@ -189,7 +189,7 @@ export default function StreakCalendar({
               ? `${totalHours} hrs study time`
               : `${computedStats.activeDays} active days`}
           </strong>
-          <span> in the past 6 months</span>
+          <span> in the past one year</span>
           <span className="leetcode-info-dot" title="Activity tracks total study time logged per day">
             ⓘ
           </span>

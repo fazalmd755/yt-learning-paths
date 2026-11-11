@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SparklesIcon, CheckCircleIcon, CheckIcon, ArrowRightIcon } from "./Icons";
 import { createClient } from "@/lib/supabase/client";
 
@@ -20,6 +20,13 @@ interface MCQ {
   explanation: string;
 }
 
+interface AiChatMessage {
+  id: string;
+  question: string;
+  answer: string;
+  timeStr: string;
+}
+
 export default function AiStudyAssist({
   videoId,
   videoTitle,
@@ -27,52 +34,62 @@ export default function AiStudyAssist({
   userId,
   onNoteAdded,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<"summary" | "quiz">("summary");
+  const [activeTab, setActiveTab] = useState<"summary" | "quiz" | "ask">("summary");
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Gemini API key state (user-provided or server-provided)
+  const [geminiApiKey, setGeminiApiKey] = useState<string>("");
+  const [showKeyModal, setShowKeyModal] = useState(false);
+  const [keyInput, setKeyInput] = useState("");
+
+  // AI Content
+  const [hasGenerated, setHasGenerated] = useState(false);
   const [summaryBullets, setSummaryBullets] = useState<string[]>([
-    "Core conceptual architecture and foundational principles introduced in this lecture.",
-    "Practical code walk-through and step-by-step implementation logic demonstrated.",
-    "Execution flow optimization and industry best practices for robust applications.",
+    "Foundational concepts, syntax conventions, and architectural flow taught in this lecture.",
+    "Step-by-step practical implementation patterns demonstrated by the instructor.",
+    "Core optimization techniques, common edge-case caveats, and production best practices.",
   ]);
+
   const [mcqs, setMcqs] = useState<MCQ[]>([
     {
       id: 1,
-      question: `What is the primary objective covered in "${videoTitle}"?`,
+      question: `What is the central focus demonstrated in "${videoTitle}"?`,
       options: [
-        "Mastering the underlying mechanics and execution flow",
-        "Memorizing syntactical definitions without applying them",
-        "Disabling compiler warnings and test validations",
-        "Using legacy deprecated APIs in production",
+        "Comprehending core architectural mechanics and underlying execution flow",
+        "Memorizing syntactical details without practical implementation",
+        "Disabling runtime assertions and error handling",
+        "Deploying legacy unmaintained modules",
       ],
       correct: 0,
       explanation:
-        "The lesson emphasizes deep comprehension of foundational mechanics, structure, and execution patterns over superficial memorization.",
+        "The lesson focuses on deep structural comprehension of principles and real-world implementation rather than rote memorization.",
     },
     {
       id: 2,
-      question: "When applying the concepts from this lesson in a real project, what is the best practice?",
+      question: "When applying the concepts from this video, what is the recommended industry approach?",
       options: [
-        "Hardcode dynamic variables for faster compilation",
-        "Write modular, testable logic with proper error boundaries and explicit typing",
-        "Avoid logging errors so user experience is not disrupted",
-        "Skip boundary condition checks if the happy path runs once",
+        "Hardcode configuration values inside core logic",
+        "Structure modular, strongly-typed code with clear error boundaries",
+        "Suppress console warnings to improve performance",
+        "Omit boundary checks if the initial test passes",
       ],
       correct: 1,
       explanation:
-        "Modular architecture with comprehensive error boundaries ensures scalability and prevents silent runtime failures.",
+        "Modular architecture with resilient error boundaries ensures maintainability and prevents silent failures in production.",
     },
     {
       id: 3,
-      question: "How should you effectively validate your code after completing this video segment?",
+      question: "How should you effectively validate your code after this lesson?",
       options: [
-        "Deploy directly to production without local test verification",
-        "Run automated unit tests, inspect network/console logs, and stress test boundary cases",
-        "Assume external libraries will handle all edge cases automatically",
-        "Rewrite the entire logic in an unfamiliar language",
+        "Ship directly to users without local validation",
+        "Run automated tests, probe edge cases, and inspect execution logs",
+        "Rely entirely on default framework behavior without validation",
+        "Rewrite in an unrelated stack",
       ],
       correct: 1,
       explanation:
-        "Systematic verification via test assertions, edge-case probing, and log inspection ensures stability.",
+        "Systematic verification via automated unit tests and boundary assertions ensures reliable runtime stability.",
     },
   ]);
 
@@ -80,49 +97,159 @@ export default function AiStudyAssist({
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, number>>({});
   const [showResults, setShowResults] = useState(false);
 
-  // Save to notes state
+  // Ask AI Tutor state
+  const [userQuestion, setUserQuestion] = useState("");
+  const [askingAi, setAskingAi] = useState(false);
+  const [chatMessages, setChatMessages] = useState<AiChatMessage[]>([]);
+
+  // Note save state
   const [savingNote, setSavingNote] = useState(false);
   const [saveSuccessMessage, setSaveSuccessMessage] = useState<string | null>(null);
 
-  // Generate fresh study assist
-  const handleGenerate = async () => {
-    setLoading(true);
-    setSaveSuccessMessage(null);
+  // Load custom Gemini API key from localStorage on mount
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem("watchlify_gemini_api_key");
+      if (stored) {
+        setGeminiApiKey(stored);
+        setKeyInput(stored);
+      }
+    } catch {}
+  }, []);
+
+  const handleSaveApiKey = () => {
+    const trimmed = keyInput.trim();
+    setGeminiApiKey(trimmed);
+    try {
+      if (trimmed) {
+        localStorage.setItem("watchlify_gemini_api_key", trimmed);
+      } else {
+        localStorage.removeItem("watchlify_gemini_api_key");
+      }
+    } catch {}
+    setShowKeyModal(false);
+    setErrorMsg(null);
+  };
+
+  const getPlayerCurrentSeconds = (): number => {
     try {
       const getTime =
         (window as any).__watchlifyGetCurrentTime ||
         (window as any).__watchifyGetCurrentTime;
-      const currentSeconds = getTime ? Math.floor(getTime()) : 0;
+      return getTime ? Math.max(0, Math.floor(getTime())) : 0;
+    } catch {
+      return 0;
+    }
+  };
 
+  // Generate dynamic Gemini AI Summary & Quiz
+  const handleGenerate = async () => {
+    setLoading(true);
+    setErrorMsg(null);
+    setSaveSuccessMessage(null);
+
+    const currentSeconds = getPlayerCurrentSeconds();
+
+    try {
       const res = await fetch("/api/ai/study-assist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          action: "study_assist",
           videoId,
           videoTitle,
           description,
           currentTimestamp: currentSeconds,
+          apiKey: geminiApiKey || undefined,
         }),
       });
 
-      if (res.ok) {
-        const data = await res.json();
-        if (data.summaryBullets) setSummaryBullets(data.summaryBullets);
-        if (data.mcqs) {
-          setMcqs(data.mcqs);
-          setSelectedAnswers({});
-          setShowResults(false);
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        if (data?.error === "NO_API_KEY") {
+          setShowKeyModal(true);
+          setErrorMsg("Please provide a Gemini API key to activate AI features.");
+          return;
         }
+        throw new Error(data?.message || "Failed to generate AI study material.");
       }
-    } catch (err) {
+
+      if (Array.isArray(data.summaryBullets) && data.summaryBullets.length > 0) {
+        setSummaryBullets(data.summaryBullets);
+      }
+      if (Array.isArray(data.mcqs) && data.mcqs.length > 0) {
+        setMcqs(data.mcqs);
+        setSelectedAnswers({});
+        setShowResults(false);
+      }
+      setHasGenerated(true);
+    } catch (err: any) {
       console.error("AI Assist generation error:", err);
+      setErrorMsg(err.message || "Failed to contact Gemini AI.");
     } finally {
       setLoading(false);
     }
   };
 
+  // Ask AI Tutor a specific doubt
+  const handleAskDoubt = async (questionToAsk?: string) => {
+    const q = (questionToAsk ?? userQuestion).trim();
+    if (!q) return;
+
+    setAskingAi(true);
+    setErrorMsg(null);
+    const currentSeconds = getPlayerCurrentSeconds();
+
+    try {
+      const res = await fetch("/api/ai/study-assist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "ask",
+          question: q,
+          videoId,
+          videoTitle,
+          description,
+          currentTimestamp: currentSeconds,
+          apiKey: geminiApiKey || undefined,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        if (data?.error === "NO_API_KEY") {
+          setShowKeyModal(true);
+          setErrorMsg("Please provide a Gemini API key to ask questions.");
+          return;
+        }
+        throw new Error(data?.message || "Failed to get an answer from Gemini AI.");
+      }
+
+      const mins = Math.floor(currentSeconds / 60);
+      const secs = currentSeconds % 60;
+      const timeStr = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+      const newMsg: AiChatMessage = {
+        id: `${Date.now()}`,
+        question: q,
+        answer: data.answer || "No response received.",
+        timeStr,
+      };
+
+      setChatMessages((prev) => [newMsg, ...prev]);
+      setUserQuestion("");
+    } catch (err: any) {
+      console.error("Ask AI Error:", err);
+      setErrorMsg(err.message || "Failed to get AI answer.");
+    } finally {
+      setAskingAi(false);
+    }
+  };
+
   // 1-Click Save to Timestamped Notes
-  const handleSaveToNotes = async (type: "summary" | "quiz") => {
+  const handleSaveToNotes = async (type: "summary" | "quiz" | "chat", chatItem?: AiChatMessage) => {
     if (!userId) {
       setSaveSuccessMessage("Sign in with Google to save notes!");
       setTimeout(() => setSaveSuccessMessage(null), 3000);
@@ -133,10 +260,7 @@ export default function AiStudyAssist({
     setSaveSuccessMessage(null);
 
     try {
-      const getTime =
-        (window as any).__watchlifyGetCurrentTime ||
-        (window as any).__watchifyGetCurrentTime;
-      const currentSeconds = getTime ? Math.max(0, Math.floor(getTime())) : 0;
+      const currentSeconds = getPlayerCurrentSeconds();
       const mins = Math.floor(currentSeconds / 60);
       const secs = currentSeconds % 60;
       const timeStr = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
@@ -144,17 +268,24 @@ export default function AiStudyAssist({
       let content = "";
       if (type === "summary") {
         content = [
-          `💡 **AI Quick Summary (${timeStr})**`,
+          `💡 **Gemini AI Core Takeaways (${timeStr})**`,
           ...summaryBullets.map((b) => `• ${b}`),
         ].join("\n");
-      } else {
+      } else if (type === "quiz") {
         content = [
-          `📝 **AI Practice Quiz (${timeStr})**`,
+          `📝 **Gemini AI Practice Quiz (${timeStr})**`,
           ...mcqs.map(
             (m, idx) =>
               `${idx + 1}. ${m.question}\n   *Answer:* ${m.options[m.correct]}\n   *Why:* ${m.explanation}`
           ),
         ].join("\n\n");
+      } else if (type === "chat" && chatItem) {
+        content = [
+          `💬 **Q&A with Gemini Tutor (${chatItem.timeStr})**`,
+          `**Q:** ${chatItem.question}`,
+          "",
+          `**A:** ${chatItem.answer}`,
+        ].join("\n");
       }
 
       const supabase = createClient();
@@ -187,35 +318,130 @@ export default function AiStudyAssist({
   const correctCount = mcqs.filter((q) => selectedAnswers[q.id] === q.correct).length;
 
   return (
-    <section className="ai-tutor-container mt-4 rounded-xl border border-white/10 bg-zinc-900/60 p-4 md:p-5 backdrop-blur-md">
+    <section className="ai-tutor-container mt-4 rounded-xl border border-white/10 bg-zinc-900/70 p-4 md:p-5 backdrop-blur-md">
       {/* Header bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
-        <div className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 text-emerald-400">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400">
             <SparklesIcon size={18} />
           </div>
           <div>
-            <h3 className="text-sm font-semibold tracking-wide text-zinc-100">
-              AI Study Assist
-            </h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-semibold tracking-wide text-zinc-100">
+                Gemini AI Study Assistant
+              </h3>
+              <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold text-emerald-400">
+                Gemini 2.0 Flash
+              </span>
+            </div>
             <p className="text-xs text-zinc-400">
-              Instant 3-bullet summary & self-check quiz for this lesson
+              Video-grounded summaries, practice quizzes, and instant doubt resolution
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
+          {/* API Key Config Button */}
+          <button
+            type="button"
+            onClick={() => {
+              setKeyInput(geminiApiKey);
+              setShowKeyModal(true);
+            }}
+            title="Configure Gemini API Key"
+            className="flex items-center gap-1 rounded-lg border border-white/10 bg-zinc-800/80 px-2.5 py-1.5 text-xs text-zinc-300 transition hover:bg-zinc-700 hover:text-white"
+          >
+            <span>🔑</span>
+            <span>{geminiApiKey ? "API Key Connected" : "Set API Key"}</span>
+          </button>
+
+          {/* Regenerate Button */}
           <button
             type="button"
             onClick={handleGenerate}
             disabled={loading}
-            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5 text-xs font-medium text-emerald-400 transition hover:bg-emerald-500/20 disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/25 disabled:opacity-50"
           >
             <SparklesIcon size={14} className={loading ? "animate-spin" : ""} />
-            {loading ? "Analyzing..." : "Regenerate for this segment"}
+            {loading ? "Generating with Gemini..." : hasGenerated ? "Regenerate AI Content" : "Generate with Gemini"}
           </button>
         </div>
       </div>
+
+      {/* Error Message */}
+      {errorMsg && (
+        <div className="mt-3 flex items-center justify-between rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
+          <span>{errorMsg}</span>
+          <button
+            type="button"
+            onClick={() => setShowKeyModal(true)}
+            className="rounded bg-red-500/20 px-2 py-1 font-semibold text-red-200 hover:bg-red-500/30"
+          >
+            Connect API Key
+          </button>
+        </div>
+      )}
+
+      {/* API Key Modal / Popover */}
+      {showKeyModal && (
+        <div className="mt-3 rounded-lg border border-white/15 bg-zinc-950 p-4 shadow-xl">
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-zinc-200">
+              🔑 Google Gemini API Key
+            </h4>
+            <button
+              type="button"
+              onClick={() => setShowKeyModal(false)}
+              className="text-xs text-zinc-400 hover:text-white"
+            >
+              ✕
+            </button>
+          </div>
+          <p className="mt-1 text-xs text-zinc-400">
+            Watchlify uses Google Gemini 2.0 Flash to generate high-yield quizzes and solve doubts.
+            Get your 100% free key with no credit card at{" "}
+            <a
+              href="https://aistudio.google.com/app/apikey"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-emerald-400 underline hover:text-emerald-300"
+            >
+              Google AI Studio
+            </a>
+            .
+          </p>
+          <div className="mt-3 flex gap-2">
+            <input
+              type="password"
+              placeholder="Paste your Gemini API key (AIzaSy...)"
+              value={keyInput}
+              onChange={(e) => setKeyInput(e.target.value)}
+              className="flex-1 rounded-md border border-white/10 bg-zinc-900 px-3 py-1.5 text-xs text-zinc-100 placeholder:text-zinc-500 focus:border-emerald-500 focus:outline-none"
+            />
+            <button
+              type="button"
+              onClick={handleSaveApiKey}
+              className="rounded-md bg-emerald-500 px-3 py-1.5 text-xs font-bold text-black hover:bg-emerald-400"
+            >
+              Save Key
+            </button>
+            {geminiApiKey && (
+              <button
+                type="button"
+                onClick={() => {
+                  setKeyInput("");
+                  setGeminiApiKey("");
+                  localStorage.removeItem("watchlify_gemini_api_key");
+                  setShowKeyModal(false);
+                }}
+                className="rounded-md bg-zinc-800 px-2.5 py-1.5 text-xs text-zinc-400 hover:text-red-300"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="mt-3 flex items-center gap-2 border-b border-white/5 pb-2">
@@ -228,7 +454,7 @@ export default function AiStudyAssist({
               : "text-zinc-400 hover:text-zinc-200"
           }`}
         >
-          3-Bullet Summary
+          💡 Key Takeaways
         </button>
         <button
           type="button"
@@ -239,7 +465,18 @@ export default function AiStudyAssist({
               : "text-zinc-400 hover:text-zinc-200"
           }`}
         >
-          Practice Quiz (3 MCQs)
+          📝 Practice Quiz ({mcqs.length} MCQs)
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab("ask")}
+          className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+            activeTab === "ask"
+              ? "bg-white/10 text-white"
+              : "text-zinc-400 hover:text-zinc-200"
+          }`}
+        >
+          💬 Ask AI Tutor
         </button>
 
         {saveSuccessMessage && (
@@ -250,7 +487,7 @@ export default function AiStudyAssist({
         )}
       </div>
 
-      {/* Tab 1: 3-Bullet Summary */}
+      {/* Tab 1: Key Takeaways */}
       {activeTab === "summary" && (
         <div className="mt-3 space-y-3">
           <div className="space-y-2">
@@ -267,9 +504,9 @@ export default function AiStudyAssist({
             ))}
           </div>
 
-          <div className="flex items-center justify-between pt-1">
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
             <span className="text-[11px] text-zinc-400">
-              Captures key takeaways at the current video timestamp.
+              Captures key takeaways at the current video segment.
             </span>
             <button
               type="button"
@@ -284,7 +521,7 @@ export default function AiStudyAssist({
         </div>
       )}
 
-      {/* Tab 2: Practice Quiz (3 MCQs) */}
+      {/* Tab 2: Practice Quiz */}
       {activeTab === "quiz" && (
         <div className="mt-3 space-y-4">
           {showResults && (
@@ -307,13 +544,14 @@ export default function AiStudyAssist({
                   </p>
                   <p className="text-[11px] opacity-80">
                     {correctCount === mcqs.length
-                      ? "Awesome job! You nailed all questions for this lesson."
-                      : "Review the explanations below to solidify the concept."}
+                      ? "Awesome job! You completely mastered the concepts in this lesson."
+                      : "Review the explanations below to reinforce your understanding."}
                   </p>
                 </div>
               </div>
             </div>
           )}
+
           {mcqs.map((q, qIndex) => {
             const chosen = selectedAnswers[q.id];
             const hasChosen = chosen !== undefined;
@@ -420,6 +658,108 @@ export default function AiStudyAssist({
               <CheckCircleIcon size={14} className="text-emerald-400" />
               {savingNote ? "Saving..." : "Save Quiz to Notes (1-Click)"}
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Tab 3: Ask AI Tutor (Doubt Solver) */}
+      {activeTab === "ask" && (
+        <div className="mt-3 space-y-3">
+          {/* Quick suggestions */}
+          <div className="flex flex-wrap items-center gap-1.5">
+            <span className="text-[11px] text-zinc-500">Quick prompts:</span>
+            {[
+              "Explain this in simple terms 💡",
+              "Give practical code examples 💻",
+              "Common mistakes to avoid ⚠️",
+              "How is this asked in interviews? 🎯",
+            ].map((chip) => (
+              <button
+                key={chip}
+                type="button"
+                onClick={() => {
+                  setUserQuestion(chip);
+                  handleAskDoubt(chip);
+                }}
+                disabled={askingAi}
+                className="rounded-full border border-white/10 bg-zinc-800/60 px-2.5 py-1 text-[11px] text-zinc-300 transition hover:bg-zinc-700 hover:text-white disabled:opacity-50"
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
+
+          {/* Question Input */}
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleAskDoubt();
+            }}
+            className="flex gap-2"
+          >
+            <input
+              type="text"
+              placeholder="Ask anything about this video (e.g., 'What is the difference between...')"
+              value={userQuestion}
+              onChange={(e) => setUserQuestion(e.target.value)}
+              className="flex-1 rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-xs text-zinc-100 placeholder:text-zinc-500 focus:border-emerald-500 focus:outline-none"
+            />
+            <button
+              type="submit"
+              disabled={askingAi || !userQuestion.trim()}
+              className="flex items-center gap-1.5 rounded-lg bg-emerald-500 px-4 py-2 text-xs font-bold text-black transition hover:bg-emerald-400 disabled:opacity-40"
+            >
+              {askingAi ? (
+                <>
+                  <SparklesIcon size={13} className="animate-spin" />
+                  <span>Thinking...</span>
+                </>
+              ) : (
+                <>
+                  <span>Ask Tutor</span>
+                  <ArrowRightIcon size={12} />
+                </>
+              )}
+            </button>
+          </form>
+
+          {/* Chat / Answers Stream */}
+          <div className="space-y-3 pt-2">
+            {chatMessages.length === 0 && (
+              <div className="rounded-lg border border-dashed border-white/10 p-5 text-center text-xs text-zinc-500">
+                Have a doubt about this lesson? Ask Gemini Tutor above or click any quick prompt!
+              </div>
+            )}
+
+            {chatMessages.map((msg) => (
+              <div
+                key={msg.id}
+                className="rounded-lg border border-white/5 bg-zinc-950/60 p-3.5 space-y-2"
+              >
+                <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="font-semibold text-zinc-200 text-xs">
+                      💬 Q: {msg.question}
+                    </span>
+                    <span className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-400">
+                      @{msg.timeStr}
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleSaveToNotes("chat", msg)}
+                    disabled={savingNote}
+                    className="flex items-center gap-1 rounded bg-white/5 px-2 py-1 text-[11px] text-zinc-300 hover:bg-white/10 hover:text-white"
+                  >
+                    <CheckCircleIcon size={12} className="text-emerald-400" />
+                    <span>Save to Notes</span>
+                  </button>
+                </div>
+                <div className="whitespace-pre-wrap text-xs text-zinc-300 leading-relaxed font-sans">
+                  {msg.answer}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       )}
