@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import Player from "@/components/Player";
-import VideoDescription from "@/components/VideoDescription";
-import VideoNotes from "@/components/VideoNotes";
-import AiStudyAssist from "@/components/AiStudyAssist";
+import WatchStudyPanel from "@/components/WatchStudyPanel";
 import { createClient } from "@/lib/supabase/server";
 import { fetchVideoDescription } from "@/lib/youtube";
 
@@ -93,11 +91,21 @@ export default async function LearningPathWatchPage({
 
   return (
     <main className="watch-page">
-      <Link href={`/learning-paths/${id}`} className="back-link"><span aria-hidden="true">←</span> Back to {path.title}</Link>
-      <section className="watch-heading">
-        <div className="watch-lesson-meta">Lesson {String(current.position + 1).padStart(2, "0")} of {String(count ?? 0).padStart(2, "0")}</div>
-        <h1>{video.title}</h1>
-      </section>
+      <div className="watch-top-compact">
+        <div className="watch-top-left">
+          <Link href={`/learning-paths/${id}`} className="watch-back-link">
+            <span aria-hidden="true">←</span> {path.title}
+          </Link>
+          <span className="watch-top-sep">•</span>
+          <span className="watch-lesson-pill">
+            Lesson {String(current.position + 1).padStart(2, "0")} / {String(count ?? 0).padStart(2, "0")}
+          </span>
+          <h1 className="watch-compact-title" title={video.title}>
+            {video.title}
+          </h1>
+        </div>
+      </div>
+
       <div className="watch-content-grid">
         <div className="watch-player">
           <Player
@@ -114,30 +122,43 @@ export default async function LearningPathWatchPage({
             videoTitle={video.title}
             courseTitle={path.title}
           />
-          <VideoDescription description={description} />
-          <AiStudyAssist
-            videoId={video.id}
-            videoTitle={video.title}
-            description={description}
-            userId={user.id}
-          />
         </div>
-        <VideoNotes
+
+        <WatchStudyPanel
           userId={user.id}
           courseId={id}
           videoId={video.id}
+          videoTitle={video.title}
           durationSeconds={video.duration_seconds ?? 0}
+          description={description}
           notes={notes ?? []}
           watchBaseHref={watchPath}
         />
       </div>
+
       <div className="watch-pagination">
         {previousVideo ? (
-          <Link href={`${watchPath}/${previousVideo.id}`} className="watch-prev"><span aria-hidden="true">←</span><span><small>PREVIOUS LESSON</small> {previousVideo.title}</span></Link>
-        ) : <span className="watch-prev-placeholder" />}
+          <Link href={`${watchPath}/${previousVideo.id}`} className="watch-prev">
+            <span aria-hidden="true">←</span>
+            <span>
+              <small>PREVIOUS</small> {previousVideo.title}
+            </span>
+          </Link>
+        ) : (
+          <span className="watch-prev-placeholder" />
+        )}
         {nextVideo ? (
-          <Link href={`${watchPath}/${nextVideo.id}`} className="watch-next"><span><small>NEXT LESSON</small> {nextVideo.title}</span><span aria-hidden="true">→</span></Link>
-        ) : <Link href={`/learning-paths/${id}`} className="watch-next watch-course-finish">Path complete <span aria-hidden="true">✓</span></Link>}
+          <Link href={`${watchPath}/${nextVideo.id}`} className="watch-next">
+            <span>
+              <small>NEXT</small> {nextVideo.title}
+            </span>
+            <span aria-hidden="true">→</span>
+          </Link>
+        ) : (
+          <Link href={`/learning-paths/${id}`} className="watch-next watch-course-finish">
+            Path complete <span aria-hidden="true">✓</span>
+          </Link>
+        )}
       </div>
     </main>
   );

@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { removeCourse } from "@/app/dashboard/actions";
-import CourseLessonScheduleButton from "@/components/CourseLessonScheduleButton";
-import CourseLessonList, { type CourseLessonItem } from "@/components/CourseLessonList";
+import CourseLessonList from "@/components/CourseLessonList";
 import CourseNotesExport, { type ExportableNote } from "@/components/CourseNotesExport";
 import { ArrowRightIcon, PlayIcon, TargetIcon } from "@/components/Icons";
 import ProgressBar from "@/components/ProgressBar";
@@ -127,74 +126,85 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
     formattedTargetDate = new Intl.DateTimeFormat("en", {
       month: "short",
       day: "numeric",
-      year: "numeric",
     }).format(targetDate);
   } catch {
-    formattedTargetDate = "in a few days";
+    formattedTargetDate = "soon";
   }
 
   const completionPct = videos.length > 0 ? Math.round((done / videos.length) * 100) : 0;
 
   return (
     <main className="course-page">
-      <Link href="/dashboard" className="back-link"><span aria-hidden="true">←</span> My learning</Link>
-      <section className="course-detail-hero">
-        <div className="course-detail-art">
+      <div className="course-top-nav">
+        <Link href="/dashboard" className="back-link">
+          <span aria-hidden="true">←</span> Dashboard
+        </Link>
+      </div>
+
+      {/* Compact Course Hero */}
+      <section className="course-detail-hero-compact">
+        <div className="course-hero-compact-art">
           {playlist.thumbnail_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={playlist.thumbnail_url} alt="" />
-          ) : <PlayIcon size={48} />}
-          <div className="course-detail-art-shade" />
+          ) : (
+            <div className="course-hero-placeholder">
+              <PlayIcon size={32} />
+            </div>
+          )}
         </div>
-        <div className="course-detail-copy">
-          <h1>{playlist.title}</h1>
-          <p>{playlist.channel_title || "YouTube course"}</p>
-          <div className="course-detail-stats">
-            <span><strong>{videos.length}</strong> videos</span>
-            <i />
-            <span><strong>{formatDuration(totalSeconds)}</strong> total</span>
-            <i />
-            <span><strong>{formatDuration(remainingSeconds)}</strong> left</span>
-            <i />
-            <span><strong>{done}</strong> complete</span>
-          </div>
 
-          {/* Estimated Course Completion Card */}
-          <div className="course-etc-banner">
-            <span className="etc-icon"><TargetIcon size={20} /></span>
-            <div className="etc-copy">
-              <strong>
-                {done === videos.length && videos.length > 0
-                  ? "Course Completed! 🎉"
-                  : `Finish in ~${daysToFinish} ${daysToFinish === 1 ? "day" : "days"} (by ${formattedTargetDate})`}
-              </strong>
-              <span>
-                {done === videos.length && videos.length > 0
-                  ? "Great job finishing this playlist."
-                  : `Based on your daily goal of ${goalMinutes} mins/day (${formatDuration(remainingSeconds)} remaining).`}
-              </span>
+        <div className="course-hero-compact-content">
+          <div className="course-hero-header-row">
+            <div>
+              <span className="course-hero-channel">{playlist.channel_title || "YouTube Course"}</span>
+              <h1 className="course-hero-title">{playlist.title}</h1>
             </div>
           </div>
 
-          <div className="detail-progress-row"><span>YOUR PROGRESS</span><strong>{completionPct}%</strong></div>
-          <ProgressBar value={completionPct} className="detail-progress" />
-          <div className="course-detail-action">
-            <span>{done}/{videos.length} videos complete</span>
-            <div className="course-detail-actions">
+          {/* Inline Stats & ETC Pill */}
+          <div className="course-hero-stats-row">
+            <span><strong>{videos.length}</strong> lessons</span>
+            <i className="hero-stat-sep" />
+            <span><strong>{formatDuration(totalSeconds)}</strong> total</span>
+            <i className="hero-stat-sep" />
+            <span><strong>{formatDuration(remainingSeconds)}</strong> left</span>
+            <i className="hero-stat-sep" />
+            <span className="course-etc-pill">
+              <TargetIcon size={12} />
+              {done === videos.length && videos.length > 0
+                ? "Course Completed! 🎉"
+                : `Est. finish: ${formattedTargetDate} (~${daysToFinish}d)`}
+            </span>
+          </div>
+
+          {/* Progress + Main Actions */}
+          <div className="course-hero-progress-row">
+            <div className="course-hero-progress-track">
+              <div className="course-hero-progress-label">
+                <span>Progress: {done}/{videos.length} completed</span>
+                <strong>{completionPct}%</strong>
+              </div>
+              <ProgressBar value={completionPct} className="detail-progress" />
+            </div>
+
+            <div className="course-hero-actions">
               {nextVideo && (
                 <Link href={`/watch/${id}/${nextVideo}`} className="detail-start-button">
-                  {done === 0 ? "Start course" : done === videos.length ? "Review course" : "Continue learning"} <ArrowRightIcon size={14} className="inline-block ml-1" />
+                  {done === 0 ? "Start course" : done === videos.length ? "Review course" : "Continue"} <ArrowRightIcon size={12} className="inline-block ml-1" />
                 </Link>
               )}
               <form action={removeCourse} className="detail-remove-form">
                 <input type="hidden" name="courseId" value={id} />
-                <button type="submit" className="detail-remove-button">Remove playlist</button>
+                <button type="submit" className="detail-remove-button" title="Remove course">
+                  Remove
+                </button>
               </form>
             </div>
           </div>
 
-          {/* Course Utilities Toolbar */}
-          <div className="course-utilities-toolbar">
+          {/* Compact Utilities Bar */}
+          <div className="course-utilities-compact">
             <ShareRoadmapButton
               roadmapId={playlist.youtube_playlist_id || id}
               title={playlist.title}
@@ -220,12 +230,12 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
         </div>
       </section>
 
+      {/* Video Lessons Section */}
       <section className="video-list-section">
-        <div className="video-list-heading mb-4">
-          <div>
-            <h2>Video lessons</h2>
-          </div>
-          <span>{videos.length} lessons</span>
+        <div className="video-list-heading mb-3">
+          <h2>
+            Lessons <span className="heading-count">{videos.length}</span>
+          </h2>
         </div>
         <CourseLessonList
           courseId={id}

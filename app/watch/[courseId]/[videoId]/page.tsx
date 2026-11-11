@@ -1,10 +1,8 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import Player from "@/components/Player";
-import VideoDescription from "@/components/VideoDescription";
-import VideoNotes from "@/components/VideoNotes";
 import PomodoroTimer from "@/components/PomodoroTimer";
-import AiStudyAssist from "@/components/AiStudyAssist";
+import WatchStudyPanel from "@/components/WatchStudyPanel";
 import { createClient } from "@/lib/supabase/server";
 import { fetchVideoDescription } from "@/lib/youtube";
 
@@ -29,7 +27,7 @@ export default async function WatchPage({
 
   const { data: course } = await supabase
     .from("user_courses")
-    .select("id, playlist_id, playlist:playlists(title)")
+    .select("id, playlist_id, playlist:playlists(title, channel_title)")
     .eq("id", courseId)
     .eq("user_id", user.id)
     .maybeSingle();
@@ -104,22 +102,30 @@ export default async function WatchPage({
       ? progress.last_position
       : 0;
 
+  const playlistData = one<any>(course?.playlist);
+
   return (
     <main className="watch-page">
-      <div className="watch-top-bar flex items-center justify-between">
-        <Link href={`/courses/${courseId}`} className="back-link">
-          <span aria-hidden="true">←</span> Back to course
-        </Link>
-        <PomodoroTimer />
+      {/* Compact Study Header */}
+      <div className="watch-top-compact">
+        <div className="watch-top-left">
+          <Link href={`/courses/${courseId}`} className="watch-back-link">
+            <span aria-hidden="true">←</span> {playlistData?.title || "Course"}
+          </Link>
+          <span className="watch-top-sep">•</span>
+          <span className="watch-lesson-pill">
+            Lesson {String(index + 1).padStart(2, "0")} / {String(lessonCount ?? 0).padStart(2, "0")}
+          </span>
+          <h1 className="watch-compact-title" title={video.title}>
+            {video.title}
+          </h1>
+        </div>
+        <div className="watch-top-right">
+          <PomodoroTimer />
+        </div>
       </div>
 
-      <section className="watch-heading">
-        <div className="watch-lesson-meta">
-          Lesson {String(index + 1).padStart(2, "0")} of {String(lessonCount ?? 0).padStart(2, "0")}
-        </div>
-        <h1>{video.title}</h1>
-      </section>
-
+      {/* Grid: Video Player on Left, Tabbed Study Desk on Right */}
       <div className="watch-content-grid">
         <div className="watch-player">
           <Player
@@ -134,31 +140,29 @@ export default async function WatchPage({
             initialStatus={progress?.status ?? "not_started"}
             nextHref={next ? `/watch/${courseId}/${next.id}` : null}
             videoTitle={video.title}
-            courseTitle={one<any>(course?.playlist)?.title ?? "Course"}
-          />
-          <VideoDescription description={description} />
-          <AiStudyAssist
-            videoId={video.id}
-            videoTitle={video.title}
-            description={description}
-            userId={user.id}
+            courseTitle={playlistData?.title ?? "Course"}
           />
         </div>
-        <VideoNotes
+
+        <WatchStudyPanel
           userId={user.id}
           courseId={courseId}
           videoId={video.id}
+          videoTitle={video.title}
           durationSeconds={video.duration_seconds ?? 0}
+          description={description}
           notes={notes ?? []}
+          channelTitle={playlistData?.channel_title}
         />
       </div>
 
+      {/* Bottom Pagination */}
       <div className="watch-pagination">
         {prev ? (
           <Link href={`/watch/${courseId}/${prev.id}`} className="watch-prev">
             <span aria-hidden="true">←</span>
             <span>
-              <small>PREVIOUS LESSON</small> {prev.title}
+              <small>PREVIOUS</small> {prev.title}
             </span>
           </Link>
         ) : (
@@ -167,7 +171,7 @@ export default async function WatchPage({
         {next ? (
           <Link href={`/watch/${courseId}/${next.id}`} className="watch-next">
             <span>
-              <small>NEXT LESSON</small> {next.title}
+              <small>NEXT</small> {next.title}
             </span>
             <span aria-hidden="true">→</span>
           </Link>

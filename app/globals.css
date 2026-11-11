@@ -9145,3 +9145,360 @@ textarea::placeholder {
     display: none;
   }
 }
+
+
+/* ==========================================================================
+   COMPACT COURSE DETAIL & WATCH PAGE STYLES
+   ========================================================================== */
+
+/* Compact Course Detail Hero */
+.course-detail-hero-compact {
+  display: flex;
+  gap: 18px;
+  background: rgba(22, 27, 34, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-top: 12px;
+  margin-bottom: 18px;
+}
+.course-hero-compact-art {
+  width: 220px;
+  height: 124px;
+  border-radius: 7px;
+  overflow: hidden;
+  background: #1e2329;
+  flex-shrink: 0;
+  position: relative;
+}
+.course-hero-compact-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.course-hero-placeholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  color: var(--lime, #84cc16);
+  background: linear-gradient(135deg, #1f2937, #111827);
+}
+.course-hero-compact-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+.course-hero-channel {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #8b949e;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.course-hero-title {
+  font-size: 18px !important;
+  font-weight: 750 !important;
+  color: #f1f2f3 !important;
+  letter-spacing: -0.02em !important;
+  line-height: 1.25 !important;
+  margin: 2px 0 0 !important;
+}
+.course-hero-stats-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #94a3b8;
+  flex-wrap: wrap;
+}
+.hero-stat-sep {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+}
+.course-etc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  background: rgba(132, 204, 22, 0.12);
+  border: 1px solid rgba(132, 204, 22, 0.25);
+  border-radius: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--lime, #84cc16);
+}
+.course-hero-progress-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.course-hero-progress-track {
+  flex: 1;
+  min-width: 180px;
+}
+.course-hero-progress-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10.5px;
+  color: #8b949e;
+  margin-bottom: 4px;
+}
+.course-hero-progress-label strong {
+  color: var(--lime, #84cc16);
+}
+.course-hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.course-hero-actions .detail-start-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--lime, #84cc16);
+  color: #09090b !important;
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 750;
+  text-decoration: none;
+}
+.course-hero-actions .detail-remove-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #94a3b8;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 11px;
+  cursor: pointer;
+}
+.course-hero-actions .detail-remove-button:hover {
+  color: #f43f5e;
+  border-color: rgba(244, 63, 94, 0.3);
+}
+
+/* Compact Utilities Toolbar */
+.course-utilities-compact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+.course-utilities-compact button,
+.course-utilities-compact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px !important;
+  font-size: 10.5px !important;
+  border-radius: 5px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #cbd5e1 !important;
+}
+.course-utilities-compact button:hover,
+.course-utilities-compact a:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  color: #ffffff !important;
+}
+
+/* Compact Video Lessons List */
+.video-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.video-row {
+  min-height: 52px !important;
+  padding: 5px 10px !important;
+  gap: 10px !important;
+  border-radius: 6px !important;
+  background: rgba(22, 27, 34, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+}
+.video-row:hover {
+  background: rgba(28, 33, 40, 0.85) !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+}
+.video-thumbnail {
+  width: 72px !important;
+  height: 40px !important;
+  border-radius: 4px !important;
+}
+.video-index {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  color: #64748b !important;
+  width: 20px !important;
+}
+.video-row-copy p {
+  font-size: 12.5px !important;
+  font-weight: 650 !important;
+  line-height: 1.35 !important;
+  color: #f1f2f3 !important;
+}
+.video-row-copy > span {
+  font-size: 10px !important;
+  margin-top: 2px !important;
+  color: #8b949e !important;
+}
+.video-status {
+  padding: 2px 7px !important;
+  font-size: 9.5px !important;
+  border-radius: 4px !important;
+}
+
+/* Compact Watch Page Top Bar */
+.watch-top-compact {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: rgba(22, 27, 34, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+.watch-top-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+}
+.watch-back-link {
+  font-size: 12px;
+  font-weight: 700;
+  color: #8b949e;
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.watch-back-link:hover {
+  color: #f1f2f3;
+}
+.watch-top-sep {
+  color: #4b5563;
+  font-size: 11px;
+}
+.watch-lesson-pill {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--lime, #84cc16);
+  background: rgba(132, 204, 22, 0.12);
+  border: 1px solid rgba(132, 204, 22, 0.25);
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.watch-compact-title {
+  font-size: 13.5px !important;
+  font-weight: 750 !important;
+  color: #f1f2f3 !important;
+  margin: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.watch-top-right {
+  flex-shrink: 0;
+}
+
+/* Watch Study Panel (Tabbed Desk on Right Column) */
+.watch-study-panel {
+  display: flex;
+  flex-direction: column;
+  background: rgba(22, 27, 34, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  min-height: 480px;
+}
+.watch-tabs-bar {
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 20, 26, 0.7);
+  padding: 4px 6px 0;
+  gap: 2px;
+}
+.watch-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 7px 12px;
+  border: none;
+  background: transparent;
+  color: #8b949e;
+  font-size: 11.5px;
+  font-weight: 700;
+  cursor: pointer;
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+.watch-tab-btn:hover {
+  color: #f1f2f3;
+  background: rgba(255, 255, 255, 0.04);
+}
+.watch-tab-btn.active {
+  color: #f1f2f3;
+  background: rgba(22, 27, 34, 0.9);
+  border-bottom-color: var(--lime, #84cc16);
+}
+.watch-tab-count {
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #94a3b8;
+}
+.watch-tab-btn.active .watch-tab-count {
+  background: rgba(132, 204, 22, 0.2);
+  color: var(--lime, #84cc16);
+}
+.watch-tab-badge {
+  font-size: 8.5px;
+  font-weight: 800;
+  padding: 1px 4px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #a855f7, #6366f1);
+  color: #ffffff;
+}
+.watch-tab-content {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 600px;
+}
+.watch-tab-ai-wrap,
+.watch-tab-desc-wrap {
+  padding: 12px;
+}
+
+@media (max-width: 768px) {
+  .course-detail-hero-compact {
+    flex-direction: column;
+  }
+  .course-hero-compact-art {
+    width: 100%;
+    height: 180px;
+  }
+}
