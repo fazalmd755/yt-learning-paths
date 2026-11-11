@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { updateDailyGoal } from "@/app/dashboard/actions";
+import { TargetIcon } from "@/components/Icons";
 
 type Props = {
   email: string;
@@ -71,6 +73,8 @@ function FlameIcon({ size = 18 }: { size?: number }) {
   );
 }
 
+const PRESETS = [15, 30, 45, 60];
+
 export default function SiteHeader({
   email,
   displayName,
@@ -82,21 +86,44 @@ export default function SiteHeader({
 }: Props) {
   const [searchOpen, setSearchOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [goalOpen, setGoalOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [imageError, setImageError] = useState(false);
+
+  // Daily goal state
+  const [currentGoal, setCurrentGoal] = useState<number>(goalMinutes);
+  const [customGoal, setCustomGoal] = useState<string>(String(goalMinutes));
+  const [savedFeedback, setSavedFeedback] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
   const searchRef = useRef<HTMLInputElement>(null);
   const searchWrapRef = useRef<HTMLDivElement>(null);
   const notifWrapRef = useRef<HTMLDivElement>(null);
+  const goalWrapRef = useRef<HTMLDivElement>(null);
   const profileWrapRef = useRef<HTMLDivElement>(null);
-  const goalReached = todayMinutes >= goalMinutes;
-  const remaining = Math.max(0, goalMinutes - todayMinutes);
+
+  const goalReached = todayMinutes >= currentGoal;
+  const remaining = Math.max(0, currentGoal - todayMinutes);
+  const goalPercent = currentGoal > 0 ? Math.min(100, (todayMinutes / currentGoal) * 100) : 0;
+
   const accountName = displayName.trim() || email;
   const initial = accountName.trim().charAt(0).toUpperCase() || "U";
   const showAvatar = Boolean(avatarUrl && !imageError);
 
+  // Circular ring calculations
+  // Radius = 11, circumference = 2 * PI * 11 ≈ 69.115
+  const circumference = 69.115;
+  const strokeDashoffset = circumference - (goalPercent / 100) * circumference;
+
   useEffect(() => {
     if (searchOpen) searchRef.current?.focus();
   }, [searchOpen]);
+
+  // Sync prop changes
+  useEffect(() => {
+    setCurrentGoal(goalMinutes);
+    setCustomGoal(String(goalMinutes));
+  }, [goalMinutes]);
 
   // Close popovers when clicking outside
   useEffect(() => {
@@ -120,6 +147,14 @@ export default function SiteHeader({
       }
 
       if (
+        goalOpen &&
+        goalWrapRef.current &&
+        !goalWrapRef.current.contains(target)
+      ) {
+        setGoalOpen(false);
+      }
+
+      if (
         profileOpen &&
         profileWrapRef.current &&
         !profileWrapRef.current.contains(target)
@@ -130,11 +165,32 @@ export default function SiteHeader({
 
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [searchOpen, notificationsOpen, profileOpen]);
+  }, [searchOpen, notificationsOpen, goalOpen, profileOpen]);
+
+  const handleGoalUpdate = (minutes: number) => {
+    if (minutes < 1 || minutes > 600) return;
+    setCurrentGoal(minutes);
+    setCustomGoal(String(minutes));
+    startTransition(async () => {
+      const formData = new FormData();
+      formData.set("daily_goal_minutes", String(minutes));
+      await updateDailyGoal(formData);
+      setSavedFeedback(true);
+      setTimeout(() => setSavedFeedback(false), 2000);
+    });
+  };
+
+  const handleCustomGoalSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    const val = parseInt(customGoal, 10);
+    if (!isNaN(val) && val >= 1 && val <= 600) {
+      handleGoalUpdate(val);
+    }
+  };
 
   return (
     <div className={`header-actions ${searchOpen ? "search-open" : ""}`}>
-      {/* Search — wrapped in ref div so click-outside works */}
+      {/* Search */}
       <div ref={searchWrapRef} style={{ display: "contents" }}>
         {searchOpen && (
           <form action="/dashboard#courses" method="get" className="header-search-form">
@@ -162,6 +218,7 @@ export default function SiteHeader({
           onClick={() => {
             setSearchOpen((open) => !open);
             setNotificationsOpen(false);
+            setGoalOpen(false);
             setProfileOpen(false);
           }}
         >
@@ -179,6 +236,7 @@ export default function SiteHeader({
           onClick={() => {
             setNotificationsOpen((open) => !open);
             setSearchOpen(false);
+            setGoalOpen(false);
             setProfileOpen(false);
           }}
         >
@@ -203,8 +261,8 @@ export default function SiteHeader({
                 </strong>
                 <p>
                   {goalReached
-                    ? `You've reached your ${goalMinutes}-minute goal today. Great work!`
-                    : `${remaining} ${remaining === 1 ? "minute" : "minutes"} left to reach your ${goalMinutes}-minute goal.`}
+                    ? `You've reached your ${currentGoal}-minute goal today. Great work!`
+                    : `${remaining} ${remaining === 1 ? "minute" : "minutes"} left to reach your ${currentGoal}-minute goal.`}
                 </p>
               </div>
             </div>
@@ -220,8 +278,132 @@ export default function SiteHeader({
         )}
       </div>
 
+      {/* Daily Goal Interactive Progress Ring */}
+      <div ref={goalWrapRef} className="header-action-wrap">
+        <button
+          type="button"
+          className={`header-goal-ring-btn ${goalReached ? "goal-reached" : ""}`}
+          aria-label={`Daily goal: ${todayMinutes} of ${currentGoal} min (${Math.round(goalPercent)}%)`}
+          title={`Daily focus goal: ${todayMinutes}/${currentGoal}m (${Math.round(goalPercent)}%)`}
+          aria-expanded={goalOpen}
+          onClick={() => {
+            setGoalOpen((open) => !open);
+            setSearchOpen(false);
+            setNotificationsOpen(false);
+            setProfileOpen(false);
+          }}
+        >
+          <svg width={30} height={30} viewBox="0 0 28 28" className="header-goal-svg">
+            <circle
+              cx="14"
+              cy="14"
+              r="11"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.12)"
+              strokeWidth="2.5"
+            />
+            <circle
+              cx="14"
+              cy="14"
+              r="11"
+              fill="none"
+              stroke={goalReached ? "#84cc16" : "#38bdf8"}
+              strokeWidth="2.5"
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+              transform="rotate(-90 14 14)"
+              style={{ transition: "stroke-dashoffset 0.4s ease" }}
+            />
+          </svg>
+          <span className="header-goal-ring-text">
+            {goalReached ? "✓" : `${Math.round(goalPercent)}%`}
+          </span>
+        </button>
+
+        {goalOpen && (
+          <div className="header-popover goal-popover">
+            <div className="popover-heading">
+              <div className="flex items-center gap-1.5">
+                <TargetIcon size={14} className="text-lime-400" />
+                <span>Daily Focus Goal</span>
+              </div>
+              <span className={`notification-state ${goalReached ? "notification-done" : ""}`}>
+                {goalReached ? "GOAL REACHED" : `${Math.round(goalPercent)}%`}
+              </span>
+            </div>
+
+            <div className="goal-popover-body">
+              <div className="goal-popover-stat-row">
+                <div>
+                  <strong className="goal-popover-num">{todayMinutes}</strong>
+                  <span className="goal-popover-unit"> / {currentGoal} min today</span>
+                </div>
+                {savedFeedback && <span className="goal-saved-badge">✓ Saved</span>}
+              </div>
+
+              <div className="goal-popover-progress-bar">
+                <div
+                  className="goal-popover-progress-fill"
+                  style={{
+                    width: `${goalPercent}%`,
+                    backgroundColor: goalReached ? "#84cc16" : "#38bdf8",
+                  }}
+                />
+              </div>
+
+              <p className="goal-popover-desc">
+                {goalReached
+                  ? "Outstanding! You reached your daily learning goal."
+                  : `${remaining} min remaining to reach your target today.`}
+              </p>
+
+              <div className="goal-popover-divider" />
+
+              <span className="goal-popover-label">ADJUST DAILY TARGET</span>
+              <div className="goal-presets-row">
+                {PRESETS.map((p) => (
+                  <button
+                    key={p}
+                    type="button"
+                    disabled={isPending}
+                    onClick={() => handleGoalUpdate(p)}
+                    className={`goal-preset-btn ${currentGoal === p ? "active" : ""}`}
+                  >
+                    {p}m
+                  </button>
+                ))}
+              </div>
+
+              <form onSubmit={handleCustomGoalSubmit} className="goal-custom-form mt-2">
+                <div className="goal-custom-input-wrap">
+                  <input
+                    type="number"
+                    min="1"
+                    max="600"
+                    value={customGoal}
+                    onChange={(e) => setCustomGoal(e.target.value)}
+                    placeholder="Custom mins"
+                    className="goal-custom-input"
+                  />
+                  <span className="goal-custom-suffix">min</span>
+                </div>
+                <button
+                  type="submit"
+                  disabled={isPending || Number(customGoal) === currentGoal}
+                  className="goal-custom-submit-btn"
+                >
+                  Save
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Streak Fire Badge */}
       <Link
-        href="/dashboard"
+        href="/dashboard#consistency"
         className="header-streak header-streak-fire"
         aria-label={`${streak}-day learning streak`}
         title={`${streak}-day learning streak`}
@@ -241,6 +423,7 @@ export default function SiteHeader({
             setProfileOpen((open) => !open);
             setSearchOpen(false);
             setNotificationsOpen(false);
+            setGoalOpen(false);
           }}
         >
           {showAvatar ? (
@@ -280,7 +463,10 @@ export default function SiteHeader({
             </div>
             <div className="profile-popover-divider" />
             <Link href="/dashboard" onClick={() => setProfileOpen(false)}>
-              My learning
+              Dashboard
+            </Link>
+            <Link href="/dashboard#courses" onClick={() => setProfileOpen(false)}>
+              My Courses
             </Link>
             <Link href="/settings" onClick={() => setProfileOpen(false)}>
               Profile settings

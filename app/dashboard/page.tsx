@@ -3,16 +3,10 @@ import { redirect } from "next/navigation";
 import AddCourseForm from "@/components/AddCourseForm";
 import CourseLibrary from "@/components/CourseLibrary";
 import StreakCalendar from "@/components/StreakCalendar";
-import CompactDailyGoal from "@/components/CompactDailyGoal";
 import AchievementsBadges from "@/components/AchievementsBadges";
 import ProfileReminderBanner from "@/components/ProfileReminderBanner";
 import { computeProfileCompletion } from "@/lib/profile";
-import {
-  FlameIcon,
-  TargetIcon,
-  BookOpenIcon,
-  ArrowRightIcon,
-} from "@/components/Icons";
+import { ArrowRightIcon } from "@/components/Icons";
 import { getCourseSummaries } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz, lastNDates } from "@/lib/utils";
@@ -67,7 +61,6 @@ export default async function DashboardPage({
   }
 
   const days = dates.map((date) => ({ date, seconds: secondsByDate.get(date) ?? 0 }));
-  const todaySeconds = secondsByDate.get(today) ?? 0;
   const streak = Number(streakData ?? 0);
   const totalActiveDays = activeDaysList.length;
 
@@ -96,7 +89,6 @@ export default async function DashboardPage({
   const resume = [...courses]
     .filter((course) => course.continueVideoId && course.completedVideos < course.totalVideos)
     .sort((a, b) => (b.lastActivity ?? "").localeCompare(a.lastActivity ?? ""))[0];
-  const goalPercent = goalSeconds ? Math.min(100, (todaySeconds / goalSeconds) * 100) : 0;
 
   const displayName = [user.user_metadata?.display_name, user.user_metadata?.full_name, user.user_metadata?.name]
     .find((value): value is string => typeof value === "string") ?? "";
@@ -140,68 +132,11 @@ export default async function DashboardPage({
         </div>
       </section>
 
-      {/* Slim Profile Reminder Pill */}
+      {/* Slim Profile Reminder Pill (only shows if profile < 100%) */}
       <ProfileReminderBanner
         percent={profileCompletion.percent}
         remainingLabels={profileCompletion.remainingSteps.map((s) => s.label)}
       />
-
-      {/* Single Sleek KPI Metric Strip (Replaces 3 giant cards) */}
-      <section className="dashboard-kpi-bar" aria-label="Learning metrics summary">
-        {/* KPI 1: Daily Focus */}
-        <div className="kpi-item">
-          <span className="kpi-icon kpi-icon-goal">
-            <TargetIcon size={16} />
-          </span>
-          <div className="kpi-info">
-            <span className="kpi-label">DAILY FOCUS</span>
-            <div className="kpi-value-row">
-              <strong>{Math.floor(todaySeconds / 60)}</strong>
-              <small>/ {goalMinutes} min</small>
-            </div>
-          </div>
-          <div className="kpi-progress-wrap" title={`${Math.round(goalPercent)}% of daily target reached`}>
-            <div className="kpi-progress-bar">
-              <div className="kpi-progress-fill" style={{ width: `${goalPercent}%` }} />
-            </div>
-            <span className="kpi-progress-text">{Math.round(goalPercent)}%</span>
-          </div>
-        </div>
-
-        {/* KPI 2: Current Streak */}
-        <div className="kpi-item">
-          <span className="kpi-icon kpi-icon-streak">
-            <FlameIcon size={16} />
-          </span>
-          <div className="kpi-info">
-            <span className="kpi-label">CURRENT STREAK</span>
-            <div className="kpi-value-row">
-              <strong>{streak}</strong>
-              <small>{streak === 1 ? "day" : "days"}</small>
-            </div>
-          </div>
-          <span className={`kpi-status-badge ${streak > 0 ? "kpi-badge-fire" : "kpi-badge-idle"}`}>
-            {streak > 0 ? "🔥 On Fire" : "Start today"}
-          </span>
-        </div>
-
-        {/* KPI 3: Courses */}
-        <div className="kpi-item">
-          <span className="kpi-icon kpi-icon-library">
-            <BookOpenIcon size={16} />
-          </span>
-          <div className="kpi-info">
-            <span className="kpi-label">MY COURSES</span>
-            <div className="kpi-value-row">
-              <strong>{courses.length}</strong>
-              <small>{courses.length === 1 ? "course" : "courses"}</small>
-            </div>
-          </div>
-          <span className="kpi-meta-text">
-            {completedVideos}/{totalVideos} completed
-          </span>
-        </div>
-      </section>
 
       {/* Sleek Compact Resume Bar (if active lesson exists) */}
       {resume && resume.continueVideoId && (
@@ -253,9 +188,9 @@ export default async function DashboardPage({
         />
       </section>
 
-      {/* Consistency Heatmap + Compact Daily Goal */}
+      {/* Consistency Heatmap */}
       <section id="consistency" className="dashboard-lower">
-        <div className="panel-card activity-panel flex-1">
+        <div className="panel-card activity-panel w-full">
           <div className="panel-heading">
             <div>
               <h2>Consistency Heatmap</h2>
@@ -269,10 +204,6 @@ export default async function DashboardPage({
             totalActiveDays={totalActiveDays}
             maxStreak={maxStreak}
           />
-        </div>
-
-        <div className="panel-card daily-goal-panel">
-          <CompactDailyGoal initialMinutes={goalMinutes} />
         </div>
       </section>
     </main>

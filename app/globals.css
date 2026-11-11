@@ -9502,3 +9502,188 @@ textarea::placeholder {
     height: 180px;
   }
 }
+
+
+/* ==========================================================================
+   NAVBAR DAILY GOAL RING & INTERACTIVE POPOVER
+   ========================================================================== */
+
+.header-goal-ring-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(22, 27, 34, 0.8);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+.header-goal-ring-btn:hover {
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(30, 37, 46, 0.9);
+}
+.header-goal-ring-btn.goal-reached {
+  border-color: rgba(132, 204, 22, 0.4);
+}
+.header-goal-svg {
+  width: 28px;
+  height: 28px;
+}
+.header-goal-ring-text {
+  position: absolute;
+  font-size: 8px;
+  font-weight: 800;
+  color: #f1f2f3;
+  letter-spacing: -0.04em;
+}
+.header-goal-ring-btn.goal-reached .header-goal-ring-text {
+  color: var(--lime, #84cc16);
+  font-size: 10px;
+}
+
+/* Goal Popover */
+.goal-popover {
+  width: 280px !important;
+  right: 0 !important;
+  left: auto !important;
+  padding: 14px 16px !important;
+}
+.goal-popover-stat-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 10px 0 6px;
+}
+.goal-popover-num {
+  font-size: 22px;
+  font-weight: 800;
+  color: #f4f5f6;
+  letter-spacing: -0.03em;
+}
+.goal-popover-unit {
+  font-size: 11px;
+  color: #8b949e;
+  font-weight: 500;
+}
+.goal-saved-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #34d399;
+  background: rgba(16, 185, 129, 0.15);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.goal-popover-progress-bar {
+  width: 100%;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.goal-popover-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+.goal-popover-desc {
+  font-size: 11px;
+  color: #94a3b8;
+  margin: 0;
+  line-height: 1.4;
+}
+.goal-popover-divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 12px 0 10px;
+}
+.goal-popover-label {
+  display: block;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #71717a;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.goal-presets-row {
+  display: flex;
+  gap: 6px;
+}
+.goal-preset-btn {
+  flex: 1;
+  padding: 5px 0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.goal-preset-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+}
+.goal-preset-btn.active {
+  background: rgba(132, 204, 22, 0.18);
+  border-color: rgba(132, 204, 22, 0.4);
+  color: var(--lime, #84cc16);
+}
+.goal-custom-form {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.goal-custom-input-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.goal-custom-input {
+  width: 100%;
+  height: 28px;
+  background: rgba(15, 20, 26, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  padding: 0 32px 0 8px;
+  color: #f1f2f3;
+  font-size: 11px;
+  outline: none;
+}
+.goal-custom-input:focus {
+  border-color: rgba(56, 189, 248, 0.5);
+}
+.goal-custom-suffix {
+  position: absolute;
+  right: 8px;
+  font-size: 10px;
+  color: #71717a;
+}
+.goal-custom-submit-btn {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f1f2f3;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.goal-custom-submit-btn:hover:not(:disabled) {
+  background: var(--lime, #84cc16);
+  color: #09090b;
+  border-color: var(--lime, #84cc16);
+}
+.goal-custom-submit-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
