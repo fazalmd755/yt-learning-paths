@@ -465,9 +465,6 @@ export default function SiteHeader({
             <Link href="/dashboard" onClick={() => setProfileOpen(false)}>
               Dashboard
             </Link>
-            <Link href="/dashboard#courses" onClick={() => setProfileOpen(false)}>
-              My Courses
-            </Link>
             <Link href="/settings" onClick={() => setProfileOpen(false)}>
               Profile settings
             </Link>
