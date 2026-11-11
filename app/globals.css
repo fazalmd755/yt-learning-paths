@@ -9842,3 +9842,185 @@ textarea::placeholder {
   font-size: 9px;
   color: #64748b;
 }
+
+
+/* ==========================================================================
+   LEETCODE ROW: BADGES (LEFT) + HEATMAP (RIGHT)
+   ========================================================================== */
+
+.dashboard-leetcode-row {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.dashboard-leetcode-row > .leetcode-badges-card {
+  flex: 0 0 240px;
+}
+.dashboard-leetcode-row > .leetcode-heatmap-card {
+  flex: 1;
+  min-width: 0;
+  max-width: none;
+}
+
+/* LeetCode Badges Card */
+.leetcode-badges-card {
+  background: rgba(22, 27, 34, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 10px 12px 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+.leetcode-badges-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.leetcode-badges-title {
+  font-size: 13.5px;
+  font-weight: 750;
+  color: #f1f2f3;
+}
+.leetcode-badges-count {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+.leetcode-badges-all-btn {
+  background: transparent;
+  border: none;
+  color: #8b949e;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+.leetcode-badges-all-btn:hover {
+  color: #38bdf8;
+}
+.leetcode-featured-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: background 0.15s ease;
+}
+.leetcode-featured-badge-row:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+.leetcode-badge-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.leetcode-badge-circle.unlocked {
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.25) 0%, rgba(249, 115, 22, 0.08) 100%);
+  border: 1.5px solid rgba(249, 115, 22, 0.4);
+  box-shadow: 0 0 12px rgba(249, 115, 22, 0.2);
+}
+.leetcode-badge-circle.locked {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px dashed rgba(255, 255, 255, 0.15);
+}
+.leetcode-badge-emoji {
+  font-size: 18px;
+}
+.leetcode-featured-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.leetcode-featured-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #f1f2f3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.leetcode-featured-caption {
+  font-size: 9.5px;
+  color: #8b949e;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.leetcode-badges-tray {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.leetcode-tray-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.leetcode-tray-icon:hover {
+  transform: scale(1.15);
+}
+.leetcode-tray-icon.unlocked {
+  border-color: rgba(16, 185, 129, 0.35);
+  background: rgba(16, 185, 129, 0.12);
+}
+.leetcode-tray-icon.locked {
+  opacity: 0.45;
+  filter: grayscale(1);
+}
+
+/* Modal styles for Badges */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+.leetcode-badges-modal {
+  width: 100%;
+  max-width: 580px;
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: #161b22;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+@media (max-width: 820px) {
+  .dashboard-leetcode-row {
+    flex-direction: column;
+  }
+  .dashboard-leetcode-row > .leetcode-badges-card {
+    flex: none;
+    width: 100%;
+  }
+}

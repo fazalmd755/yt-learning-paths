@@ -161,8 +161,15 @@ export default async function DashboardPage({
         </section>
       )}
 
-      {/* LeetCode-style Consistency Heatmap (Placed prominently near top, not wide, no future days) */}
-      <section id="consistency" className="mb-3.5">
+      {/* LeetCode-style Row: Badges Widget on Left, Consistency Heatmap on Right */}
+      <section className="dashboard-leetcode-row">
+        <AchievementsBadges
+          streak={streak}
+          totalActiveDays={totalActiveDays}
+          completedVideos={completedVideos}
+          totalCourses={courses.length}
+          finishedCourses={finishedCourses}
+        />
         <StreakCalendar
           days={days}
           today={today}
@@ -186,17 +193,6 @@ export default async function DashboardPage({
           <span className="section-side-note">Click any course to resume learning</span>
         </div>
         <CourseLibrary courses={courses} initialQuery={search} />
-      </section>
-
-      {/* Gamification: Badges & Milestones (Compact Collapsible) */}
-      <section className="mt-5 mb-5">
-        <AchievementsBadges
-          streak={streak}
-          totalActiveDays={totalActiveDays}
-          completedVideos={completedVideos}
-          totalCourses={courses.length}
-          finishedCourses={finishedCourses}
-        />
       </section>
     </main>
   );
