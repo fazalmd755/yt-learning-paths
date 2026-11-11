@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { ArrowRightIcon } from "@/components/Icons";
 
 export default function AddCourseForm() {
   const router = useRouter();
@@ -33,26 +34,33 @@ export default function AddCourseForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="add-course-form">
-      <label htmlFor="course-url" className="course-url-label">PASTE A YOUTUBE PLAYLIST OR VIDEO LINK</label>
-      <div className="course-url-row">
+    <form onSubmit={onSubmit} className="add-course-compact-form">
+      <div className="add-course-compact-row">
+        <span className="add-course-compact-icon" aria-hidden="true">🔗</span>
         <input
           id="course-url"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
-          placeholder="https://www.youtube.com/playlist?list=..."
-          className="course-url-input"
+          placeholder="Paste YouTube playlist or video URL to create course..."
+          className="add-course-compact-input"
           type="url"
           required
         />
         <button
-          disabled={loading}
-          className="course-add-button"
+          disabled={loading || !url.trim()}
+          className="add-course-compact-btn"
+          type="submit"
         >
-          {loading ? "Importing..." : <>Create path <span aria-hidden="true">↗</span></>}
+          {loading ? (
+            "Importing..."
+          ) : (
+            <>
+              <span>+ Import Path</span>
+              <ArrowRightIcon size={12} className="inline-block" />
+            </>
+          )}
         </button>
       </div>
-      <p className="course-url-hint">Both playlists and individual videos are supported.</p>
       {error && <p role="alert" className="course-form-error">{error}</p>}
     </form>
   );

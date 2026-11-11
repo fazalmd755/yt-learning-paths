@@ -27,7 +27,7 @@ export default function AchievementsBadges({
   totalCourses,
   finishedCourses,
 }: Props) {
-  const [showAll, setShowAll] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const badges: Badge[] = [
     {
@@ -87,65 +87,81 @@ export default function AchievementsBadges({
   ];
 
   const unlockedCount = badges.filter((b) => b.current >= b.target).length;
-  const displayedBadges = showAll ? badges : badges.slice(0, 4);
 
   return (
-    <div className="achievements-section-card">
-      <div className="achievements-header-row">
-        <div>
-          <span className="achievements-kicker">MILESTONES & REWARDS</span>
-          <h2 className="achievements-title">
-            Achievements{" "}
-            <span className="achievements-counter">
-              {unlockedCount} / {badges.length} Unlocked
-            </span>
-          </h2>
+    <div className="achievements-compact-container">
+      <div className="achievements-compact-header">
+        <div className="achievements-compact-left">
+          <span className="achievements-compact-trophy">🏆</span>
+          <span className="achievements-compact-label">Achievements</span>
+          <span className="achievements-counter">
+            {unlockedCount} / {badges.length}
+          </span>
+          {/* Quick preview of unlocked or next badge */}
+          <div className="achievements-preview-pills">
+            {badges.slice(0, 3).map((b) => {
+              const isUnlocked = b.current >= b.target;
+              return (
+                <span
+                  key={b.id}
+                  className={`achievement-pill ${isUnlocked ? "unlocked" : "locked"}`}
+                  title={`${b.title}: ${b.description} (${b.current}/${b.target} ${b.unit})`}
+                >
+                  {b.icon} {b.title}
+                </span>
+              );
+            })}
+          </div>
         </div>
+
         <button
           type="button"
-          onClick={() => setShowAll(!showAll)}
-          className="achievements-toggle-btn"
+          onClick={() => setExpanded(!expanded)}
+          className="achievements-compact-toggle"
+          aria-expanded={expanded}
         >
-          {showAll ? "Show Less ↑" : "View All Badges →"}
+          {expanded ? "Collapse ▲" : "View All Badges ▼"}
         </button>
       </div>
 
-      <div className="achievements-grid">
-        {displayedBadges.map((b) => {
-          const isUnlocked = b.current >= b.target;
-          const progress = Math.min(100, Math.round((b.current / b.target) * 100));
+      {expanded && (
+        <div className="achievements-grid mt-3">
+          {badges.map((b) => {
+            const isUnlocked = b.current >= b.target;
+            const progress = Math.min(100, Math.round((b.current / b.target) * 100));
 
-          return (
-            <div
-              key={b.id}
-              className={`achievement-badge-card ${isUnlocked ? "unlocked" : "locked"}`}
-            >
-              <div className="badge-card-top">
-                <span className="badge-emoji">{b.icon}</span>
-                {isUnlocked ? (
-                  <span className="badge-status-pill unlocked">✓ Unlocked</span>
-                ) : (
-                  <span className="badge-status-pill locked">
-                    {b.current} / {b.target} {b.unit}
-                  </span>
+            return (
+              <div
+                key={b.id}
+                className={`achievement-badge-card ${isUnlocked ? "unlocked" : "locked"}`}
+              >
+                <div className="badge-card-top">
+                  <span className="badge-emoji">{b.icon}</span>
+                  {isUnlocked ? (
+                    <span className="badge-status-pill unlocked">✓ Unlocked</span>
+                  ) : (
+                    <span className="badge-status-pill locked">
+                      {b.current} / {b.target} {b.unit}
+                    </span>
+                  )}
+                </div>
+
+                <strong className="badge-title">{b.title}</strong>
+                <p className="badge-desc">{b.description}</p>
+
+                {!isUnlocked && (
+                  <div className="badge-progress-track">
+                    <div
+                      className="badge-progress-fill"
+                      style={{ width: `${progress}%` }}
+                    />
+                  </div>
                 )}
               </div>
-
-              <strong className="badge-title">{b.title}</strong>
-              <p className="badge-desc">{b.description}</p>
-
-              {!isUnlocked && (
-                <div className="badge-progress-track">
-                  <div
-                    className="badge-progress-fill"
-                    style={{ width: `${progress}%` }}
-                  />
-                </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

@@ -2,7 +2,6 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import AddCourseForm from "@/components/AddCourseForm";
 import CourseLibrary from "@/components/CourseLibrary";
-import ProgressBar from "@/components/ProgressBar";
 import StreakCalendar from "@/components/StreakCalendar";
 import CompactDailyGoal from "@/components/CompactDailyGoal";
 import AchievementsBadges from "@/components/AchievementsBadges";
@@ -12,7 +11,6 @@ import {
   FlameIcon,
   TargetIcon,
   BookOpenIcon,
-  PlayIcon,
   ArrowRightIcon,
 } from "@/components/Icons";
 import { getCourseSummaries } from "@/lib/data";
@@ -117,151 +115,135 @@ export default async function DashboardPage({
     dailyGoalMinutes: goalMinutes,
   });
 
+  const firstName = displayName.trim() ? displayName.trim().split(" ")[0] : "";
+
   return (
     <main className="dashboard-shell">
-      <section className="dashboard-welcome">
-        <div>
-          <div className="dashboard-space-badge">
-            <span className="dashboard-badge-dot" /> Study Workspace
-          </div>
-          <h1 className="dashboard-heading">
-            Make today a <span className="text-gradient-brand">learning day</span>
+      {/* Sleek Compact Header */}
+      <section className="dashboard-welcome-compact">
+        <div className="welcome-compact-left">
+          <span className="welcome-dot" />
+          <h1 className="welcome-title">
+            {firstName ? `Welcome back, ${firstName}` : "Study Workspace"}
           </h1>
-          <p>Every focused session builds unstoppable momentum towards your goals.</p>
+          <span className="welcome-subtag">Focused Study</span>
         </div>
-        <div className="welcome-date">
-          <span>TODAY</span>
-          <strong>
+        <div className="welcome-compact-date">
+          <span>
             {new Intl.DateTimeFormat("en", {
-              weekday: "long",
+              weekday: "short",
               month: "short",
               day: "numeric",
               timeZone: tz,
             }).format(new Date())}
-          </strong>
+          </span>
         </div>
       </section>
 
+      {/* Slim Profile Reminder Pill */}
       <ProfileReminderBanner
         percent={profileCompletion.percent}
         remainingLabels={profileCompletion.remainingSteps.map((s) => s.label)}
       />
 
-      <section className="dashboard-overview">
-        <article className="goal-card">
-          <div className="overview-card-top">
-            <span className="overview-icon goal-icon">
-              <TargetIcon size={18} />
-            </span>
-            <span className="card-kicker">DAILY FOCUS</span>
+      {/* Single Sleek KPI Metric Strip (Replaces 3 giant cards) */}
+      <section className="dashboard-kpi-bar" aria-label="Learning metrics summary">
+        {/* KPI 1: Daily Focus */}
+        <div className="kpi-item">
+          <span className="kpi-icon kpi-icon-goal">
+            <TargetIcon size={16} />
+          </span>
+          <div className="kpi-info">
+            <span className="kpi-label">DAILY FOCUS</span>
+            <div className="kpi-value-row">
+              <strong>{Math.floor(todaySeconds / 60)}</strong>
+              <small>/ {goalMinutes} min</small>
+            </div>
           </div>
-          <div className="goal-number">
-            {Math.floor(todaySeconds / 60)}
-            <span> / {goalMinutes} min</span>
+          <div className="kpi-progress-wrap" title={`${Math.round(goalPercent)}% of daily target reached`}>
+            <div className="kpi-progress-bar">
+              <div className="kpi-progress-fill" style={{ width: `${goalPercent}%` }} />
+            </div>
+            <span className="kpi-progress-text">{Math.round(goalPercent)}%</span>
           </div>
-          <ProgressBar value={goalPercent} className="goal-progress" />
-          <div className="goal-caption">
-            <span>
-              {todaySeconds >= goalSeconds
-                ? "Daily goal reached! Outstanding work."
-                : `${Math.max(0, goalMinutes - Math.floor(todaySeconds / 60))} min remaining today.`}
-            </span>
-            <strong>{Math.round(goalPercent)}%</strong>
-          </div>
-        </article>
+        </div>
 
-        <article className="streak-card streak-card-fire">
-          <div className="overview-card-top">
-            <span className="overview-icon streak-icon streak-icon-fire">
-              <FlameIcon size={18} />
-            </span>
-            <span className="card-kicker streak-kicker">CURRENT STREAK</span>
+        {/* KPI 2: Current Streak */}
+        <div className="kpi-item">
+          <span className="kpi-icon kpi-icon-streak">
+            <FlameIcon size={16} />
+          </span>
+          <div className="kpi-info">
+            <span className="kpi-label">CURRENT STREAK</span>
+            <div className="kpi-value-row">
+              <strong>{streak}</strong>
+              <small>{streak === 1 ? "day" : "days"}</small>
+            </div>
           </div>
-          <div className="streak-number streak-number-fire">
-            {streak}
-            <span> days</span>
-          </div>
-          <p className="overview-caption">
-            {streak > 0 ? "You're on fire! Keep the momentum going." : "Start your streak with a lesson today."}
-          </p>
-        </article>
+          <span className={`kpi-status-badge ${streak > 0 ? "kpi-badge-fire" : "kpi-badge-idle"}`}>
+            {streak > 0 ? "🔥 On Fire" : "Start today"}
+          </span>
+        </div>
 
-        <article className="library-stat-card">
-          <div className="overview-card-top">
-            <span className="overview-icon library-icon">
-              <BookOpenIcon size={18} />
-            </span>
-            <span className="card-kicker">MY LIBRARY</span>
+        {/* KPI 3: Courses */}
+        <div className="kpi-item">
+          <span className="kpi-icon kpi-icon-library">
+            <BookOpenIcon size={16} />
+          </span>
+          <div className="kpi-info">
+            <span className="kpi-label">MY COURSES</span>
+            <div className="kpi-value-row">
+              <strong>{courses.length}</strong>
+              <small>{courses.length === 1 ? "course" : "courses"}</small>
+            </div>
           </div>
-          <div className="library-stat-number">
-            {courses.length}
-            <span> courses</span>
-          </div>
-          <p className="overview-caption">
-            {completedVideos} of {totalVideos} lessons completed
-          </p>
-        </article>
+          <span className="kpi-meta-text">
+            {completedVideos}/{totalVideos} completed
+          </span>
+        </div>
       </section>
 
+      {/* Sleek Compact Resume Bar (if active lesson exists) */}
       {resume && resume.continueVideoId && (
-        <section className="resume-card">
-          <div className="resume-art">
-            <PlayIcon size={24} />
-            <small>CURRENT LESSON</small>
+        <section className="resume-compact-bar">
+          <div className="resume-compact-left">
+            <span className="resume-compact-badge">RESUME</span>
+            <span className="resume-compact-title" title={resume.title}>
+              {resume.title}
+            </span>
+            <span className="resume-compact-meta">
+              ({resume.completedVideos}/{resume.totalVideos} videos
+              {resume.channelTitle ? ` · ${resume.channelTitle}` : ""})
+            </span>
           </div>
-          <div className="resume-copy">
-            <h2>{resume.title}</h2>
-            <p>
-              {resume.completedVideos} of {resume.totalVideos} lessons complete
-              {resume.channelTitle ? ` · ${resume.channelTitle}` : ""}
-            </p>
-          </div>
-          <Link href={`/watch/${resume.id}/${resume.continueVideoId}`} className="resume-button">
-            Continue learning <ArrowRightIcon size={16} />
+          <Link
+            href={`/watch/${resume.id}/${resume.continueVideoId}`}
+            className="resume-compact-btn"
+          >
+            <span>Continue</span>
+            <ArrowRightIcon size={12} />
           </Link>
         </section>
       )}
 
-      {/* Study Hubs Shortcut Banner */}
-      <section className="study-hubs-banner-wrap">
-        <Link href="/study-hubs" className="study-hubs-banner">
-          <div className="banner-left">
-            <span className="banner-icon">🎓</span>
-            <div>
-              <strong>Study Hubs (Semester & Class Bundles)</strong>
-              <p>Group all your subjects & playlists into one unified screen. Switch between subjects with one click.</p>
-            </div>
-          </div>
-          <span className="banner-cta">
-            Open Study Hubs <ArrowRightIcon size={14} />
-          </span>
-        </Link>
-      </section>
-
-      <section className="add-course-section">
-        <div className="section-title-row">
-          <div>
-            <h2>Start a new learning path</h2>
-          </div>
-          <span className="section-side-note">Paste any YouTube playlist or video link.</span>
-        </div>
+      {/* Compact Quick-Add Bar */}
+      <section className="add-course-bar-wrap">
         <AddCourseForm />
       </section>
 
+      {/* Main Course Library */}
       <section id="courses" className="library-section">
-        <div className="section-title-row">
-          <div>
-            <h2>
-              Your courses <span className="heading-count">{courses.length}</span>
-            </h2>
-          </div>
-          <span className="section-side-note">Learn at your own pace and track your mastery.</span>
+        <div className="section-title-compact">
+          <h2>
+            Your Courses <span className="heading-count">{courses.length}</span>
+          </h2>
+          <span className="section-side-note">Click any course to resume learning</span>
         </div>
         <CourseLibrary courses={courses} initialQuery={search} />
       </section>
 
-      {/* Gamification: Badges & Milestones */}
-      <section className="mb-6">
+      {/* Gamification: Badges & Milestones (Compact Collapsible) */}
+      <section className="mt-5 mb-5">
         <AchievementsBadges
           streak={streak}
           totalActiveDays={totalActiveDays}
@@ -276,9 +258,9 @@ export default async function DashboardPage({
         <div className="panel-card activity-panel flex-1">
           <div className="panel-heading">
             <div>
-              <h2>Your consistency</h2>
+              <h2>Consistency Heatmap</h2>
             </div>
-            <span className="panel-period">ACTIVITY HEATMAP</span>
+            <span className="panel-period">LAST 16 WEEKS</span>
           </div>
           <StreakCalendar
             days={days}
