@@ -96,15 +96,24 @@ export async function GET(req: Request) {
           
           <!-- Brand Header -->
           <tr>
-            <td style="padding: 28px 32px; background: linear-gradient(180deg, #171b24 0%, #13161c 100%); border-bottom: 1px solid #222734;">
+            <td style="padding: 24px 32px; background: linear-gradient(180deg, #171b24 0%, #13161c 100%); border-bottom: 1px solid #222734;">
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td align="left">
-                    <span style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">
-                      Watch<span style="color: #10b981;">lify</span>
-                    </span>
+                  <td align="left" style="vertical-align: middle;">
+                    <table cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="vertical-align: middle; padding-right: 12px;">
+                          <img src="${siteUrl}/logo.png" width="34" height="34" alt="Watchlify" style="display: block; border-radius: 8px; border: 1px solid #222734;" />
+                        </td>
+                        <td style="vertical-align: middle;">
+                          <span style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">
+                            Watch<span style="color: #10b981;">lify</span>
+                          </span>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
-                  <td align="right">
+                  <td align="right" style="vertical-align: middle;">
                     <span style="display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: 700; color: #10b981; background-color: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); border-radius: 999px; text-transform: uppercase; letter-spacing: 0.5px;">
                       Daily Streak
                     </span>
