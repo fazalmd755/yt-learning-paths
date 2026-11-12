@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRightIcon, PlayIcon, SparklesIcon, CheckIcon } from "@/components/Icons";
 import { WatchlifyIcon } from "@/components/BrandLogo";
 import HeroUrlInput from "@/components/HeroUrlInput";
+import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Watchlify — Turn YouTube Playlists into Distraction-Free Courses",
@@ -68,8 +69,25 @@ const faqs = [
 ];
 
 export default function Home() {
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.q,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.a,
+      },
+    })),
+  };
+
   return (
     <main className="home-shell">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* Hero Section */}
       <section className="hero-shell">
         <div className="hero-content">
@@ -359,23 +377,8 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* Footer */}
-      <footer className="home-footer">
-        <div className="home-footer-brand">
-          <Link href="/" className="brand-link" aria-label="Watchlify Home">
-            <WatchlifyIcon size={28} />
-            <span className="brand-name">
-              Watch<span className="text-gradient-brand">lify</span>
-            </span>
-          </Link>
-          <span>Turn scattered YouTube playlists into distraction-free courses.</span>
-        </div>
-        <div className="home-footer-links">
-          <Link href="/syllabus/select">Playlists</Link>
-          <Link href="/planner">Planner</Link>
-          <Link href="/settings">Settings</Link>
-        </div>
-      </footer>
+      {/* Universal Footer */}
+      <SiteFooter />
     </main>
   );
 }

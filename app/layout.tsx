@@ -19,7 +19,7 @@ function getSiteUrl(): string {
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
-  return "https://watchlify.app";
+  return "https://watchlify.online";
 }
 
 const siteUrl = getSiteUrl();
@@ -31,21 +31,23 @@ export const metadata: Metadata = {
     template: "%s | Watchlify",
   },
   description:
-    "Transform scattered YouTube playlists into organized learning paths. Track video progress, build daily streaks, take timestamped notes, and finish what you start.",
+    "Transform scattered YouTube playlists into organized, distraction-free learning paths. Track video progress, build daily streaks, take timestamped notes, and finish what you start.",
   applicationName: "Watchlify",
-  authors: [{ name: "Watchlify" }],
+  authors: [{ name: "Watchlify", url: "https://watchlify.online" }],
   generator: "Next.js",
   keywords: [
-    "youtube learning",
-    "course tracker",
-    "playlist to course",
+    "watchlify",
+    "watchlify.online",
+    "youtube playlist to course",
+    "youtube learning tracker",
+    "distraction free youtube",
     "study tracker",
-    "learning paths",
+    "youtube course creator",
     "video notes",
+    "timestamped notes",
+    "study streak tracker",
     "youtube study planner",
-    "study streak",
-    "habit tracker",
-    "online course",
+    "free course organizer",
   ],
   creator: "Watchlify",
   publisher: "Watchlify",
@@ -63,15 +65,28 @@ export const metadata: Metadata = {
     url: siteUrl,
     title: "Watchlify — Turn YouTube Playlists into Structured Courses",
     description:
-      "Transform scattered YouTube playlists into organized learning paths. Track video progress, build daily streaks, take timestamped notes, and finish what you start.",
+      "Transform scattered YouTube playlists into organized learning paths. Zero clickbait, timestamped notes, daily streaks.",
     siteName: "Watchlify",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Watchlify - Turn YouTube Playlists into Structured Courses",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Watchlify — Turn YouTube Playlists into Structured Courses",
     description:
       "Turn YouTube playlists into structured learning paths with progress tracking and daily streaks.",
-    creator: "@watchlify",
+    site: "@watchlify_",
+    creator: "@watchlify_",
+    images: ["/opengraph-image"],
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined,
   },
   robots: {
     index: true,
@@ -158,24 +173,57 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: "Watchlify",
-    url: siteUrl,
-    applicationCategory: "EducationalApplication",
-    operatingSystem: "All",
-    description:
-      "Turn YouTube playlists and videos into structured courses with progress tracking, timestamped notes, and daily study streaks.",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-    },
-    featureList: [
-      "YouTube playlist to course conversion",
-      "Video progress tracking and bookmarking",
-      "Daily study streak and consistency heatmap",
-      "Timestamped rich video notes",
-      "Weekly study planner and scheduling",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": `${siteUrl}/#website`,
+        url: siteUrl,
+        name: "Watchlify",
+        alternateName: ["Watchlify Online", "Watchlify App"],
+        description:
+          "Turn YouTube playlists into structured, distraction-free study courses with progress tracking, timestamped notes, and daily streaks.",
+        inLanguage: "en",
+        publisher: {
+          "@type": "Organization",
+          "@id": `${siteUrl}/#organization`,
+          name: "Watchlify",
+          url: siteUrl,
+          logo: {
+            "@type": "ImageObject",
+            url: `${siteUrl}/icon.svg`,
+          },
+          sameAs: ["https://instagram.com/watchlify_"],
+          contactPoint: {
+            "@type": "ContactPoint",
+            email: "contact.watchlify@gmail.com",
+            contactType: "customer support",
+          },
+        },
+      },
+      {
+        "@type": "WebApplication",
+        "@id": `${siteUrl}/#webapp`,
+        name: "Watchlify",
+        url: siteUrl,
+        applicationCategory: "EducationalApplication",
+        operatingSystem: "All",
+        description:
+          "Turn YouTube playlists and videos into structured courses with progress tracking, timestamped notes, and daily study streaks.",
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
+        featureList: [
+          "YouTube playlist to course conversion",
+          "Distraction-free video player (no shorts, no ads)",
+          "Video progress tracking and bookmarking",
+          "Daily study streak and consistency heatmap",
+          "Timestamped rich video notes",
+          "Weekly study planner and scheduling",
+          "Curated Roadmaps and Collaborative Study Hubs",
+        ],
+      },
     ],
   };
 

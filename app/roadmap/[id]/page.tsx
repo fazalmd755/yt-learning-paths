@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://watchlify.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://watchlify.online";
   const canonicalUrl = `${siteUrl}/roadmap/${id}`;
 
   return {

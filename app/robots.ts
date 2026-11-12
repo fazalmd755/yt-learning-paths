@@ -10,30 +10,49 @@ function getSiteUrl(): string {
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
-  return "https://watchlify.app";
+  return "https://watchlify.online";
 }
 
 export default function robots(): MetadataRoute.Robots {
   const siteUrl = getSiteUrl();
 
+  const publicAllowed = [
+    "/",
+    "/roadmaps",
+    "/roadmaps/*",
+    "/roadmap/*",
+    "/study-hubs",
+    "/study-hubs/*",
+    "/syllabus",
+    "/syllabus/*",
+    "/planner",
+    "/contact",
+    "/privacy",
+    "/terms",
+    "/login",
+    "/signup",
+  ];
+
+  const privateDisallowed = [
+    "/api/*",
+    "/dashboard",
+    "/courses/*",
+    "/watch/*",
+    "/settings",
+    "/auth/*",
+    "/_next/*",
+  ];
+
   return {
     rules: [
       {
         userAgent: "*",
-        allow: ["/", "/roadmaps", "/syllabus", "/syllabus/*", "/planner", "/login", "/signup"],
-        disallow: [
-          "/api/*",
-          "/dashboard",
-          "/courses/*",
-          "/watch/*",
-          "/settings",
-          "/auth/*",
-          "/_next/*",
-        ],
+        allow: publicAllowed,
+        disallow: privateDisallowed,
       },
       {
         userAgent: "Googlebot",
-        allow: ["/", "/roadmaps", "/syllabus", "/syllabus/*", "/planner", "/login", "/signup"],
+        allow: publicAllowed,
         disallow: [
           "/api/*",
           "/dashboard",

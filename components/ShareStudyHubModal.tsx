@@ -32,7 +32,7 @@ export default function ShareStudyHubModal({
   const publicUrl =
     typeof window !== "undefined"
       ? `${window.location.origin}/study-hubs/share/${hubId}`
-      : `https://watchlify.app/study-hubs/share/${hubId}`;
+      : `https://watchlify.online/study-hubs/share/${hubId}`;
 
   const shareText = `Check out this Study Hub on Watchlify: "${title}" (${subjectCount} subjects, ${totalVideos} lectures). You can clone it into your own account with 1-click!`;
 

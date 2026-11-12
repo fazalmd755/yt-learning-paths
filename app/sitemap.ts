@@ -10,7 +10,7 @@ function getSiteUrl(): string {
   if (process.env.VERCEL_URL) {
     return `https://${process.env.VERCEL_URL}`;
   }
-  return "https://watchlify.app";
+  return "https://watchlify.online";
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -23,6 +23,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "daily",
       priority: 1.0,
+    },
+    {
+      url: `${siteUrl}/study-hubs`,
+      lastModified,
+      changeFrequency: "daily",
+      priority: 0.9,
     },
     {
       url: `${siteUrl}/roadmaps`,
@@ -47,6 +53,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified,
       changeFrequency: "monthly",
       priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/contact`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/privacy`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
+    {
+      url: `${siteUrl}/terms`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.5,
     },
     {
       url: `${siteUrl}/login`,

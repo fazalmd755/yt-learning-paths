@@ -25,7 +25,7 @@ export default function ShareRoadmapButton({
     if (typeof window !== "undefined") {
       return `${window.location.origin}/roadmap/${roadmapId}`;
     }
-    return `https://watchlify.app/roadmap/${roadmapId}`;
+    return `https://watchlify.online/roadmap/${roadmapId}`;
   };
 
   const publicUrl = getPublicUrl();
