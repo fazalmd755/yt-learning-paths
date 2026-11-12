@@ -23,6 +23,16 @@ function isAuthorizedCron(authHeader: string | null, secret: string | undefined)
  * aur reminder on rakha hai, unhe email bhejta hai.
  * Vercel Cron apne aap "Authorization: Bearer $CRON_SECRET" bhejta hai.
  */
+function getSiteUrl(): string {
+  if (process.env.NEXT_PUBLIC_SITE_URL && !process.env.NEXT_PUBLIC_SITE_URL.includes("localhost")) {
+    return process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "");
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+  }
+  return "https://www.watchlify.online";
+}
+
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET;
   const authHeader = req.headers.get("authorization");
@@ -44,7 +54,7 @@ export async function GET(req: Request) {
     .limit(500); // MVP limit: bade scale par batching/queue chahiye
   if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const siteUrl = getSiteUrl();
   let sent = 0;
 
   for (const p of profiles ?? []) {
@@ -68,8 +78,60 @@ export async function GET(req: Request) {
       body: JSON.stringify({
         from,
         to: email,
-        subject: `${p.daily_goal_minutes} minutes left to reach today's goal`,
-        html: `<p>You haven't reached your learning goal for today yet. Spend just ${p.daily_goal_minutes} minutes learning to keep your streak going.</p><p><a href="${siteUrl}/dashboard">Continue learning</a></p>`,
+        subject: `🔥 Keep your streak alive! ${p.daily_goal_minutes} mins left today`,
+        html: `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin: 0; padding: 0; background-color: #09090b; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #f4f4f5;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="padding: 40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" style="max-width: 520px; background-color: #18181b; border: 1px solid #27272a; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+          <!-- Header -->
+          <tr>
+            <td style="padding: 32px 32px 20px; border-bottom: 1px solid #27272a;">
+              <span style="font-size: 22px; font-weight: 800; color: #ffffff; letter-spacing: -0.5px;">
+                Watch<span style="color: #f97316;">lify</span>
+              </span>
+            </td>
+          </tr>
+          <!-- Body -->
+          <tr>
+            <td style="padding: 32px;">
+              <h2 style="margin: 0 0 12px; font-size: 20px; font-weight: 700; color: #ffffff;">Don't lose your study streak! 🔥</h2>
+              <p style="margin: 0 0 20px; font-size: 15px; line-height: 24px; color: #a1a1aa;">
+                You haven't reached your learning goal for today yet. Just <strong>${p.daily_goal_minutes} minutes</strong> of focused learning is all it takes to keep your daily momentum going.
+              </p>
+              
+              <div style="margin: 28px 0;">
+                <a href="${siteUrl}/dashboard" style="display: inline-block; background-color: #f97316; color: #ffffff; font-size: 15px; font-weight: 600; text-decoration: none; padding: 14px 28px; border-radius: 10px; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);">
+                  Continue Learning →
+                </a>
+              </div>
+
+              <p style="margin: 24px 0 0; font-size: 13px; color: #71717a;">
+                Watch YouTube tutorials distraction-free, organize notes, and hit your milestones on Watchlify.
+              </p>
+            </td>
+          </tr>
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 20px 32px; background-color: #121215; border-top: 1px solid #27272a; font-size: 12px; color: #71717a; text-align: center;">
+              You received this because daily study reminders are enabled on your account.<br>
+              You can adjust this anytime in your <a href="${siteUrl}/settings" style="color: #f97316; text-decoration: none;">Account Settings</a>.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+        `,
       }),
     });
     if (res.ok) sent += 1;
