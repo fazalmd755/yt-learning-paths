@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createAdminClient, createClient } from "@/lib/supabase/server";
 import { fetchPlaylist, fetchSingleVideo, parseYoutubeInput } from "@/lib/youtube";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { learningPathAddVideoSchema } from "@/lib/validations/api";
 
 type RouteContext = { params: Promise<{ id: string }> };
 
@@ -10,8 +12,23 @@ export async function POST(request: Request, { params }: RouteContext) {
   const { data: { user }, error: authError } = await supabase.auth.getUser();
   if (authError || !user) return NextResponse.json({ error: "Please sign in first." }, { status: 401 });
 
-  const body: unknown = await request.json().catch(() => null);
-  const url = body && typeof body === "object" && "url" in body && typeof body.url === "string" ? body.url.trim() : "";
+  const clientIp = getClientIp(request);
+  const [userLimit, ipLimit] = await Promise.all([
+    checkRateLimit(`lp_vid:user:${user.id}`, 10, 60),
+    checkRateLimit(`lp_vid:ip:${clientIp}`, 15, 60),
+  ]);
+
+  if (!userLimit.success || !ipLimit.success) {
+    return NextResponse.json({ error: "Too many video import requests. Please wait a moment." }, { status: 429 });
+  }
+
+  const rawBody = await request.json().catch(() => null);
+  const validation = learningPathAddVideoSchema.safeParse(rawBody);
+  if (!validation.success) {
+    return NextResponse.json({ error: validation.error.issues[0]?.message || "Invalid YouTube link." }, { status: 400 });
+  }
+
+  const { url } = validation.data;
   const parsed = parseYoutubeInput(url);
   if (!parsed) {
     return NextResponse.json({ error: "Paste a valid YouTube video or playlist link." }, { status: 400 });

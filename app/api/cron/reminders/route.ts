@@ -1,8 +1,22 @@
 import { NextResponse } from "next/server";
+import crypto from "crypto";
 import { createAdminClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
+
+function isAuthorizedCron(authHeader: string | null, secret: string | undefined): boolean {
+  if (!secret || secret === "change-me") return false;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) return false;
+  const token = authHeader.slice(7);
+  try {
+    const a = Buffer.from(token, "utf-8");
+    const b = Buffer.from(secret, "utf-8");
+    return a.length === b.length && crypto.timingSafeEqual(a, b);
+  } catch {
+    return false;
+  }
+}
 
 /**
  * Roz ek baar chalta hai (vercel.json). Jinhone aaj ka goal poora nahi kiya
@@ -11,7 +25,8 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET;
-  if (!secret || req.headers.get("authorization") !== `Bearer ${secret}`) {
+  const authHeader = req.headers.get("authorization");
+  if (!isAuthorizedCron(authHeader, secret)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 

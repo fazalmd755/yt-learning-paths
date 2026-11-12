@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getTrackByIdOrSlug } from "@/lib/roadmaps";
 import { getOrFetchPlaylistWithCache } from "@/lib/youtube-cache";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { roadmapCloneSchema } from "@/lib/validations/api";
 
 export async function POST(req: Request) {
   try {
@@ -17,11 +19,31 @@ export async function POST(req: Request) {
       );
     }
 
-    const body = await req.json().catch(() => ({}));
-    const roadmapId = String(body?.roadmapId ?? "").trim();
-    if (!roadmapId) {
-      return NextResponse.json({ error: "Missing roadmap ID." }, { status: 400 });
+    // 1. Rate Limiting (12 clone requests per minute per user, 20 per IP)
+    const clientIp = getClientIp(req);
+    const [userLimit, ipLimit] = await Promise.all([
+      checkRateLimit(`clone:user:${user.id}`, 12, 60),
+      checkRateLimit(`clone:ip:${clientIp}`, 20, 60),
+    ]);
+
+    if (!userLimit.success || !ipLimit.success) {
+      return NextResponse.json(
+        { error: "Rate limit reached. Please wait before cloning again." },
+        { status: 429 }
+      );
     }
+
+    // 2. Strict Input Validation with Zod
+    const rawBody = await req.json().catch(() => null);
+    const validation = roadmapCloneSchema.safeParse(rawBody);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: validation.error.issues[0]?.message || "Invalid roadmap ID." },
+        { status: 400 }
+      );
+    }
+
+    const { roadmapId } = validation.data;
 
     // 1. Check curated track
     const curated = getTrackByIdOrSlug(roadmapId);

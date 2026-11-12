@@ -126,6 +126,18 @@ export async function addSubjectToHub(formData: FormData) {
     return { error: "Subject name is required." };
   }
 
+  // Security Check: Verify that the authenticated user owns this study hub
+  const { data: hub, error: hubErr } = await supabase
+    .from("user_study_hubs")
+    .select("id")
+    .eq("id", hubId)
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (hubErr || !hub) {
+    return { error: "Study hub not found or unauthorized." };
+  }
+
   let finalCourseId: string | null = null;
   let finalPlaylistId: string | null = null;
 
@@ -220,6 +232,7 @@ export async function removeSubjectFromHub(subjectId: string, hubId: string) {
     .from("study_hub_subjects")
     .delete()
     .eq("id", subjectId)
+    .eq("hub_id", hubId)
     .eq("user_id", user.id);
 
   if (error) {

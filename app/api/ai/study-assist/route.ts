@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { aiStudyAssistSchema } from "@/lib/validations/api";
 
 export interface StudyAssistResponse {
   title: string;
@@ -204,19 +206,62 @@ export async function POST(req: Request) {
       );
     }
 
-    const body = await req.json().catch(() => ({}));
-    const action = String(body?.action || "study_assist"); // "study_assist" | "ask"
-    const videoTitle = String(body?.videoTitle ?? "Lesson Topic").trim();
-    const description = String(body?.description ?? "").trim();
-    const currentTimestamp = Number(body?.currentTimestamp ?? 0);
-    const userQuestion = String(body?.question ?? "").trim();
+    // 1. Production Rate Limiting (10 requests per minute per user, 15 per IP)
+    const clientIp = getClientIp(req);
+    const [userLimit, ipLimit] = await Promise.all([
+      checkRateLimit(`ai:user:${user.id}`, 10, 60),
+      checkRateLimit(`ai:ip:${clientIp}`, 15, 60),
+    ]);
+
+    if (!userLimit.success || !ipLimit.success) {
+      const retryAfter = Math.max(userLimit.reset, ipLimit.reset) - Math.floor(Date.now() / 1000);
+      return NextResponse.json(
+        {
+          error: "TOO_MANY_REQUESTS",
+          message: "You have exceeded the AI request limit. Please wait a moment before asking again.",
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(Math.max(1, retryAfter)),
+            "X-RateLimit-Limit": String(userLimit.limit),
+            "X-RateLimit-Remaining": String(userLimit.remaining),
+            "X-RateLimit-Reset": String(userLimit.reset),
+          },
+        }
+      );
+    }
+
+    // 2. Strict Payload Validation with Zod
+    const rawBody = await req.json().catch(() => null);
+    const parsedResult = aiStudyAssistSchema.safeParse(rawBody);
+
+    if (!parsedResult.success) {
+      return NextResponse.json(
+        {
+          error: "VALIDATION_ERROR",
+          message: parsedResult.error.issues[0]?.message || "Invalid request payload.",
+        },
+        { status: 400 }
+      );
+    }
+
+    const {
+      action,
+      videoTitle,
+      description,
+      currentTimestamp,
+      question: userQuestion = "",
+      apiKey: clientKey,
+    } = parsedResult.data;
 
     // Key hierarchy: server env GEMINI_API_KEY -> client passed key
     const geminiKey =
       process.env.GEMINI_API_KEY ||
       process.env.GOOGLE_AI_API_KEY ||
       process.env.GOOGLE_API_KEY ||
-      String(body?.apiKey ?? "").trim();
+      clientKey ||
+      "";
 
     const mins = Math.floor(currentTimestamp / 60);
     const secs = currentTimestamp % 60;

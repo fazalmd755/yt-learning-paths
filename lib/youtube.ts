@@ -17,13 +17,33 @@ export type YtPlaylist = {
   videos: YtVideo[];
 };
 
+const ALLOWED_YT_HOSTS = new Set([
+  "youtube.com",
+  "www.youtube.com",
+  "m.youtube.com",
+  "music.youtube.com",
+  "youtu.be",
+  "www.youtube-nocookie.com",
+]);
+
+function isAllowedHost(hostname: string): boolean {
+  const host = hostname.toLowerCase();
+  return ALLOWED_YT_HOSTS.has(host) || host.endsWith(".youtube.com") || host.endsWith(".youtube-nocookie.com");
+}
+
+const VIDEO_ID_REGEX = /^[A-Za-z0-9_-]{11}$/;
+const PLAYLIST_ID_REGEX = /^[A-Za-z0-9_-]{10,64}$/;
+
 /** URL ya seedha ID se playlist ID nikalta hai */
 export function extractPlaylistId(input: string): string | null {
   const text = input.trim();
   try {
-    return new URL(text).searchParams.get("list");
+    const url = new URL(text);
+    if (!isAllowedHost(url.hostname)) return null;
+    const list = url.searchParams.get("list");
+    return list && PLAYLIST_ID_REGEX.test(list) ? list : null;
   } catch {
-    return /^[A-Za-z0-9_-]{10,}$/.test(text) ? text : null;
+    return PLAYLIST_ID_REGEX.test(text) ? text : null;
   }
 }
 
@@ -37,19 +57,36 @@ export function parseYoutubeInput(input: string): ParsedInput | null {
   if (!text) return null;
   try {
     const url = new URL(text);
+    if (!isAllowedHost(url.hostname)) return null;
+
     const list = url.searchParams.get("list");
-    if (list) return { kind: "playlist", id: list };
-    const v = url.searchParams.get("v");
-    if (v) return { kind: "video", id: v };
-    if (url.hostname === "youtu.be") {
-      const id = url.pathname.split("/").filter(Boolean)[0];
-      return id ? { kind: "video", id } : null;
+    if (list && PLAYLIST_ID_REGEX.test(list)) {
+      return { kind: "playlist", id: list };
     }
+
+    const v = url.searchParams.get("v");
+    if (v && VIDEO_ID_REGEX.test(v)) {
+      return { kind: "video", id: v };
+    }
+
+    if (url.hostname.toLowerCase() === "youtu.be") {
+      const id = url.pathname.split("/").filter(Boolean)[0];
+      return id && VIDEO_ID_REGEX.test(id) ? { kind: "video", id } : null;
+    }
+
     const m = url.pathname.match(/^\/(?:shorts|embed|live)\/([A-Za-z0-9_-]{11})/);
-    return m ? { kind: "video", id: m[1] } : null;
+    if (m && m[1] && VIDEO_ID_REGEX.test(m[1])) {
+      return { kind: "video", id: m[1] };
+    }
+
+    return null;
   } catch {
-    if (/^(PL|UU|OL|FL|LL)[A-Za-z0-9_-]{10,}$/.test(text)) return { kind: "playlist", id: text };
-    if (/^[A-Za-z0-9_-]{11}$/.test(text)) return { kind: "video", id: text };
+    if (PLAYLIST_ID_REGEX.test(text) && (text.startsWith("PL") || text.startsWith("UU") || text.startsWith("OL") || text.startsWith("FL") || text.startsWith("LL") || text.length >= 18)) {
+      return { kind: "playlist", id: text };
+    }
+    if (VIDEO_ID_REGEX.test(text)) {
+      return { kind: "video", id: text };
+    }
     return null;
   }
 }

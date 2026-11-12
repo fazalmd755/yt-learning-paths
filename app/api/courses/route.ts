@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { parseYoutubeInput } from "@/lib/youtube";
 import { getOrFetchPlaylistWithCache } from "@/lib/youtube-cache";
+import { checkRateLimit, getClientIp } from "@/lib/rate-limit";
+import { courseImportSchema } from "@/lib/validations/api";
 
 export async function POST(req: Request) {
   const supabase = await createClient();
@@ -10,9 +12,41 @@ export async function POST(req: Request) {
   } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Please sign in first." }, { status: 401 });
 
-  const body = await req.json().catch(() => ({}));
-  const refresh = Boolean(body?.refresh);
-  const inputUrl = String(body?.url ?? "").trim();
+  // 1. YouTube Quota Rate Limiting (6 imports per minute per user, 10 per IP)
+  const clientIp = getClientIp(req);
+  const [userLimit, ipLimit] = await Promise.all([
+    checkRateLimit(`import:user:${user.id}`, 6, 60),
+    checkRateLimit(`import:ip:${clientIp}`, 10, 60),
+  ]);
+
+  if (!userLimit.success || !ipLimit.success) {
+    const retryAfter = Math.max(userLimit.reset, ipLimit.reset) - Math.floor(Date.now() / 1000);
+    return NextResponse.json(
+      {
+        error: "Import rate limit reached. Please wait a moment before importing another playlist.",
+      },
+      {
+        status: 429,
+        headers: {
+          "Retry-After": String(Math.max(1, retryAfter)),
+          "X-RateLimit-Limit": String(userLimit.limit),
+          "X-RateLimit-Remaining": String(userLimit.remaining),
+        },
+      }
+    );
+  }
+
+  // 2. Strict Input Validation with Zod
+  const rawBody = await req.json().catch(() => null);
+  const validation = courseImportSchema.safeParse(rawBody);
+  if (!validation.success) {
+    return NextResponse.json(
+      { error: validation.error.issues[0]?.message || "Invalid YouTube link provided." },
+      { status: 400 }
+    );
+  }
+
+  const { url: inputUrl, refresh } = validation.data;
   const parsed = parseYoutubeInput(inputUrl);
 
   if (!parsed) {
