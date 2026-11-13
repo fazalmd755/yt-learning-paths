@@ -178,17 +178,22 @@ export function generateWelcomeEmailHtml({
  * Sends a welcome email to a new user via Resend.
  * Fails gracefully without throwing an error if configuration is missing.
  */
-export async function sendWelcomeEmail({ to, displayName }: WelcomeEmailOptions): Promise<{ success: boolean; error?: string }> {
+export async function sendWelcomeEmail({ to, displayName }: WelcomeEmailOptions): Promise<{ success: boolean; error?: string; details?: any }> {
   const resendKey = process.env.RESEND_API_KEY;
-  const from = process.env.RESEND_FROM || "Watchlify <notifications@watchlify.online>";
+  let from = process.env.RESEND_FROM;
+
+  if (!from || from.includes("yourdomain.com")) {
+    from = "Watchlify <onboarding@resend.dev>";
+  }
 
   if (!to || !to.includes("@")) {
     return { success: false, error: "Invalid recipient email" };
   }
 
-  if (!resendKey) {
-    console.warn(`[Welcome Email] RESEND_API_KEY not configured. Skipped sending email to ${to}.`);
-    return { success: false, error: "RESEND_API_KEY not configured" };
+  if (!resendKey || resendKey.trim() === "") {
+    const msg = "RESEND_API_KEY is not configured in environment variables (Vercel / .env).";
+    console.warn(`[Welcome Email] ${msg} Skipped sending email to ${to}.`);
+    return { success: false, error: msg };
   }
 
   const siteUrl = getSiteUrl();
@@ -200,7 +205,7 @@ export async function sendWelcomeEmail({ to, displayName }: WelcomeEmailOptions)
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${resendKey}`,
+        Authorization: `Bearer ${resendKey.trim()}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -214,12 +219,12 @@ export async function sendWelcomeEmail({ to, displayName }: WelcomeEmailOptions)
     if (!res.ok) {
       const errorText = await res.text();
       console.error(`[Welcome Email Error] Resend returned ${res.status}:`, errorText);
-      return { success: false, error: errorText };
+      return { success: false, error: `Resend error (${res.status}): ${errorText}` };
     }
 
     const data = await res.json();
     console.log(`[Welcome Email Sent] To: ${to}, Resend ID: ${data?.id}`);
-    return { success: true };
+    return { success: true, details: data };
   } catch (err: any) {
     console.error("[Welcome Email Exception]", err);
     return { success: false, error: err?.message || "Unknown error" };
@@ -238,7 +243,7 @@ export async function handleNewUserWelcome(user: {
 }) {
   if (!user || !user.id || !user.email) return;
 
-  // 1. If already sent, do nothing
+  // 1. If already successfully sent, do nothing
   if (user.user_metadata?.welcome_email_sent) {
     return;
   }
@@ -267,28 +272,33 @@ export async function handleNewUserWelcome(user: {
     return;
   }
 
-  // 3. Mark as sent first to avoid duplicate sends in parallel requests
-  try {
-    await admin.auth.admin.updateUserById(user.id, {
-      user_metadata: {
-        ...(user.user_metadata || {}),
-        welcome_email_sent: true,
-        welcome_email_sent_at: new Date().toISOString(),
-      },
-    });
-  } catch (err) {
-    console.error("[Welcome Email] Could not set welcome_email_sent metadata:", err);
-  }
-
-  // 4. Send the welcome email
+  // 3. Send the welcome email FIRST
   const displayName =
     user.user_metadata?.display_name ||
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
     "";
 
-  await sendWelcomeEmail({
+  const result = await sendWelcomeEmail({
     to: user.email,
     displayName,
   });
+
+  // 4. ONLY mark as sent if the email was actually successfully delivered by Resend!
+  // If Resend failed (e.g. missing API key), we do not set welcome_email_sent so it can retry once configured.
+  if (result.success) {
+    try {
+      await admin.auth.admin.updateUserById(user.id, {
+        user_metadata: {
+          ...(user.user_metadata || {}),
+          welcome_email_sent: true,
+          welcome_email_sent_at: new Date().toISOString(),
+        },
+      });
+    } catch (err) {
+      console.error("[Welcome Email] Could not set welcome_email_sent metadata:", err);
+    }
+  } else {
+    console.warn(`[Welcome Email] Did not set welcome_email_sent flag because delivery failed: ${result.error}`);
+  }
 }
