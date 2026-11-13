@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Script from "next/script";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import SiteHeader from "@/components/SiteHeader";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 import AnimatedBackground from "@/components/AnimatedBackground";
@@ -8,6 +9,20 @@ import { WatchlifyIcon } from "@/components/BrandLogo";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
 import "./globals.css";
+
+const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+});
 
 function getSiteUrl(): string {
   if (process.env.NEXT_PUBLIC_SITE_URL && !process.env.NEXT_PUBLIC_SITE_URL.includes("localhost")) {
@@ -27,11 +42,11 @@ const siteUrl = getSiteUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Watchlify — Turn YouTube Playlists into Structured Courses",
+    default: "Watchlify — YouTube Playlists into Structured Courses",
     template: "%s | Watchlify",
   },
   description:
-    "Transform scattered YouTube playlists into organized, distraction-free learning paths. Track video progress, build daily streaks, take timestamped notes, and finish what you start.",
+    "Turn YouTube playlists into distraction-free courses. Track progress, take timestamped notes, build daily study streaks, and finish what you start.",
   applicationName: "Watchlify",
   authors: [{ name: "Watchlify", url: "https://watchlify.online" }],
   generator: "Next.js",
@@ -63,9 +78,9 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    title: "Watchlify — Turn YouTube Playlists into Structured Courses",
+    title: "Watchlify — YouTube Playlists into Structured Courses",
     description:
-      "Transform scattered YouTube playlists into organized learning paths. Zero clickbait, timestamped notes, daily streaks.",
+      "Turn YouTube playlists into distraction-free courses. Track progress, take timestamped notes, and build daily streaks.",
     siteName: "Watchlify",
     images: [
       {
@@ -78,9 +93,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Watchlify — Turn YouTube Playlists into Structured Courses",
+    title: "Watchlify — YouTube Playlists into Structured Courses",
     description:
-      "Turn YouTube playlists into structured learning paths with progress tracking and daily streaks.",
+      "Turn YouTube playlists into distraction-free courses with progress tracking and daily streaks.",
     site: "@watchlify_",
     creator: "@watchlify_",
     images: ["/opengraph-image"],
@@ -228,7 +243,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   };
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${plusJakarta.variable} ${jetbrainsMono.variable}`}>
       <head>
         <Script
           src="https://www.googletagmanager.com/gtm.js?id=GTM-P767SJF7"
@@ -241,12 +256,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             gtag('js', new Date());
           `}
         </Script>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-          rel="stylesheet"
-        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

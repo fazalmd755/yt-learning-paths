@@ -6,9 +6,9 @@ import HeroUrlInput from "@/components/HeroUrlInput";
 import SiteFooter from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
-  title: "Watchlify — Turn YouTube Playlists into Distraction-Free Courses",
+  title: "Watchlify — YouTube Playlists into Structured Courses",
   description:
-    "Turn scattered YouTube playlists into organized, distraction-free courses. Strip away recommendations, track exact watch progress, take timestamped notes, and finish what you start.",
+    "Turn YouTube playlists into distraction-free courses. Track progress, take timestamped notes, build daily study streaks, and finish what you start.",
   alternates: {
     canonical: "/",
   },
