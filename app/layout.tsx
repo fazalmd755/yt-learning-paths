@@ -288,6 +288,44 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </header>
         {children}
         <PwaInstallPrompt />
+
+        {/* Mobile Bottom Navigation — only visible on small screens via CSS */}
+        <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+          <Link href="/" className="mobile-bottom-nav-link" aria-label="Home">
+            <span className="nav-icon" aria-hidden="true">🏠</span>
+            <span>Home</span>
+          </Link>
+          {user ? (
+            <Link href="/dashboard" className="mobile-bottom-nav-link" aria-label="Dashboard">
+              <span className="nav-icon" aria-hidden="true">📊</span>
+              <span>Dashboard</span>
+            </Link>
+          ) : (
+            <Link href="/login" className="mobile-bottom-nav-link" aria-label="Login">
+              <span className="nav-icon" aria-hidden="true">🔑</span>
+              <span>Login</span>
+            </Link>
+          )}
+          <Link href="/study-hubs" className="mobile-bottom-nav-link" aria-label="Study Hubs">
+            <span className="nav-icon" aria-hidden="true">👥</span>
+            <span>Hubs</span>
+          </Link>
+          <Link href="/planner" className="mobile-bottom-nav-link" aria-label="Planner">
+            <span className="nav-icon" aria-hidden="true">📅</span>
+            <span>Planner</span>
+          </Link>
+          {user ? (
+            <Link href="/settings" className="mobile-bottom-nav-link" aria-label="Settings">
+              <span className="nav-icon" aria-hidden="true">⚙️</span>
+              <span>Settings</span>
+            </Link>
+          ) : (
+            <Link href="/roadmaps" className="mobile-bottom-nav-link" aria-label="Roadmaps">
+              <span className="nav-icon" aria-hidden="true">🗺️</span>
+              <span>Roadmaps</span>
+            </Link>
+          )}
+        </nav>
       </body>
     </html>
   );
