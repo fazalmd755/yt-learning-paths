@@ -12142,3 +12142,339 @@ textarea::placeholder {
     font-size: 12px;
   }
 }
+
+
+/* ==========================================================================
+   📱 PLANNER PAGE — Specific Mobile Fix
+   Problem: sidebar was showing alongside/behind main content, text cut off
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  /* Force single column — override any inherited grid */
+  .planner-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px;
+    width: 100%;
+  }
+
+  /* Main section: full width */
+  .planner-main {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  /* Sidebar: full width, shown BELOW the main content */
+  .planner-sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Courses card: full width, no overflow */
+  .planner-courses-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Course links: truncate properly */
+  .planner-course-link {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .planner-course-link strong {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+  }
+
+  .planner-course-link small {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+  }
+
+  /* Focus card: full width */
+  .planner-focus-card {
+    width: 100%;
+    padding: 16px;
+  }
+
+  /* View toolbar: stack cleanly */
+  .planner-view-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  /* View switch buttons: equal width */
+  .planner-view-switch {
+    display: flex;
+    width: 100%;
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .planner-view-switch button {
+    flex: 1;
+    min-height: 44px;
+    font-size: 13px;
+    border-radius: 0;
+  }
+
+  /* Date navigation: centered */
+  .planner-date-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .planner-date-navigation strong {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    min-width: 0;
+  }
+
+  .planner-date-navigation button {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    min-height: unset;
+    font-size: 16px;
+  }
+
+  /* Date picker: right-aligned */
+  .planner-date-picker {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    font-size: 12px;
+  }
+
+  .planner-date-picker input {
+    height: 36px;
+    font-size: 13px;
+    padding: 0 8px;
+    min-height: unset;
+  }
+
+  /* Week grid: compact 7 columns */
+  .planner-week {
+    display: grid !important;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 4px;
+    width: 100%;
+  }
+
+  .planner-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 64px;
+    padding: 6px 2px;
+    text-align: center;
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .planner-day > span {
+    font-size: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: clip;
+    max-width: 100%;
+    display: block;
+  }
+
+  .planner-day strong {
+    font-size: 15px;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .planner-day small {
+    font-size: 7px;
+    display: block;
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  /* Task list: full width */
+  .planner-task-list {
+    width: 100%;
+  }
+
+  .planner-task {
+    min-width: 0;
+    overflow: hidden;
+  }
+
+  .planner-task-copy {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  .planner-task-copy h3 {
+    font-size: 14px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Add task form: single column */
+  .planner-add-form {
+    padding: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .planner-form-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+  }
+
+  .planner-form-grid label {
+    font-size: 13px;
+  }
+
+  .planner-form-grid input {
+    min-height: 48px;
+    font-size: 15px; /* prevent iOS zoom */
+  }
+
+  .planner-add-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .planner-add-footer > button {
+    width: 100%;
+    min-height: 50px;
+    font-size: 15px;
+    justify-content: center;
+  }
+
+  .planner-add-footer > span {
+    text-align: center;
+    font-size: 11px;
+  }
+
+  /* Summary row: compact */
+  .planner-summary {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 10px;
+  }
+
+  .planner-summary h2 {
+    font-size: 18px;
+  }
+
+  .planner-summary-stats {
+    gap: 8px;
+    font-size: 11px;
+  }
+
+  /* Month calendar: full width */
+  .planner-month-calendar {
+    padding: 8px 6px;
+  }
+
+  .planner-month-day {
+    min-height: 36px;
+  }
+
+  .planner-month-day strong {
+    font-size: 11px;
+  }
+
+  /* Year grid: 3 columns on mobile */
+  .planner-year-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .planner-year-month {
+    min-height: 68px;
+    padding: 10px 8px;
+  }
+
+  .planner-year-month strong {
+    font-size: 11px;
+  }
+
+  /* Product shell width fix */
+  .product-shell {
+    width: calc(100% - 28px);
+    padding: 16px 0 50px;
+    overflow: hidden;
+  }
+
+  /* Page heading: stack on mobile */
+  .product-page-heading {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .product-page-heading h1 {
+    font-size: clamp(26px, 7vw, 36px);
+    margin-bottom: 2px;
+  }
+
+  .product-page-heading > div > p {
+    font-size: 13px;
+  }
+
+  .quiet-link {
+    align-self: flex-start;
+    min-height: 40px;
+    font-size: 12px;
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 380px) {
+  .planner-day {
+    min-height: 56px;
+    padding: 4px 1px;
+  }
+
+  .planner-day > span {
+    font-size: 7px;
+  }
+
+  .planner-day strong {
+    font-size: 13px;
+  }
+
+  .planner-day small {
+    display: none; /* "tasks" text hide on very small screens */
+  }
+
+  .planner-view-switch button {
+    font-size: 11px;
+    min-height: 40px;
+  }
+}
