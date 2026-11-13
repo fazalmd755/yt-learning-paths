@@ -4,6 +4,15 @@ import { ArrowRightIcon, PlayIcon, SparklesIcon, CheckIcon } from "@/components/
 import { WatchlifyIcon } from "@/components/BrandLogo";
 import HeroUrlInput from "@/components/HeroUrlInput";
 import SiteFooter from "@/components/SiteFooter";
+import {
+  VengeanceButton,
+  AnimatedRays,
+  SkiperLink,
+  SkiperCard,
+  InteractiveMockup,
+  AnimmasterMagnetic,
+  AnimmasterTextReveal,
+} from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Watchlify — YouTube Playlists into Structured Courses",
@@ -96,7 +105,9 @@ export default function Home() {
           </div>
           <h1 className="hero-title">
             <span>The world&apos;s best education is on YouTube.</span>
-            <span className="hero-accent-line"> The worst distractions are too.</span>
+            <span className="hero-accent-line block mt-1">
+              <AnimmasterTextReveal text="The worst distractions are too." delay={0.2} />
+            </span>
           </h1>
           <p className="hero-copy">
             Watchlify strips away clickbait recommendations, infinite shorts, and algorithmic rabbit holes.
@@ -108,9 +119,13 @@ export default function Home() {
           <HeroUrlInput />
 
           <div className="hero-actions">
-            <Link href="/login" className="button-primary">
-              Start learning for free with Google <ArrowRightIcon size={16} className="inline-block ml-1" />
-            </Link>
+            <AnimmasterMagnetic strength={0.3}>
+              <Link href="/login" className="inline-block">
+                <VengeanceButton variant="emerald">
+                  Start learning for free with Google <ArrowRightIcon size={16} className="inline-block ml-1" />
+                </VengeanceButton>
+              </Link>
+            </AnimmasterMagnetic>
             <a href="#comparison" className="button-text">
               See the difference <span aria-hidden="true">↓</span>
             </a>
@@ -122,75 +137,77 @@ export default function Home() {
             <span><CheckIcon size={14} className="text-emerald-400 inline mr-1" /> Zero algorithmic traps</span>
           </div>
 
-          <div className="home-quick-links">
-            <Link href="/syllabus/select">Explore playlists <span aria-hidden="true">↗</span></Link>
-            <Link href="/planner">Plan your week <span aria-hidden="true">↗</span></Link>
+          <div className="home-quick-links flex items-center gap-6 mt-4">
+            <SkiperLink href="/syllabus/select">Explore playlists</SkiperLink>
+            <SkiperLink href="/planner">Plan your week</SkiperLink>
           </div>
         </div>
 
         {/* Dashboard Preview Mockup */}
         <div className="preview-wrap" aria-label="Learning dashboard preview">
           <div className="preview-glow" />
-          <div className="preview-card">
-            <div className="preview-topline">
-              <div className="preview-brand">
-                <WatchlifyIcon size={20} /> Watchlify
+          <InteractiveMockup>
+            <div className="preview-card">
+              <div className="preview-topline">
+                <div className="preview-brand">
+                  <WatchlifyIcon size={20} /> Watchlify
+                </div>
+                <span className="preview-avatar">A</span>
               </div>
-              <span className="preview-avatar">A</span>
-            </div>
-            <div className="preview-greeting">TODAY · YOUR STUDY SPACE</div>
-            <h2>Make today a learning day.</h2>
-            <div className="preview-metrics">
-              <div className="preview-metric">
-                <span className="metric-icon emerald-icon">✦</span>
-                <div>
-                  <strong>18 <small>/ 25 min</small></strong>
-                  <span>DAILY GOAL</span>
+              <div className="preview-greeting">TODAY · YOUR STUDY SPACE</div>
+              <h2>Make today a learning day.</h2>
+              <div className="preview-metrics">
+                <div className="preview-metric">
+                  <span className="metric-icon emerald-icon">✦</span>
+                  <div>
+                    <strong>18 <small>/ 25 min</small></strong>
+                    <span>DAILY GOAL</span>
+                  </div>
+                </div>
+                <div className="preview-metric">
+                  <span className="metric-icon fire-icon">🔥</span>
+                  <div>
+                    <strong>7 days</strong>
+                    <span>CURRENT STREAK</span>
+                  </div>
                 </div>
               </div>
-              <div className="preview-metric">
-                <span className="metric-icon fire-icon">🔥</span>
+              <div className="preview-course-label">
+                <span>CONTINUE LEARNING</span>
+                <span>04 / 12</span>
+              </div>
+              <div className="preview-course">
+                <div className="preview-thumbnail">
+                  <span>✳</span>
+                  <small>DESIGN</small>
+                </div>
+                <div className="preview-course-info">
+                  <strong>Design systems from scratch</strong>
+                  <span>Figma & UI fundamentals</span>
+                  <div className="preview-progress"><i /></div>
+                  <small>8 videos left · 2h 40m</small>
+                </div>
+                <span className="preview-play" aria-hidden="true">▶</span>
+              </div>
+              <div className="preview-week">
+                <span>THIS WEEK</span>
                 <div>
-                  <strong>7 days</strong>
-                  <span>CURRENT STREAK</span>
+                  {["M", "T", "W", "T", "F", "S", "S"].map((day, i) => (
+                    <i key={`${day}-${i}`} className={i < 4 ? "active" : ""}>
+                      {day}
+                    </i>
+                  ))}
                 </div>
               </div>
             </div>
-            <div className="preview-course-label">
-              <span>CONTINUE LEARNING</span>
-              <span>04 / 12</span>
-            </div>
-            <div className="preview-course">
-              <div className="preview-thumbnail">
-                <span>✳</span>
-                <small>DESIGN</small>
-              </div>
-              <div className="preview-course-info">
-                <strong>Design systems from scratch</strong>
-                <span>Figma & UI fundamentals</span>
-                <div className="preview-progress"><i /></div>
-                <small>8 videos left · 2h 40m</small>
-              </div>
-              <span className="preview-play" aria-hidden="true">▶</span>
-            </div>
-            <div className="preview-week">
-              <span>THIS WEEK</span>
+            <div className="floating-note">
+              <span>✦</span>
               <div>
-                {["M", "T", "W", "T", "F", "S", "S"].map((day, i) => (
-                  <i key={`${day}-${i}`} className={i < 4 ? "active" : ""}>
-                    {day}
-                  </i>
-                ))}
+                <strong>Small daily steps.</strong>
+                <small>Unstoppable momentum.</small>
               </div>
             </div>
-          </div>
-          <div className="floating-note">
-            <span>✦</span>
-            <div>
-              <strong>Small daily steps.</strong>
-              <small>Unstoppable momentum.</small>
-            </div>
-          </div>
+          </InteractiveMockup>
         </div>
       </section>
 
@@ -287,7 +304,8 @@ export default function Home() {
       </section>
 
       {/* Concrete Highlights Section */}
-      <section id="features" className="how-section">
+      <section id="features" className="how-section relative">
+        <AnimatedRays />
         <div className="section-heading">
           <div>
             <div className="eyebrow"><span className="eyebrow-dot" /> EVERYTHING YOU NEED TO FINISH</div>
@@ -301,14 +319,13 @@ export default function Home() {
 
         <div className="feature-grid-v2">
           {highlights.map((item) => (
-            <article key={item.number} className="feature-card-v2">
-              <span className="feature-number-v2">{item.number}</span>
+            <SkiperCard key={item.number} badge={`Step ${item.number}`} className="feature-card-v2">
               <div className="feature-card-content">
-                <h3>{item.title}</h3>
-                <small className="feature-subtitle">{item.subtitle}</small>
-                <p>{item.description}</p>
+                <h3 className="text-lg font-semibold text-white mb-1">{item.title}</h3>
+                <small className="feature-subtitle text-emerald-400 font-medium block mb-2">{item.subtitle}</small>
+                <p className="text-sm text-neutral-400 leading-relaxed">{item.description}</p>
               </div>
-            </article>
+            </SkiperCard>
           ))}
         </div>
       </section>

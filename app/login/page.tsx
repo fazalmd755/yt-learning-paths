@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import GoogleAuthButton from "@/components/GoogleAuthButton";
 import { signInWithGoogle } from "./actions";
+import { AnimatedRays } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Log In",
@@ -18,8 +19,9 @@ export default async function LoginPage({
 }) {
   const { error, message } = await searchParams;
   return (
-    <main className="auth-page">
-      <section className="auth-aside">
+    <main className="auth-page relative overflow-hidden">
+      <AnimatedRays className="absolute inset-0 pointer-events-none z-0" />
+      <section className="auth-aside relative z-10">
         <span className="auth-aside-mark">✳</span>
         <h1>Learn what you love,<br /><span>at your own pace.</span></h1>
         <p>Turn your YouTube playlists into learning paths. Every session saved, every milestone yours.</p>

@@ -11,6 +11,7 @@ import { getCourseSummaries } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz, lastNDates } from "@/lib/utils";
 import { handleNewUserWelcome } from "@/lib/email";
+import { AnimmasterTextReveal, AnimmasterMagnetic, AnimatedRays } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -121,11 +122,18 @@ export default async function DashboardPage({
   return (
     <main className="dashboard-shell">
       {/* Sleek Compact Header */}
-      <section className="dashboard-welcome-compact">
+      <section className="dashboard-welcome-compact relative">
         <div className="welcome-compact-left">
           <span className="welcome-dot" />
-          <h1 className="welcome-title">
-            {firstName ? `Welcome back, ${firstName}` : "Study Workspace"}
+          <h1 className="welcome-title flex items-center gap-2">
+            {firstName ? (
+              <>
+                Welcome back,{" "}
+                <AnimmasterTextReveal text={firstName} delay={0.1} />
+              </>
+            ) : (
+              <AnimmasterTextReveal text="Study Workspace" delay={0.1} />
+            )}
           </h1>
           <span className="welcome-subtag">Focused Study</span>
         </div>
@@ -160,18 +168,21 @@ export default async function DashboardPage({
               {resume.channelTitle ? ` · ${resume.channelTitle}` : ""})
             </span>
           </div>
-          <Link
-            href={`/watch/${resume.id}/${resume.continueVideoId}`}
-            className="resume-compact-btn"
-          >
-            <span>Continue</span>
-            <ArrowRightIcon size={12} />
-          </Link>
+          <AnimmasterMagnetic strength={0.2}>
+            <Link
+              href={`/watch/${resume.id}/${resume.continueVideoId}`}
+              className="resume-compact-btn inline-flex items-center gap-1.5"
+            >
+              <span>Continue</span>
+              <ArrowRightIcon size={12} />
+            </Link>
+          </AnimmasterMagnetic>
         </section>
       )}
 
       {/* LeetCode-style Row: Badges Widget on Left, Consistency Heatmap on Right */}
-      <section className="dashboard-leetcode-row">
+      <section className="dashboard-leetcode-row relative overflow-hidden rounded-2xl">
+        <AnimatedRays className="absolute inset-0 pointer-events-none opacity-20 -z-10" />
         <AchievementsBadges
           streak={streak}
           maxStreak={maxStreak}
