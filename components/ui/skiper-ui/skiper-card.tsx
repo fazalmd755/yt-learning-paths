@@ -11,7 +11,7 @@ interface SkiperCardProps {
 }
 
 /**
- * Skiper UI - Dynamic spotlight cursor-follow card
+ * Skiper UI - Dynamic spotlight cursor-follow card (Theme-adaptive)
  */
 export function SkiperCard({ children, className = "", badge }: SkiperCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -36,7 +36,7 @@ export function SkiperCard({ children, className = "", badge }: SkiperCardProps)
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 350, damping: 25 }}
       className={cn(
-        "relative rounded-2xl border border-white/10 bg-neutral-900/70 p-6 backdrop-blur-md overflow-hidden transition-colors duration-200",
+        "relative rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-neutral-900/70 p-6 backdrop-blur-md overflow-hidden transition-colors duration-200 shadow-sm dark:shadow-none text-slate-900 dark:text-slate-100",
         className
       )}
     >
@@ -45,11 +45,11 @@ export function SkiperCard({ children, className = "", badge }: SkiperCardProps)
         className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300"
         style={{
           opacity: isHovered ? 1 : 0,
-          background: `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(16, 185, 129, 0.15), transparent 70%)`,
+          background: `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(16, 185, 129, 0.12), transparent 70%)`,
         }}
       />
       {badge && (
-        <span className="inline-block text-[11px] font-semibold tracking-wider text-emerald-400 bg-emerald-950/70 border border-emerald-500/30 px-2.5 py-1 rounded-full mb-3 uppercase">
+        <span className="inline-block text-[11px] font-semibold tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-300/60 dark:border-emerald-500/30 px-2.5 py-1 rounded-full mb-3 uppercase">
           {badge}
         </span>
       )}

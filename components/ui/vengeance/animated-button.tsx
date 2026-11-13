@@ -12,7 +12,7 @@ export interface AnimatedButtonProps extends React.ButtonHTMLAttributes<HTMLButt
 }
 
 /**
- * Vengeance UI - Animated Button
+ * Vengeance UI - Animated Button (Theme-adaptive)
  * Shimmering border glow + moving text shine highlight with smooth spring interaction
  */
 export const VengeanceButton: React.FC<AnimatedButtonProps> = ({
@@ -25,8 +25,8 @@ export const VengeanceButton: React.FC<AnimatedButtonProps> = ({
     variant === "emerald"
       ? "bg-emerald-500 text-neutral-950 shadow-[0_0_24px_rgba(16,185,129,0.35)] hover:bg-emerald-400 font-semibold border-emerald-400/40"
       : variant === "primary"
-      ? "bg-neutral-900 text-white border-neutral-800"
-      : "bg-white/10 text-white border-white/15 backdrop-blur-md";
+      ? "bg-slate-900 dark:bg-neutral-900 text-white border-slate-800 dark:border-neutral-800"
+      : "bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white border-slate-200 dark:border-white/15 backdrop-blur-md";
 
   return (
     <motion.button

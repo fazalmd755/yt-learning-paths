@@ -162,12 +162,12 @@ export default function AchievementsBadges({
             className="modal-card leetcode-badges-modal"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="modal-header flex items-center justify-between pb-3 border-b border-white/10">
+            <div className="modal-header flex items-center justify-between pb-3 border-b border-slate-200 dark:border-white/10">
               <div className="flex items-center gap-2">
                 <span className="text-xl">🏆</span>
                 <div>
-                  <h3 className="text-base font-bold text-white">Achievements & Badges</h3>
-                  <p className="text-xs text-zinc-400">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white">Achievements & Badges</h3>
+                  <p className="text-xs text-slate-500 dark:text-zinc-400">
                     {unlockedCount} of {badges.length} badges earned
                   </p>
                 </div>
@@ -175,7 +175,7 @@ export default function AchievementsBadges({
               <button
                 type="button"
                 onClick={() => setModalOpen(false)}
-                className="text-zinc-400 hover:text-white text-xl p-1"
+                className="text-slate-400 hover:text-slate-800 dark:text-zinc-400 dark:hover:text-white text-xl p-1"
                 aria-label="Close modal"
               >
                 ✕
@@ -198,21 +198,21 @@ export default function AchievementsBadges({
                       <div className="flex items-center gap-2">
                         <span className="badge-emoji text-2xl">{b.icon}</span>
                         <div>
-                          <strong className="badge-title text-sm text-white block">
+                          <strong className="badge-title text-sm text-slate-900 dark:text-white block">
                             {b.title}
                           </strong>
-                          <span className="text-[11px] text-zinc-400">
+                          <span className="text-[11px] text-slate-500 dark:text-zinc-400">
                             {b.description}
                           </span>
                         </div>
                       </div>
 
                       {isUnlocked ? (
-                        <span className="badge-status-pill unlocked text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 font-semibold border border-emerald-500/30">
+                        <span className="badge-status-pill unlocked text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 font-semibold border border-emerald-400/40">
                           ✓ Earned
                         </span>
                       ) : (
-                        <span className="badge-status-pill locked text-xs px-2 py-0.5 rounded-full bg-zinc-800 text-zinc-400 font-medium border border-zinc-700">
+                        <span className="badge-status-pill locked text-xs px-2 py-0.5 rounded-full bg-slate-100 dark:bg-zinc-800 text-slate-600 dark:text-zinc-400 font-medium border border-slate-200 dark:border-zinc-700">
                           🔒 {b.current} / {b.target} {b.unit}
                         </span>
                       )}

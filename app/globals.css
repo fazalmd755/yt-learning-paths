@@ -13313,3 +13313,606 @@ html.light .mobile-bottom-nav-link:hover {
 }
 
 
+
+/* ==========================================================================
+   8. Comprehensive Component Inversions (Light Theme)
+   ========================================================================== */
+
+/* 8.1 LeetCode Heatmap & Activity Calendar */
+html.light .leetcode-heatmap-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light .leetcode-header-left strong {
+  color: #0f172a !important;
+}
+
+html.light .leetcode-stat-pill {
+  color: #64748b !important;
+}
+
+html.light .leetcode-stat-pill strong {
+  color: #0f172a !important;
+}
+
+html.light .leetcode-slot-empty {
+  background: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .leetcode-month-label {
+  color: #64748b !important;
+}
+
+html.light .leetcode-heatmap-footer {
+  border-top: 1px solid #f1f5f9 !important;
+  color: #64748b !important;
+}
+
+html.light .leetcode-legend {
+  color: #64748b !important;
+}
+
+html.light .legend-box.bg-\[\#282b33\] {
+  background: #e2e8f0 !important;
+}
+
+html.light .leetcode-tooltip {
+  background: #0f172a !important;
+  color: #f8fafc !important;
+  border: 1px solid #334155 !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2) !important;
+}
+
+/* 8.2 LeetCode Badges Card & Modal */
+html.light .leetcode-badges-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light .leetcode-badges-title {
+  color: #0f172a !important;
+}
+
+html.light .badge-five-item {
+  border: 1px solid transparent !important;
+}
+
+html.light .badge-five-item.locked {
+  background: #f8fafc !important;
+  border: 1px dashed #cbd5e1 !important;
+  opacity: 1 !important;
+}
+
+html.light .badge-five-item.unlocked {
+  background: radial-gradient(circle, rgba(234, 88, 12, 0.12) 0%, rgba(255, 255, 255, 0.95) 100%) !important;
+  border: 1px solid rgba(249, 115, 22, 0.4) !important;
+  box-shadow: 0 2px 10px rgba(249, 115, 22, 0.12) !important;
+}
+
+html.light .badge-five-label {
+  color: #0f172a !important;
+}
+
+html.light .badge-five-item.locked .badge-five-label {
+  color: #64748b !important;
+}
+
+html.light .badge-mini-bar {
+  background: #e2e8f0 !important;
+}
+
+html.light .leetcode-badges-modal {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 20px 50px rgba(15, 23, 42, 0.15) !important;
+}
+
+html.light .achievement-badge-card {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .achievement-badge-card.unlocked {
+  background: #f0fdf4 !important;
+  border-color: #bbf7d0 !important;
+}
+
+/* 8.3 Daily Goal Panel & Header Ring Popover */
+html.light .daily-goal-panel,
+html.light .compact-daily-goal {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .goal-panel-label {
+  color: #64748b !important;
+}
+
+html.light .goal-value-num {
+  color: #0f172a !important;
+}
+
+html.light .goal-value-unit,
+html.light .goal-panel-hint {
+  color: #64748b !important;
+}
+
+html.light .goal-preset-btn {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html.light .goal-preset-btn:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .goal-preset-btn.active {
+  background: #ecfdf5 !important;
+  border-color: #10b981 !important;
+  color: #047857 !important;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.15) !important;
+}
+
+html.light .goal-custom-input {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light .goal-save-btn,
+html.light .goal-custom-submit-btn {
+  background: #0f172a !important;
+  color: #ffffff !important;
+}
+
+html.light .goal-popover-num {
+  color: #0f172a !important;
+}
+
+html.light .goal-popover-unit,
+html.light .goal-popover-desc,
+html.light .goal-popover-label {
+  color: #64748b !important;
+}
+
+html.light .goal-popover-divider {
+  background: #e2e8f0 !important;
+}
+
+/* 8.4 Pomodoro Timer */
+html.light .pomodoro-toggle-btn {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light .pomodoro-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 16px 40px -4px rgba(15, 23, 42, 0.12) !important;
+}
+
+html.light .pomodoro-title {
+  color: #64748b !important;
+}
+
+html.light .pomodoro-close-btn {
+  color: #64748b !important;
+}
+
+html.light .pomodoro-close-btn:hover {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+}
+
+html.light .pomodoro-mode-tabs {
+  background: #f1f5f9 !important;
+}
+
+html.light .pomodoro-tab {
+  color: #64748b !important;
+}
+
+html.light .pomodoro-tab.active {
+  background: #ffffff !important;
+  color: #0284c7 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light .pomodoro-big-time {
+  color: #0f172a !important;
+}
+
+html.light .pomodoro-status-text {
+  color: #64748b !important;
+}
+
+html.light .pomodoro-progress-bar {
+  background: #e2e8f0 !important;
+}
+
+html.light .pomodoro-btn-reset {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html.light .pomodoro-btn-reset:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .pomodoro-footer {
+  border-top: 1px solid #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+html.light .pomodoro-footer strong {
+  color: #0f172a !important;
+}
+
+/* 8.5 AI Study Assist & AI Lesson Tutor */
+html.light .ai-lesson-tutor-container,
+html.light .ai-tutor-container {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06) !important;
+}
+
+html.light .ai-tutor-header {
+  background: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html.light .ai-tutor-heading {
+  color: #64748b !important;
+}
+
+html.light .ai-tab-btn {
+  color: #64748b !important;
+}
+
+html.light .ai-tab-btn:hover {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+}
+
+html.light .ai-tab-btn.active {
+  background: #e0f2fe !important;
+  border-color: #7dd3fc !important;
+  color: #0369a1 !important;
+}
+
+html.light .summary-point-item {
+  color: #334155 !important;
+}
+
+html.light .quiz-question-box {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .quiz-question-text {
+  color: #0f172a !important;
+}
+
+html.light .quiz-option-btn {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html.light .quiz-option-btn:hover:not(:disabled) {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light .option-letter {
+  background: #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html.light .quiz-explanation {
+  border-top: 1px dashed #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+html.light .quiz-kicker {
+  color: #64748b !important;
+}
+
+html.light .flashcard-front {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light .flashcard-back {
+  background: #ecfdf5 !important;
+  border: 1px solid #a7f3d0 !important;
+}
+
+html.light .flashcard-text {
+  color: #0f172a !important;
+}
+
+html.light .flashcard-side-label {
+  color: #64748b !important;
+}
+
+html.light .flashcard-tap-hint {
+  color: #94a3b8 !important;
+}
+
+html.light .ai-chat-input,
+html.light .ai-ask-input {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* 8.6 Watch Study Panel & Video Workspace */
+html.light .watch-study-panel {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .watch-tabs-bar {
+  background: #f8fafc !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html.light .watch-tab-btn {
+  color: #64748b !important;
+}
+
+html.light .watch-tab-btn:hover {
+  color: #0f172a !important;
+  background: #f1f5f9 !important;
+}
+
+html.light .watch-tab-btn.active {
+  color: #0f172a !important;
+  background: #ffffff !important;
+  border-bottom-color: #10b981 !important;
+}
+
+html.light .watch-tab-count {
+  background: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+html.light .watch-video-title {
+  color: #0f172a !important;
+}
+
+html.light .watch-channel-sub {
+  color: #64748b !important;
+}
+
+html.light .video-description-box {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+/* 8.7 Study Hub Workspace & Headers */
+html.light .workspace-header-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light .workspace-title {
+  color: #0f172a !important;
+}
+
+html.light .workspace-desc {
+  color: #475569 !important;
+}
+
+html.light .workspace-countdown {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html.light .header-stats-widget {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .widget-label {
+  color: #64748b !important;
+}
+
+html.light .crumb-current {
+  color: #0f172a !important;
+}
+
+html.light .crumb-separator {
+  color: #cbd5e1 !important;
+}
+
+html.light .resource-card-v2 {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .resource-card-v2:hover {
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* 8.8 Modals & Overlays */
+html.light .modal-card,
+html.light .schedule-modal-card,
+html.light .certificate-modal-content {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.15) !important;
+}
+
+html.light .schedule-modal-header h3 {
+  color: #0f172a !important;
+}
+
+html.light .schedule-modal-header p {
+  color: #64748b !important;
+}
+
+html.light .schedule-modal-header {
+  border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html.light .schedule-modal-close,
+html.light .cert-modal-close {
+  color: #64748b !important;
+}
+
+html.light .schedule-modal-close:hover,
+html.light .cert-modal-close:hover {
+  color: #0f172a !important;
+}
+
+html.light .schedule-modal-form input,
+html.light .schedule-modal-form select,
+html.light .schedule-modal-form textarea {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light .share-hub-preview {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .preview-text strong {
+  color: #0f172a !important;
+}
+
+html.light .preview-text span {
+  color: #64748b !important;
+}
+
+html.light .share-link-input {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* 8.9 Contact Portal & Feature Cards */
+html.light .contact-feature-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .contact-feature-card:hover {
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light .contact-card-title {
+  color: #0f172a !important;
+}
+
+html.light .contact-card-desc {
+  color: #475569 !important;
+}
+
+html.light .contact-card-kicker {
+  color: #64748b !important;
+}
+
+html.light .contact-pill-primary {
+  background: #0f172a !important;
+  color: #ffffff !important;
+}
+
+html.light .contact-copy-btn {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html.light .contact-copy-btn:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .contact-form-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .contact-form-title {
+  color: #0f172a !important;
+}
+
+html.light .contact-field label {
+  color: #475569 !important;
+}
+
+html.light .contact-field input,
+html.light .contact-field textarea,
+html.light .contact-field select {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* 8.10 Universal Site Footer */
+html.light .site-universal-footer {
+  background: #ffffff !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+html.light .footer-brand-bio,
+html.light .footer-contact-desc {
+  color: #64748b !important;
+}
+
+html.light .footer-col-title {
+  color: #0f172a !important;
+}
+
+html.light .footer-links-list a {
+  color: #475569 !important;
+}
+
+html.light .footer-links-list a:hover {
+  color: #0f172a !important;
+}
+
+html.light .footer-contact-pill {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+html.light .footer-contact-pill:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light .footer-bottom-bar {
+  border-top: 1px solid #f1f5f9 !important;
+}
+
+html.light .footer-copy-text {
+  color: #94a3b8 !important;
+}

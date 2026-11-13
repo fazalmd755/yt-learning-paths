@@ -94,28 +94,28 @@ export default function AddCourseForm() {
             onClick={() => setShowCatalog(!showCatalog)}
             className={`flex items-center gap-1 rounded-lg border px-3 py-2 text-xs font-semibold transition ${
               showCatalog
-                ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-300"
-                : "border-white/10 bg-zinc-800/80 text-zinc-300 hover:bg-zinc-700 hover:text-white"
+                ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+                : "border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-zinc-800/80 text-slate-700 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-700 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            <SparklesIcon size={13} className="text-emerald-400" />
+            <SparklesIcon size={13} className="text-emerald-500 dark:text-emerald-400" />
             <span>{showCatalog ? "Close Options" : "Pick from Curated"}</span>
           </button>
         </div>
       </form>
 
-      {error && <p role="alert" className="course-form-error text-xs text-red-400 mt-1">{error}</p>}
+      {error && <p role="alert" className="course-form-error text-xs text-red-500 dark:text-red-400 mt-1">{error}</p>}
 
       {/* Quick Select Preset Pills */}
       <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-        <span className="text-[11px] font-medium text-zinc-500">Or pick curated:</span>
+        <span className="text-[11px] font-medium text-slate-500 dark:text-zinc-500">Or pick curated:</span>
         {CURATED_TRACKS.slice(0, 5).map((track) => (
           <button
             key={track.id}
             type="button"
             disabled={loading}
             onClick={() => importUrl(track.playlistUrl, track.id)}
-            className="flex items-center gap-1 rounded-full border border-white/10 bg-zinc-900/60 px-2.5 py-1 text-[11px] text-zinc-300 transition hover:border-emerald-500/40 hover:bg-zinc-800 hover:text-white disabled:opacity-50"
+            className="flex items-center gap-1 rounded-full border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-zinc-900/60 px-2.5 py-1 text-[11px] text-slate-700 dark:text-zinc-300 transition hover:border-emerald-500/40 hover:bg-slate-200 dark:hover:bg-zinc-800 hover:text-slate-900 dark:hover:text-white disabled:opacity-50"
           >
             <span>
               {track.category === "dsa"
@@ -138,7 +138,7 @@ export default function AddCourseForm() {
           <button
             type="button"
             onClick={() => setShowCatalog(true)}
-            className="text-[11px] text-emerald-400 underline hover:text-emerald-300 pl-1"
+            className="text-[11px] text-emerald-500 underline hover:text-emerald-400 pl-1"
           >
             + view all {CURATED_TRACKS.length}
           </button>
@@ -147,14 +147,14 @@ export default function AddCourseForm() {
 
       {/* Expandable Curated Playlists Drawer */}
       {showCatalog && (
-        <div className="mt-3 rounded-xl border border-white/10 bg-zinc-950/80 p-4 shadow-xl backdrop-blur-md animate-fade-in">
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
+        <div className="mt-3 rounded-xl border border-slate-200 dark:border-white/10 bg-white/95 dark:bg-zinc-950/80 p-4 shadow-xl backdrop-blur-md animate-fade-in">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-white/10 pb-3">
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-200 flex items-center gap-1.5">
-                <SparklesIcon size={14} className="text-emerald-400" />
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-800 dark:text-zinc-200 flex items-center gap-1.5">
+                <SparklesIcon size={14} className="text-emerald-500" />
                 <span>Curated Industry Playlists & Tracks</span>
               </h3>
-              <p className="text-xs text-zinc-400 mt-0.5">
+              <p className="text-xs text-slate-500 dark:text-zinc-400 mt-0.5">
                 Click any playlist to instantly add it to your personal study workspace
               </p>
             </div>
@@ -168,8 +168,8 @@ export default function AddCourseForm() {
                   onClick={() => setSelectedCategory(c.id)}
                   className={`rounded-md px-2 py-0.5 text-[11px] font-medium transition ${
                     selectedCategory === c.id
-                      ? "bg-emerald-500/20 text-emerald-300 border border-emerald-500/40"
-                      : "text-zinc-400 hover:text-zinc-200 hover:bg-white/5"
+                      ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40"
+                      : "text-slate-600 dark:text-zinc-400 hover:text-slate-900 dark:hover:text-zinc-200 hover:bg-slate-100 dark:hover:bg-white/5"
                   }`}
                 >
                   {c.label}
@@ -185,38 +185,38 @@ export default function AddCourseForm() {
               return (
                 <div
                   key={track.id}
-                  className="flex flex-col justify-between rounded-lg border border-white/5 bg-zinc-900/50 p-3.5 transition hover:border-emerald-500/30 hover:bg-zinc-900/80"
+                  className="flex flex-col justify-between rounded-lg border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-zinc-900/50 p-3.5 transition hover:border-emerald-500/30 hover:bg-slate-100 dark:hover:bg-zinc-900/80"
                 >
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-1.5">
-                      <span className="rounded bg-white/5 px-1.5 py-0.5 text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">
+                      <span className="rounded bg-slate-200/70 dark:bg-white/5 px-1.5 py-0.5 text-[10px] font-semibold text-slate-600 dark:text-zinc-400 uppercase tracking-wider">
                         {track.level}
                       </span>
-                      <span className="text-[10px] text-zinc-500 font-mono">
+                      <span className="text-[10px] text-slate-500 dark:text-zinc-500 font-mono">
                         {track.estimatedHours} · {track.lessonCount} videos
                       </span>
                     </div>
 
-                    <h4 className="text-xs font-bold text-zinc-100 line-clamp-1" title={track.title}>
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-zinc-100 line-clamp-1" title={track.title}>
                       {track.title}
                     </h4>
-                    <p className="text-[11px] text-zinc-400 mt-0.5 line-clamp-1">
+                    <p className="text-[11px] text-slate-600 dark:text-zinc-400 mt-0.5 line-clamp-1">
                       by {track.creator}
                     </p>
-                    <p className="text-[11px] text-zinc-500 mt-1.5 line-clamp-2 leading-relaxed">
+                    <p className="text-[11px] text-slate-500 dark:text-zinc-500 mt-1.5 line-clamp-2 leading-relaxed">
                       {track.description}
                     </p>
                   </div>
 
-                  <div className="mt-3 pt-2.5 border-t border-white/5 flex items-center justify-between gap-2">
-                    <span className="text-[10px] text-zinc-500 truncate max-w-[120px]">
+                  <div className="mt-3 pt-2.5 border-t border-slate-200 dark:border-white/5 flex items-center justify-between gap-2">
+                    <span className="text-[10px] text-slate-500 dark:text-zinc-500 truncate max-w-[120px]">
                       {track.tags.slice(0, 2).join(" · ")}
                     </span>
                     <button
                       type="button"
                       disabled={loading}
                       onClick={() => importUrl(track.playlistUrl, track.id)}
-                      className="flex items-center gap-1 rounded bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/25 disabled:opacity-50"
+                      className="flex items-center gap-1 rounded bg-emerald-500/15 px-2.5 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300 transition hover:bg-emerald-500/25 disabled:opacity-50"
                     >
                       {isSelected ? (
                         <span>Adding...</span>

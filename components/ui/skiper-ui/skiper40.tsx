@@ -5,7 +5,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 /**
- * Skiper UI - Minimal interactive animated link with slide-underline and micro-arrow
+ * Skiper UI - Minimal interactive animated link with slide-underline and micro-arrow (Theme-adaptive)
  */
 export const SkiperLink = ({
   children,
@@ -20,8 +20,8 @@ export const SkiperLink = ({
     <Link
       href={href}
       className={cn(
-        "group relative inline-flex items-center text-sm font-medium text-neutral-300 hover:text-white transition-colors duration-200",
-        "before:pointer-events-none before:absolute before:bottom-0 before:left-0 before:h-[1.5px] before:w-full before:bg-emerald-400 before:content-['']",
+        "group relative inline-flex items-center text-sm font-medium text-slate-700 dark:text-neutral-300 hover:text-slate-950 dark:hover:text-white transition-colors duration-200",
+        "before:pointer-events-none before:absolute before:bottom-0 before:left-0 before:h-[1.5px] before:w-full before:bg-emerald-500 before:content-['']",
         "before:origin-right before:scale-x-0 before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)]",
         "hover:before:origin-left hover:before:scale-x-100",
         className
