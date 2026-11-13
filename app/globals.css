@@ -13288,14 +13288,45 @@ html.light .benefit-item strong {
   color: #0f172a !important;
 }
 
+/* Light Mode Dynamic Background & Tech Grid (Matching Dark Mode Grid Exactly) */
 html.light .app-background-layer {
-  opacity: 0.18 !important;
+  opacity: 1 !important;
 }
 
 html.light .tech-grid-overlay {
   background-image:
-    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px) !important;
+    linear-gradient(to right, rgba(16, 185, 129, 0.18) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(16, 185, 129, 0.18) 1px, transparent 1px),
+    linear-gradient(to right, rgba(15, 23, 42, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.07) 1px, transparent 1px) !important;
+  background-size: 44px 44px !important;
+  mask-image: radial-gradient(ellipse 95% 80% at 50% 25%, black 50%, transparent 95%) !important;
+  -webkit-mask-image: radial-gradient(ellipse 95% 80% at 50% 25%, black 50%, transparent 95%) !important;
+}
+
+html.light .anim-spotlight {
+  background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.28) 0%, rgba(200, 255, 50, 0.12) 30%, rgba(56, 189, 248, 0.1) 50%, transparent 72%) !important;
+  filter: blur(80px) !important;
+}
+
+html.light .anim-orb-left {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.22) 0%, rgba(200, 255, 50, 0.08) 32%, transparent 70%) !important;
+  filter: blur(95px) !important;
+}
+
+html.light .anim-orb-right {
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.22) 0%, rgba(16, 185, 129, 0.1) 38%, transparent 70%) !important;
+  filter: blur(100px) !important;
+}
+
+html.light .anim-orb-center {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.2) 0%, rgba(56, 189, 248, 0.1) 55%, transparent 70%) !important;
+  filter: blur(85px) !important;
+}
+
+html.light .anim-orb-lower {
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.16) 0%, rgba(56, 189, 248, 0.08) 45%, transparent 70%) !important;
+  filter: blur(90px) !important;
 }
 
 html.light .mobile-bottom-nav {
