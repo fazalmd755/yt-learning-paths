@@ -10,6 +10,7 @@ import { ArrowRightIcon } from "@/components/Icons";
 import { getCourseSummaries } from "@/lib/data";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz, lastNDates } from "@/lib/utils";
+import { handleNewUserWelcome } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -24,6 +25,12 @@ export default async function DashboardPage({
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login");
+
+  if (!user.user_metadata?.welcome_email_sent) {
+    handleNewUserWelcome(user).catch((e) => {
+      console.error("Dashboard welcome email check error:", e);
+    });
+  }
 
   // Single parallel batch for all dashboard data - avoids database waterfalls
   const [{ data: profile }, courses, { data: allActivity }, { data: streakData }] =

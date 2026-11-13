@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { handleNewUserWelcome } from "@/lib/email";
 
 function fail(message: string, path = "/login"): never {
   redirect(`${path}?error=${encodeURIComponent(message)}`);
@@ -111,7 +112,14 @@ export async function signup(formData: FormData) {
     fail("An account with this email already exists. Log in instead.", "/signup");
   }
 
-  if (data.session) redirect("/dashboard");
+  if (data.session) {
+    if (data.session.user) {
+      handleNewUserWelcome(data.session.user).catch((e) => {
+        console.error("Welcome email check failed in signup:", e);
+      });
+    }
+    redirect("/dashboard");
+  }
   redirect(
     `/signup?message=${encodeURIComponent("Your account request was received. Confirm your email before logging in. If the email does not arrive, you can resend it below.")}`
   );
