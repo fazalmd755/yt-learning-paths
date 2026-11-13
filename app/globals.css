@@ -12478,3 +12478,309 @@ textarea::placeholder {
     min-height: 40px;
   }
 }
+
+/* ==========================================================================
+   Complete Light Theme Overrides (html.light)
+   ========================================================================== */
+html.light {
+  color-scheme: light;
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --muted: #64748b;
+  --subtle: #94a3b8;
+  --line: #e2e8f0;
+  --line-subtle: #f1f5f9;
+  --line-hover: #cbd5e1;
+  --lime: #10b981;
+  --lime-dark: #059669;
+  --ink: #0f172a;
+  --primary: #10b981;
+  --secondary: #0284c7;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-hover: #f1f5f9;
+}
+
+html.light body {
+  background: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+html.light .site-header {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+}
+
+html.light .brand-link {
+  color: #0f172a !important;
+}
+
+html.light .site-nav-links a {
+  color: #475569 !important;
+  border-color: #e2e8f0 !important;
+  background: rgba(0, 0, 0, 0.03) !important;
+}
+
+html.light .site-nav-links a:hover {
+  color: #0f172a !important;
+  background: rgba(0, 0, 0, 0.06) !important;
+  border-color: #cbd5e1 !important;
+  text-shadow: none !important;
+}
+
+html.light .nav-login {
+  background: #0f172a !important;
+  color: #ffffff !important;
+  border-color: #0f172a !important;
+}
+
+html.light .nav-login span {
+  color: #10b981 !important;
+}
+
+html.light .theme-toggle-btn {
+  border-color: #cbd5e1 !important;
+  background: #f1f5f9 !important;
+}
+
+html.light .app-background-layer {
+  opacity: 0.22 !important;
+}
+
+html.light .tech-grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.06) 1px, transparent 1px) !important;
+}
+
+html.light .hero-title {
+  color: #0f172a !important;
+}
+
+html.light .hero-copy {
+  color: #475569 !important;
+}
+
+html.light .hero-trust-bullets span {
+  color: #475569 !important;
+}
+
+html.light .hero-badge {
+  background: #ecfdf5 !important;
+  border-color: #a7f3d0 !important;
+  color: #047857 !important;
+}
+
+html.light .hero-badge-dot {
+  background: #10b981 !important;
+}
+
+html.light .preview-card {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1) !important;
+}
+
+html.light .preview-brand {
+  color: #0f172a !important;
+}
+
+html.light .preview-greeting {
+  color: #64748b !important;
+}
+
+html.light .preview-card h2 {
+  color: #0f172a !important;
+}
+
+html.light .preview-metric {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .preview-metric strong {
+  color: #0f172a !important;
+}
+
+html.light .preview-metric span {
+  color: #64748b !important;
+}
+
+html.light .preview-course {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .preview-course-info strong {
+  color: #0f172a !important;
+}
+
+html.light .preview-course-info span,
+html.light .preview-course-info small {
+  color: #64748b !important;
+}
+
+html.light .preview-week span {
+  color: #64748b !important;
+}
+
+html.light .preview-week div i {
+  background: #f1f5f9 !important;
+  color: #64748b !important;
+}
+
+html.light .preview-week div i.active {
+  background: #10b981 !important;
+  color: #ffffff !important;
+}
+
+html.light .floating-note {
+  background: rgba(255, 255, 255, 0.98) !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light .floating-note strong {
+  color: #0f172a !important;
+}
+
+html.light .floating-note small {
+  color: #64748b !important;
+}
+
+html.light .comparison-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .comparison-card h3 {
+  color: #0f172a !important;
+}
+
+html.light .comparison-card p {
+  color: #64748b !important;
+}
+
+html.light .comparison-list li strong {
+  color: #0f172a !important;
+}
+
+html.light .comparison-list li p {
+  color: #64748b !important;
+}
+
+html.light .section-heading h2 {
+  color: #0f172a !important;
+}
+
+html.light .section-heading p {
+  color: #64748b !important;
+}
+
+html.light .feature-card-v2 {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .feature-card-content h3 {
+  color: #0f172a !important;
+}
+
+html.light .feature-card-content p {
+  color: #64748b !important;
+}
+
+html.light .home-faq-details {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .home-faq-summary {
+  color: #0f172a !important;
+}
+
+html.light .home-faq-answer {
+  color: #475569 !important;
+}
+
+html.light .site-footer {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+html.light .site-footer a {
+  color: #475569 !important;
+}
+
+html.light .site-footer a:hover {
+  color: #0f172a !important;
+}
+
+html.light .auth-card {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.06) !important;
+}
+
+html.light .auth-card h2 {
+  color: #0f172a !important;
+}
+
+html.light .auth-intro,
+html.light .auth-footnote,
+html.light .benefit-item span {
+  color: #64748b !important;
+}
+
+html.light .benefit-item strong {
+  color: #0f172a !important;
+}
+
+html.light .dashboard-shell,
+html.light .library-section,
+html.light .study-hub-shell {
+  color: #0f172a !important;
+}
+
+html.light .welcome-title,
+html.light .section-title-compact h2 {
+  color: #0f172a !important;
+}
+
+html.light .activity-panel,
+html.light .course-card-v2,
+html.light .resume-compact-bar,
+html.light .header-popover {
+  background: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .header-icon-button {
+  background: rgba(15, 23, 42, 0.04) !important;
+  border-color: #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+html.light .header-icon-button:hover {
+  background: rgba(15, 23, 42, 0.08) !important;
+  color: #0f172a !important;
+}
+
+html.light .mobile-bottom-nav {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+html.light .mobile-bottom-nav-link {
+  color: #64748b !important;
+}
+
+html.light .mobile-bottom-nav-link.active,
+html.light .mobile-bottom-nav-link:hover {
+  color: #10b981 !important;
+}
+

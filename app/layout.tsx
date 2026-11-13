@@ -3,6 +3,7 @@ import Link from "next/link";
 import Script from "next/script";
 import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import SiteHeader from "@/components/SiteHeader";
+import ThemeToggle from "@/components/ThemeToggle";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 import AnimatedBackground from "@/components/AnimatedBackground";
 import { WatchlifyIcon } from "@/components/BrandLogo";
@@ -260,6 +261,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('theme');if(t==='light'){document.documentElement.classList.add('light');document.documentElement.classList.remove('dark');}else{document.documentElement.classList.add('dark');document.documentElement.classList.remove('light');}}catch(e){}})();`,
+          }}
+        />
       </head>
       <body className="min-h-screen antialiased relative overflow-x-hidden">
         <AnimatedBackground />
@@ -277,6 +283,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                 <Link href="/study-hubs">Study Hubs</Link>
                 <Link href="/planner">Planner</Link>
               </div>
+              <ThemeToggle />
               {user && headerData ? (
                 <SiteHeader
                   email={user.email ?? ""}
