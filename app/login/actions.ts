@@ -114,9 +114,11 @@ export async function signup(formData: FormData) {
 
   if (data.session) {
     if (data.session.user) {
-      handleNewUserWelcome(data.session.user).catch((e) => {
+      try {
+        await handleNewUserWelcome(data.session.user);
+      } catch (e) {
         console.error("Welcome email check failed in signup:", e);
-      });
+      }
     }
     redirect("/dashboard");
   }

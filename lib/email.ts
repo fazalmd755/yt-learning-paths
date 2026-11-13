@@ -183,7 +183,7 @@ export async function sendWelcomeEmail({ to, displayName }: WelcomeEmailOptions)
   let from = process.env.RESEND_FROM;
 
   if (!from || from.includes("yourdomain.com")) {
-    from = "Watchlify <onboarding@resend.dev>";
+    from = "Watchlify <notifications@watchlify.online>";
   }
 
   if (!to || !to.includes("@")) {
@@ -232,7 +232,7 @@ export async function sendWelcomeEmail({ to, displayName }: WelcomeEmailOptions)
 }
 
 /**
- * Checks if a user is brand new and hasn't received the welcome email yet.
+ * Checks if a user hasn't received the welcome email yet.
  * If eligible, sends the email and sets the metadata flag `welcome_email_sent: true`.
  */
 export async function handleNewUserWelcome(user: {
@@ -248,31 +248,7 @@ export async function handleNewUserWelcome(user: {
     return;
   }
 
-  // 2. Check if the user was created recently (within the last 48 hours).
-  // This guarantees existing users who registered in the past won't suddenly receive an email.
-  const createdAtTime = user.created_at ? new Date(user.created_at).getTime() : 0;
-  const isRecentSignup = createdAtTime > 0 && Date.now() - createdAtTime <= 48 * 60 * 60 * 1000;
-
-  // We import createAdminClient lazily to avoid circular dependencies
-  const { createAdminClient } = await import("@/lib/supabase/server");
-  const admin = createAdminClient();
-
-  if (!isRecentSignup) {
-    // Old user: quietly mark as sent in user_metadata so we don't evaluate again
-    try {
-      await admin.auth.admin.updateUserById(user.id, {
-        user_metadata: {
-          ...(user.user_metadata || {}),
-          welcome_email_sent: true,
-        },
-      });
-    } catch {
-      // ignore
-    }
-    return;
-  }
-
-  // 3. Send the welcome email FIRST
+  // 2. Send the welcome email
   const displayName =
     user.user_metadata?.display_name ||
     user.user_metadata?.full_name ||
@@ -284,10 +260,11 @@ export async function handleNewUserWelcome(user: {
     displayName,
   });
 
-  // 4. ONLY mark as sent if the email was actually successfully delivered by Resend!
-  // If Resend failed (e.g. missing API key), we do not set welcome_email_sent so it can retry once configured.
+  // 3. ONLY mark as sent if the email was actually successfully delivered by Resend!
   if (result.success) {
     try {
+      const { createAdminClient } = await import("@/lib/supabase/server");
+      const admin = createAdminClient();
       await admin.auth.admin.updateUserById(user.id, {
         user_metadata: {
           ...(user.user_metadata || {}),
@@ -295,6 +272,7 @@ export async function handleNewUserWelcome(user: {
           welcome_email_sent_at: new Date().toISOString(),
         },
       });
+      console.log(`[Welcome Email] Successfully delivered to ${user.email} and flagged.`);
     } catch (err) {
       console.error("[Welcome Email] Could not set welcome_email_sent metadata:", err);
     }

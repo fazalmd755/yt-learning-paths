@@ -28,10 +28,12 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
       if (data?.user) {
-        // Send welcome email if brand new user
-        handleNewUserWelcome(data.user).catch((e) => {
+        // Send welcome email if new user
+        try {
+          await handleNewUserWelcome(data.user);
+        } catch (e) {
           console.error("Welcome email check failed in callback:", e);
-        });
+        }
       }
       const nextParam = requestUrl.searchParams.get("next");
       const dest = nextParam && nextParam.startsWith("/") ? nextParam : "/dashboard";

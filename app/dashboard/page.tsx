@@ -27,9 +27,11 @@ export default async function DashboardPage({
   if (!user) redirect("/login");
 
   if (!user.user_metadata?.welcome_email_sent) {
-    handleNewUserWelcome(user).catch((e) => {
+    try {
+      await handleNewUserWelcome(user);
+    } catch (e) {
       console.error("Dashboard welcome email check error:", e);
-    });
+    }
   }
 
   // Single parallel batch for all dashboard data - avoids database waterfalls
