@@ -12481,6 +12481,7 @@ textarea::placeholder {
 
 /* ==========================================================================
    Complete Light Theme Overrides (html.light)
+   High-contrast, clean modern UI across ALL pages and components
    ========================================================================== */
 html.light {
   color-scheme: light;
@@ -12506,25 +12507,30 @@ html.light body {
   color: #0f172a !important;
 }
 
+/* 1. Header, Logo & Navbar */
 html.light .site-header {
-  background: rgba(255, 255, 255, 0.92) !important;
+  background: rgba(255, 255, 255, 0.94) !important;
   border-bottom: 1px solid #e2e8f0 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03) !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
 }
 
 html.light .brand-link {
   color: #0f172a !important;
 }
 
+html.light .brand-name {
+  color: #0f172a !important;
+}
+
 html.light .site-nav-links a {
   color: #475569 !important;
-  border-color: #e2e8f0 !important;
-  background: rgba(0, 0, 0, 0.03) !important;
+  border: 1px solid #e2e8f0 !important;
+  background: #f8fafc !important;
 }
 
 html.light .site-nav-links a:hover {
   color: #0f172a !important;
-  background: rgba(0, 0, 0, 0.06) !important;
+  background: #f1f5f9 !important;
   border-color: #cbd5e1 !important;
   text-shadow: none !important;
 }
@@ -12539,30 +12545,634 @@ html.light .nav-login span {
   color: #10b981 !important;
 }
 
+html.light .header-icon-button {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #475569 !important;
+}
+
+html.light .header-icon-button:hover,
+html.light .header-icon-active {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
 html.light .theme-toggle-btn {
   border-color: #cbd5e1 !important;
   background: #f1f5f9 !important;
 }
 
-html.light .app-background-layer {
-  opacity: 0.22 !important;
+/* Header Popovers (Profile & Notifications) */
+html.light .header-popover,
+html.light .profile-popover,
+html.light .notification-popover {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.12) !important;
+  color: #0f172a !important;
 }
 
-html.light .tech-grid-overlay {
-  background-image:
-    linear-gradient(to right, rgba(15, 23, 42, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(15, 23, 42, 0.06) 1px, transparent 1px) !important;
+html.light .profile-popover-user-meta .profile-display-name {
+  color: #0f172a !important;
 }
 
+html.light .profile-popover-user-meta .profile-email {
+  color: #64748b !important;
+}
+
+html.light .profile-popover-divider {
+  background: #e2e8f0 !important;
+}
+
+html.light .profile-popover > a {
+  color: #334155 !important;
+}
+
+html.light .profile-popover > a:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+html.light .profile-popover form {
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+html.light .profile-popover form button {
+  background: #fef2f2 !important;
+  border: 1px solid #fecaca !important;
+  color: #dc2626 !important;
+}
+
+html.light .profile-popover form button:hover {
+  background: #fee2e2 !important;
+  color: #b91c1c !important;
+  border-color: #fca5a5 !important;
+}
+
+html.light .notification-popover .popover-heading {
+  border-bottom: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .notification-item strong {
+  color: #0f172a !important;
+}
+
+html.light .notification-item p {
+  color: #64748b !important;
+}
+
+html.light .popover-footer {
+  background: #f8fafc !important;
+  border-top: 1px solid #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+/* 2. Study Planner (/planner) */
+html.light .product-page-heading h1,
+html.light .product-hero h1,
+html.light .planner-main h1 {
+  color: #0f172a !important;
+}
+
+html.light .product-page-heading > div > p,
+html.light .product-hero > p {
+  color: #475569 !important;
+}
+
+html.light .quiet-link {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light .quiet-link:hover {
+  background: #f8fafc !important;
+  border-color: #94a3b8 !important;
+}
+
+html.light .planner-view-switch {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  backdrop-filter: none !important;
+}
+
+html.light .planner-view-switch button {
+  background: transparent !important;
+  color: #64748b !important;
+}
+
+html.light .planner-view-switch button.active {
+  background: #ffffff !important;
+  color: #047857 !important;
+  border: 1px solid #cbd5e1 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08) !important;
+}
+
+html.light .planner-date-navigation button {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+  backdrop-filter: none !important;
+}
+
+html.light .planner-date-navigation strong {
+  color: #0f172a !important;
+}
+
+html.light .planner-date-picker {
+  color: #64748b !important;
+}
+
+html.light .planner-date-picker input {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light .planner-week {
+  color: #0f172a !important;
+}
+
+html.light .planner-day {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #64748b !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .planner-day > span {
+  color: #64748b !important;
+}
+
+html.light .planner-day strong {
+  color: #0f172a !important;
+}
+
+html.light .planner-day small {
+  color: #94a3b8 !important;
+}
+
+html.light .planner-day:hover {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light .planner-day.selected {
+  background: #ecfdf5 !important;
+  border: 1.5px solid #10b981 !important;
+  box-shadow: 0 0 0 1px #10b981 !important;
+}
+
+html.light .planner-day.selected > span {
+  color: #059669 !important;
+}
+
+html.light .planner-day.selected strong {
+  color: #047857 !important;
+}
+
+html.light .planner-day.selected small {
+  color: #065f46 !important;
+}
+
+html.light .planner-month-calendar {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  backdrop-filter: none !important;
+}
+
+html.light .planner-month-weekday {
+  color: #64748b !important;
+}
+
+html.light .planner-month-day {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  backdrop-filter: none !important;
+}
+
+html.light .planner-month-day.outside-month {
+  background: transparent !important;
+  border-color: transparent !important;
+  color: #cbd5e1 !important;
+}
+
+html.light .planner-month-day.selected {
+  background: #ecfdf5 !important;
+  border-color: #10b981 !important;
+  color: #047857 !important;
+}
+
+html.light .planner-year-month {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .planner-year-month.selected,
+html.light .planner-year-month:hover {
+  background: #ecfdf5 !important;
+  border-color: #10b981 !important;
+}
+
+html.light .planner-summary h2 {
+  color: #0f172a !important;
+}
+
+html.light .planner-summary .card-kicker,
+html.light .card-kicker {
+  color: #64748b !important;
+}
+
+html.light .planner-summary-stats {
+  color: #64748b !important;
+}
+
+html.light .planner-summary-stats strong {
+  color: #047857 !important;
+}
+
+html.light .planner-empty {
+  background: #ffffff !important;
+  border: 1.5px dashed #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+html.light .planner-empty strong {
+  color: #0f172a !important;
+}
+
+html.light .planner-empty p {
+  color: #64748b !important;
+}
+
+html.light .planner-task {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .planner-task-copy h3 {
+  color: #0f172a !important;
+}
+
+html.light .planner-task-copy > p {
+  color: #64748b !important;
+}
+
+html.light .planner-task-meta span {
+  background: #f1f5f9 !important;
+  color: #047857 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .planner-task-check {
+  background: #ffffff !important;
+  border: 1.5px solid #cbd5e1 !important;
+}
+
+html.light .planner-task-check.checked {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+}
+
+html.light .planner-task-delete {
+  color: #94a3b8 !important;
+}
+
+html.light .planner-task-delete:hover {
+  background: #fef2f2 !important;
+  color: #ef4444 !important;
+}
+
+html.light .planner-add-form {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .planner-add-heading strong {
+  color: #0f172a !important;
+}
+
+html.light .planner-form-grid label {
+  color: #475569 !important;
+}
+
+html.light .planner-form-grid input {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light .planner-form-grid input:focus {
+  border-color: #10b981 !important;
+  background: #ffffff !important;
+}
+
+html.light .planner-add-footer > span {
+  color: #64748b !important;
+}
+
+html.light .planner-add-footer > button {
+  background: #10b981 !important;
+  color: #ffffff !important;
+}
+
+/* Planner Sidebar */
+html.light .planner-focus-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .planner-focus-card h3 {
+  color: #0f172a !important;
+}
+
+html.light .planner-focus-card > p {
+  color: #475569 !important;
+}
+
+html.light .planner-focus-card .card-kicker {
+  color: #059669 !important;
+}
+
+html.light .planner-focus-icon {
+  background: #ecfdf5 !important;
+  color: #10b981 !important;
+}
+
+html.light .planner-focus-foot {
+  border-top: 1px solid #e2e8f0 !important;
+  color: #64748b !important;
+}
+
+html.light .planner-courses-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .planner-courses-card .panel-heading h2 {
+  color: #0f172a !important;
+}
+
+html.light .planner-courses-card .panel-heading .card-kicker {
+  color: #059669 !important;
+}
+
+html.light .planner-course-link {
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .planner-course-link:hover {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light .planner-course-link strong {
+  color: #0f172a !important;
+}
+
+html.light .planner-course-link small {
+  color: #64748b !important;
+}
+
+html.light .planner-course-mark {
+  background: #ecfdf5 !important;
+  color: #10b981 !important;
+}
+
+/* 3. Dashboard Page (/dashboard) */
+html.light .welcome-title,
+html.light .dashboard-welcome h1 {
+  color: #0f172a !important;
+}
+
+html.light .welcome-subtag {
+  background: #ecfdf5 !important;
+  border: 1px solid #a7f3d0 !important;
+  color: #047857 !important;
+}
+
+html.light .welcome-compact-date {
+  color: #64748b !important;
+}
+
+html.light .resume-compact-bar {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .resume-compact-title {
+  color: #0f172a !important;
+}
+
+html.light .resume-compact-meta {
+  color: #64748b !important;
+}
+
+html.light .resume-compact-btn {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .activity-panel {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .streak-stat-box {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .streak-stat-box > span,
+html.light .streak-stat-box small {
+  color: #64748b !important;
+}
+
+html.light .streak-stat-box strong {
+  color: #0f172a !important;
+}
+
+html.light .streak-month-label {
+  color: #64748b !important;
+}
+
+html.light .streak-day-cell {
+  background: #f1f5f9 !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light .section-title-compact h2,
+html.light .library-section h2 {
+  color: #0f172a !important;
+}
+
+html.light .section-side-note {
+  color: #64748b !important;
+}
+
+html.light .course-card-v2 {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .course-card-v2:hover {
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06) !important;
+}
+
+html.light .course-card-title,
+html.light .course-card-v2 h3 {
+  color: #0f172a !important;
+}
+
+html.light .course-card-channel,
+html.light .course-card-v2 small,
+html.light .course-card-v2 p {
+  color: #64748b !important;
+}
+
+html.light .add-course-bar-wrap input {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+/* 4. Watch & Course Pages (/watch & /courses) */
+html.light .video-notes-panel,
+html.light .course-syllabus-panel {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .video-notes-heading h2,
+html.light .course-detail-copy h1,
+html.light .watch-heading h1 {
+  color: #0f172a !important;
+}
+
+html.light .video-notes-heading p,
+html.light .course-detail-copy > p {
+  color: #475569 !important;
+}
+
+html.light .video-note-form input,
+html.light .video-note-form textarea {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light .video-note-item {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .video-note-item > p {
+  color: #0f172a !important;
+}
+
+html.light .video-note-time {
+  background: #e0f2fe !important;
+  color: #0369a1 !important;
+}
+
+html.light .course-lesson-item,
+html.light .lesson-item {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .course-lesson-item:hover,
+html.light .lesson-item:hover {
+  background: #f8fafc !important;
+}
+
+html.light .course-lesson-item.active,
+html.light .lesson-item.active {
+  background: #ecfdf5 !important;
+  border-color: #10b981 !important;
+}
+
+/* 5. Study Hubs, Roadmaps & Syllabus */
+html.light .study-hub-card,
+html.light .roadmap-card,
+html.light .directory-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04) !important;
+}
+
+html.light .study-hub-card h2,
+html.light .study-hub-card h3,
+html.light .roadmap-card h2,
+html.light .directory-card h3,
+html.light .syllabus-hero h1 {
+  color: #0f172a !important;
+}
+
+html.light .study-hub-card p,
+html.light .roadmap-card p,
+html.light .directory-card p,
+html.light .syllabus-hero p {
+  color: #475569 !important;
+}
+
+/* 6. Settings Page (/settings) */
+html.light .profile-settings-form,
+html.light .settings-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+html.light .profile-settings-heading h2 {
+  color: #0f172a !important;
+}
+
+html.light .profile-settings-form label {
+  color: #475569 !important;
+}
+
+html.light .profile-settings-form input,
+html.light .profile-settings-form textarea {
+  background: #f8fafc !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+html.light .profile-chip-btn {
+  background: #f1f5f9 !important;
+  border: 1px solid #e2e8f0 !important;
+  color: #475569 !important;
+  backdrop-filter: none !important;
+}
+
+html.light .profile-chip-btn:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* 7. Landing Page & Auth (/ & /login) */
 html.light .hero-title {
   color: #0f172a !important;
 }
 
 html.light .hero-copy {
-  color: #475569 !important;
-}
-
-html.light .hero-trust-bullets span {
   color: #475569 !important;
 }
 
@@ -12572,82 +13182,32 @@ html.light .hero-badge {
   color: #047857 !important;
 }
 
-html.light .hero-badge-dot {
-  background: #10b981 !important;
-}
-
 html.light .preview-card {
   background: rgba(255, 255, 255, 0.95) !important;
   border-color: #e2e8f0 !important;
   box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.1) !important;
 }
 
-html.light .preview-brand {
-  color: #0f172a !important;
-}
-
-html.light .preview-greeting {
-  color: #64748b !important;
-}
-
+html.light .preview-brand,
 html.light .preview-card h2 {
   color: #0f172a !important;
 }
 
-html.light .preview-metric {
-  background: #f8fafc !important;
-  border: 1px solid #e2e8f0 !important;
-}
-
-html.light .preview-metric strong {
-  color: #0f172a !important;
-}
-
-html.light .preview-metric span {
-  color: #64748b !important;
-}
-
-html.light .preview-course {
-  background: #f8fafc !important;
-  border: 1px solid #e2e8f0 !important;
-}
-
-html.light .preview-course-info strong {
-  color: #0f172a !important;
-}
-
+html.light .preview-greeting,
 html.light .preview-course-info span,
 html.light .preview-course-info small {
   color: #64748b !important;
 }
 
-html.light .preview-week span {
-  color: #64748b !important;
+html.light .preview-metric,
+html.light .preview-course {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
 }
 
-html.light .preview-week div i {
-  background: #f1f5f9 !important;
-  color: #64748b !important;
-}
-
-html.light .preview-week div i.active {
-  background: #10b981 !important;
-  color: #ffffff !important;
-}
-
-html.light .floating-note {
-  background: rgba(255, 255, 255, 0.98) !important;
-  border-color: #e2e8f0 !important;
+html.light .preview-metric strong,
+html.light .preview-course-info strong {
   color: #0f172a !important;
-  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08) !important;
-}
-
-html.light .floating-note strong {
-  color: #0f172a !important;
-}
-
-html.light .floating-note small {
-  color: #64748b !important;
 }
 
 html.light .comparison-card {
@@ -12659,24 +13219,13 @@ html.light .comparison-card h3 {
   color: #0f172a !important;
 }
 
-html.light .comparison-card p {
+html.light .comparison-card p,
+html.light .comparison-list li p {
   color: #64748b !important;
 }
 
 html.light .comparison-list li strong {
   color: #0f172a !important;
-}
-
-html.light .comparison-list li p {
-  color: #64748b !important;
-}
-
-html.light .section-heading h2 {
-  color: #0f172a !important;
-}
-
-html.light .section-heading p {
-  color: #64748b !important;
 }
 
 html.light .feature-card-v2 {
@@ -12715,22 +13264,22 @@ html.light .site-footer a {
   color: #475569 !important;
 }
 
-html.light .site-footer a:hover {
-  color: #0f172a !important;
-}
-
-html.light .auth-card {
+html.light .auth-card,
+html.light .auth-aside {
   background: #ffffff !important;
   border-color: #e2e8f0 !important;
   box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.06) !important;
+  color: #0f172a !important;
 }
 
-html.light .auth-card h2 {
+html.light .auth-card h2,
+html.light .auth-aside h1 {
   color: #0f172a !important;
 }
 
 html.light .auth-intro,
 html.light .auth-footnote,
+html.light .auth-aside p,
 html.light .benefit-item span {
   color: #64748b !important;
 }
@@ -12739,35 +13288,14 @@ html.light .benefit-item strong {
   color: #0f172a !important;
 }
 
-html.light .dashboard-shell,
-html.light .library-section,
-html.light .study-hub-shell {
-  color: #0f172a !important;
+html.light .app-background-layer {
+  opacity: 0.18 !important;
 }
 
-html.light .welcome-title,
-html.light .section-title-compact h2 {
-  color: #0f172a !important;
-}
-
-html.light .activity-panel,
-html.light .course-card-v2,
-html.light .resume-compact-bar,
-html.light .header-popover {
-  background: #ffffff !important;
-  border-color: #e2e8f0 !important;
-  color: #0f172a !important;
-}
-
-html.light .header-icon-button {
-  background: rgba(15, 23, 42, 0.04) !important;
-  border-color: #e2e8f0 !important;
-  color: #475569 !important;
-}
-
-html.light .header-icon-button:hover {
-  background: rgba(15, 23, 42, 0.08) !important;
-  color: #0f172a !important;
+html.light .tech-grid-overlay {
+  background-image:
+    linear-gradient(to right, rgba(15, 23, 42, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.05) 1px, transparent 1px) !important;
 }
 
 html.light .mobile-bottom-nav {
@@ -12783,4 +13311,5 @@ html.light .mobile-bottom-nav-link.active,
 html.light .mobile-bottom-nav-link:hover {
   color: #10b981 !important;
 }
+
 
