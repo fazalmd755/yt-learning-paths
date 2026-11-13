@@ -12,7 +12,7 @@ interface TextRevealProps {
 
 /**
  * Animmaster Lib - GSAP Kinetic Character Reveal
- * High-framerate staggered reveal for hero headings & subheadings
+ * Text starts fully rendered and visible in DOM, then smoothly animates in on mount
  */
 export function AnimmasterTextReveal({
   text,
@@ -26,25 +26,20 @@ export function AnimmasterTextReveal({
     if (!el) return;
 
     const chars = el.querySelectorAll(".anim-char");
-    gsap.fromTo(
-      chars,
-      {
-        y: 20,
-        opacity: 0,
-      },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.6,
-        stagger: 0.025,
-        delay,
-        ease: "power3.out",
-      }
-    );
+    if (!chars.length) return;
+
+    gsap.from(chars, {
+      y: 10,
+      opacity: 0,
+      duration: 0.5,
+      stagger: 0.02,
+      delay,
+      ease: "power2.out",
+    });
   }, [text, delay]);
 
   return (
-    <span ref={containerRef} className={cn("inline-block overflow-hidden", className)}>
+    <span ref={containerRef} className={cn("inline-block", className)}>
       {text.split("").map((char, index) => (
         <span
           key={`${char}-${index}`}

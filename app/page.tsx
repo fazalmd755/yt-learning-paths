@@ -11,7 +11,6 @@ import {
   SkiperCard,
   InteractiveMockup,
   AnimmasterMagnetic,
-  AnimmasterTextReveal,
 } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -105,9 +104,7 @@ export default function Home() {
           </div>
           <h1 className="hero-title">
             <span>The world&apos;s best education is on YouTube.</span>
-            <span className="hero-accent-line block mt-1">
-              <AnimmasterTextReveal text="The worst distractions are too." delay={0.2} />
-            </span>
+            <span className="hero-accent-line"> The worst distractions are too.</span>
           </h1>
           <p className="hero-copy">
             Watchlify strips away clickbait recommendations, infinite shorts, and algorithmic rabbit holes.
