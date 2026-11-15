@@ -95,7 +95,7 @@ export default function AddCourseForm() {
             className={`flex items-center gap-1 rounded-lg border px-3 py-2 text-xs font-semibold transition ${
               showCatalog
                 ? "border-emerald-500/50 bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
-                : "border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-zinc-800/80 text-slate-700 dark:text-zinc-300 hover:bg-slate-200 dark:hover:bg-zinc-700 hover:text-slate-900 dark:hover:text-white"
+                : "border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800/80 text-neutral-700 dark:text-zinc-300 hover:bg-neutral-50 dark:hover:bg-zinc-700 hover:text-neutral-900 dark:hover:text-white shadow-xs"
             }`}
           >
             <SparklesIcon size={13} className="text-emerald-500 dark:text-emerald-400" />
@@ -108,14 +108,14 @@ export default function AddCourseForm() {
 
       {/* Quick Select Preset Pills */}
       <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-        <span className="text-[11px] font-medium text-slate-500 dark:text-zinc-500">Or pick curated:</span>
+        <span className="text-[11px] font-medium text-neutral-500 dark:text-zinc-500">Or pick curated:</span>
         {CURATED_TRACKS.slice(0, 5).map((track) => (
           <button
             key={track.id}
             type="button"
             disabled={loading}
             onClick={() => importUrl(track.playlistUrl, track.id)}
-            className="flex items-center gap-1 rounded-full border border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-zinc-900/60 px-2.5 py-1 text-[11px] text-slate-700 dark:text-zinc-300 transition hover:border-emerald-500/40 hover:bg-slate-200 dark:hover:bg-zinc-800 hover:text-slate-900 dark:hover:text-white disabled:opacity-50"
+            className="flex items-center gap-1 rounded-full border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 px-2.5 py-1 text-[11px] text-neutral-700 dark:text-zinc-300 transition hover:border-emerald-500/40 hover:bg-emerald-50/50 dark:hover:bg-zinc-800 hover:text-neutral-900 dark:hover:text-white disabled:opacity-50 shadow-xs"
           >
             <span>
               {track.category === "dsa"

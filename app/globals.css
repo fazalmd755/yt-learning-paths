@@ -14322,3 +14322,299 @@ html.light .footer-bottom-bar {
 html.light .footer-copy-text {
   color: var(--muted) !important;
 }
+
+/* ==========================================================================
+   TARGETED LIGHT MODE CARD & WIDGET ENHANCEMENTS
+   ========================================================================== */
+
+/* 1. Dashboard Compact Add Course & Curated Selectors */
+html.light .add-course-compact-row {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.12) !important;
+  box-shadow: 0 1px 3px rgba(18, 24, 21, 0.05) !important;
+  border-radius: 9999px !important;
+  padding: 4px 6px 4px 14px !important;
+}
+
+html.light .add-course-compact-row:focus-within {
+  border-color: #2e7d47 !important;
+  box-shadow: 0 0 0 3px rgba(46, 125, 71, 0.12) !important;
+}
+
+html.light .add-course-compact-icon {
+  color: #526058 !important;
+}
+
+html.light .add-course-compact-input {
+  color: #121815 !important;
+}
+
+html.light .add-course-compact-input::placeholder {
+  color: #74837a !important;
+}
+
+html.light .add-course-compact-btn {
+  background: #1e3f2d !important;
+  color: #ffffff !important;
+  border-color: #1e3f2d !important;
+  border-radius: 9999px !important;
+  font-weight: 600 !important;
+  box-shadow: 0 1px 3px rgba(30, 63, 45, 0.2) !important;
+}
+
+html.light .add-course-compact-btn:hover:not(:disabled) {
+  background: #142a1e !important;
+  border-color: #142a1e !important;
+  color: #ffffff !important;
+}
+
+html.light .achievements-compact-container {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 3px rgba(18, 24, 21, 0.04) !important;
+  border-radius: 14px !important;
+}
+
+html.light .achievements-compact-label {
+  color: #121815 !important;
+}
+
+html.light .achievement-pill.locked {
+  background: rgba(18, 24, 21, 0.04) !important;
+  color: #74837a !important;
+}
+
+html.light .view-mode-toggle {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.12) !important;
+  box-shadow: 0 1px 2px rgba(18, 24, 21, 0.04) !important;
+  border-radius: 8px !important;
+}
+
+html.light .view-mode-btn {
+  color: #74837a !important;
+}
+
+html.light .view-mode-btn:hover {
+  color: #121815 !important;
+  background: rgba(18, 24, 21, 0.05) !important;
+}
+
+html.light .view-mode-btn.active {
+  background: rgba(46, 125, 71, 0.12) !important;
+  color: #1e3f2d !important;
+  font-weight: 700 !important;
+}
+
+html.light .course-list-title {
+  color: #121815 !important;
+}
+
+html.light .course-list-item {
+  background: #ffffff !important;
+  border-color: rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 3px rgba(18, 24, 21, 0.04) !important;
+}
+
+/* 2. Course Detail Page (Light Theme) */
+html.light .course-detail-hero-compact {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 4px rgba(18, 24, 21, 0.05) !important;
+  border-radius: 22px !important;
+}
+
+html.light .course-hero-compact-art {
+  background: #eaf0ec !important;
+  border: 1px solid rgba(18, 24, 21, 0.06) !important;
+}
+
+html.light .course-hero-channel {
+  color: #526058 !important;
+}
+
+html.light .course-hero-title {
+  color: #121815 !important;
+}
+
+html.light .course-hero-stats-row {
+  color: #526058 !important;
+}
+
+html.light .course-etc-pill {
+  background: rgba(46, 125, 71, 0.1) !important;
+  border-color: rgba(46, 125, 71, 0.25) !important;
+  color: #1e3f2d !important;
+}
+
+html.light .course-hero-progress-label {
+  color: #526058 !important;
+}
+
+html.light .course-hero-progress-label strong {
+  color: #2e7d47 !important;
+}
+
+html.light .course-hero-actions .detail-start-button {
+  background: #1e3f2d !important;
+  color: #ffffff !important;
+}
+
+html.light .course-hero-actions .detail-start-button:hover {
+  background: #142a1e !important;
+}
+
+html.light .course-hero-actions .detail-remove-button {
+  border-color: rgba(18, 24, 21, 0.12) !important;
+  color: #526058 !important;
+}
+
+html.light .course-utilities-compact {
+  border-top: 1px solid rgba(18, 24, 21, 0.06) !important;
+}
+
+html.light .course-utilities-compact button,
+html.light .course-utilities-compact a {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.1) !important;
+  color: #4a5850 !important;
+  box-shadow: 0 1px 2px rgba(18, 24, 21, 0.03) !important;
+}
+
+html.light .course-utilities-compact button:hover,
+html.light .course-utilities-compact a:hover {
+  background: #f4f7f5 !important;
+  color: #121815 !important;
+}
+
+/* Video Lessons Filter & Rows */
+html.light .video-row {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 3px rgba(18, 24, 21, 0.03) !important;
+  border-radius: 14px !important;
+}
+
+html.light .video-row:hover {
+  background: #f8faf9 !important;
+  border-color: rgba(18, 24, 21, 0.16) !important;
+}
+
+html.light .video-index {
+  color: #74837a !important;
+}
+
+html.light .video-row-copy p {
+  color: #121815 !important;
+}
+
+html.light .video-row-copy > span {
+  color: #526058 !important;
+}
+
+html.light .video-status {
+  background: #f1f5f9 !important;
+  color: #334155 !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* 3. Study Hub Card (Light Theme) */
+html.light .hub-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 4px rgba(18, 24, 21, 0.05) !important;
+  border-radius: 22px !important;
+}
+
+html.light .hub-title-link h3 {
+  color: #121815 !important;
+}
+
+html.light .hub-title-link:hover h3 {
+  color: #2e7d47 !important;
+}
+
+html.light .hub-target-date {
+  background: #f1f5f9 !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+html.light .hub-desc,
+html.light .hub-desc-empty {
+  color: #4a5850 !important;
+}
+
+html.light .hub-subject-count {
+  color: #526058 !important;
+}
+
+html.light .hub-no-subjects {
+  color: #74837a !important;
+}
+
+/* 4. Study Hub Workspace (Light Theme) */
+html.light .subject-switcher-bar {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 3px rgba(18, 24, 21, 0.04) !important;
+  border-radius: 9999px !important;
+}
+
+html.light .switcher-label {
+  color: #526058 !important;
+}
+
+html.light .switcher-pill {
+  background: #f1f5f9 !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  color: #334155 !important;
+}
+
+html.light .switcher-pill:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .switcher-pill.active {
+  background: #1e3f2d !important;
+  color: #ffffff !important;
+  border-color: #1e3f2d !important;
+}
+
+html.light .subject-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 4px rgba(18, 24, 21, 0.05) !important;
+  border-radius: 22px !important;
+}
+
+html.light .subject-card-title {
+  color: #121815 !important;
+}
+
+html.light .subject-channel-name,
+html.light .subject-meta-text {
+  color: #526058 !important;
+}
+
+/* 5. Header Daily Goal Ring (Light Theme) */
+html.light .header-goal-ring-btn {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.12) !important;
+  box-shadow: 0 1px 2px rgba(18, 24, 21, 0.04) !important;
+}
+
+html.light .header-goal-ring-btn:hover {
+  background: #f8faf9 !important;
+  border-color: rgba(46, 125, 71, 0.3) !important;
+}
+
+html.light .header-goal-svg circle:first-child {
+  stroke: rgba(18, 24, 21, 0.1) !important;
+}
+
+html.light .header-goal-ring-text {
+  color: #121815 !important;
+}
+
