@@ -453,45 +453,45 @@ export default function Player({
           onClick={() => setShowShortcuts(false)}
         >
           <div
-            className="w-full max-w-sm rounded-xl border border-white/10 bg-zinc-900 p-5 shadow-2xl"
+            className="w-full max-w-sm rounded-2xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-900 p-5 shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
-              <h3 className="text-sm font-semibold text-zinc-100 flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-neutral-200 dark:border-white/10 pb-3">
+              <h3 className="text-sm font-semibold text-neutral-900 dark:text-zinc-100 flex items-center gap-2">
                 <span>⌨️</span> Keyboard Shortcuts
               </h3>
               <button
                 type="button"
                 onClick={() => setShowShortcuts(false)}
-                className="text-sm text-zinc-400 hover:text-white"
+                className="text-sm text-neutral-400 hover:text-neutral-900 dark:text-zinc-400 dark:hover:text-white"
               >
                 ✕
               </button>
             </div>
-            <div className="mt-4 space-y-2.5 text-xs text-zinc-300">
+            <div className="mt-4 space-y-2.5 text-xs text-neutral-700 dark:text-zinc-300">
               <div className="flex items-center justify-between">
                 <span>Play / Pause</span>
-                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">Space / K</span>
+                <span className="rounded-lg bg-neutral-100 dark:bg-zinc-800 px-2 py-0.5 font-mono text-neutral-800 dark:text-zinc-200 border border-neutral-200 dark:border-white/5">Space / K</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Rewind 5 seconds</span>
-                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">← / J</span>
+                <span className="rounded-lg bg-neutral-100 dark:bg-zinc-800 px-2 py-0.5 font-mono text-neutral-800 dark:text-zinc-200 border border-neutral-200 dark:border-white/5">← / J</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Forward 5 seconds</span>
-                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">→ / L</span>
+                <span className="rounded-lg bg-neutral-100 dark:bg-zinc-800 px-2 py-0.5 font-mono text-neutral-800 dark:text-zinc-200 border border-neutral-200 dark:border-white/5">→ / L</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Mute / Unmute</span>
-                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">M</span>
+                <span className="rounded-lg bg-neutral-100 dark:bg-zinc-800 px-2 py-0.5 font-mono text-neutral-800 dark:text-zinc-200 border border-neutral-200 dark:border-white/5">M</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Speed Up / Slow Down</span>
-                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">&gt; / &lt;</span>
+                <span className="rounded-lg bg-neutral-100 dark:bg-zinc-800 px-2 py-0.5 font-mono text-neutral-800 dark:text-zinc-200 border border-neutral-200 dark:border-white/5">&gt; / &lt;</span>
               </div>
               <div className="flex items-center justify-between">
                 <span>Cancel Autoplay / Close</span>
-                <span className="rounded bg-zinc-800 px-2 py-0.5 font-mono text-zinc-200">Esc</span>
+                <span className="rounded-lg bg-neutral-100 dark:bg-zinc-800 px-2 py-0.5 font-mono text-neutral-800 dark:text-zinc-200 border border-neutral-200 dark:border-white/5">Esc</span>
               </div>
             </div>
             <div className="mt-5 text-center">

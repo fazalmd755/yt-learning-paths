@@ -36,13 +36,13 @@ export function SkiperCard({ children, className = "", badge }: SkiperCardProps)
       whileHover={{ y: -4 }}
       transition={{ type: "spring", stiffness: 350, damping: 25 }}
       className={cn(
-        "relative rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-neutral-900/70 p-6 backdrop-blur-md overflow-hidden transition-colors duration-200 shadow-sm dark:shadow-none text-slate-900 dark:text-slate-100",
+        "relative rounded-[22px] border border-slate-200/80 dark:border-white/10 bg-white dark:bg-[#141b18] p-7 backdrop-blur-md overflow-hidden transition-all duration-200 shadow-sm text-slate-900 dark:text-slate-100",
         className
       )}
     >
       {/* Dynamic spotlight tracking the mouse */}
       <div
-        className="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-300"
+        className="pointer-events-none absolute -inset-px rounded-[22px] opacity-0 transition-opacity duration-300"
         style={{
           opacity: isHovered ? 1 : 0,
           background: `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(16, 185, 129, 0.12), transparent 70%)`,

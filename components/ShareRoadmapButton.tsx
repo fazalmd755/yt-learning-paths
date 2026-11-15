@@ -85,55 +85,55 @@ export default function ShareRoadmapButton({
           onClick={() => setIsOpen(false)}
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-white/10 bg-zinc-950 p-6 shadow-2xl transition-all"
+            className="w-full max-w-md rounded-2xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-950 p-6 shadow-2xl transition-all"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-3">
+            <div className="flex items-center justify-between border-b border-neutral-200 dark:border-white/10 pb-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-400">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
                   <ShareIcon size={18} />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">Share this Roadmap</h3>
-                  <p className="text-xs text-zinc-400">Anyone with this link can view the syllabus & clone it</p>
+                  <h3 className="text-sm font-bold text-neutral-900 dark:text-white">Share this Roadmap</h3>
+                  <p className="text-xs text-neutral-600 dark:text-zinc-400">Anyone with this link can view the syllabus & clone it</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg p-1 text-zinc-400 hover:bg-white/10 hover:text-white"
+                className="rounded-lg p-1 text-neutral-400 hover:bg-neutral-100 hover:text-neutral-900 dark:text-zinc-400 dark:hover:bg-white/10 dark:hover:text-white"
               >
                 ✕
               </button>
             </div>
 
             {/* Preview Card */}
-            <div className="my-4 rounded-xl border border-white/10 bg-zinc-900/50 p-3.5">
-              <div className="flex items-center justify-between text-[11px] text-emerald-400 font-mono font-semibold">
+            <div className="my-4 rounded-xl border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-zinc-900/50 p-3.5">
+              <div className="flex items-center justify-between text-[11px] text-emerald-600 dark:text-emerald-400 font-mono font-semibold">
                 <span>WATCHLIFY PUBLIC ROADMAP</span>
                 <span>{lessonCount ? `${lessonCount} Lessons` : "Curated Path"}</span>
               </div>
-              <h4 className="mt-1 text-sm font-semibold text-zinc-100 line-clamp-1">{title}</h4>
-              <p className="mt-1 text-xs text-zinc-400">
+              <h4 className="mt-1 text-sm font-semibold text-neutral-900 dark:text-zinc-100 line-clamp-1">{title}</h4>
+              <p className="mt-1 text-xs text-neutral-600 dark:text-zinc-400">
                 Distraction-free learning syllabus with zero ads, shorts, or algorithmic rabbit holes.
               </p>
             </div>
 
             {/* Link Copy Box */}
             <div className="space-y-2">
-              <label className="text-xs font-medium text-zinc-300">Public Link</label>
+              <label className="text-xs font-medium text-neutral-700 dark:text-zinc-300">Public Link</label>
               <div className="flex items-center gap-2">
                 <input
                   type="text"
                   readOnly
                   value={publicUrl}
-                  className="w-full rounded-lg border border-white/10 bg-zinc-900 px-3 py-2 text-xs font-mono text-zinc-200 focus:outline-none focus:border-emerald-500"
+                  className="w-full rounded-xl border border-neutral-300 dark:border-white/10 bg-neutral-100 dark:bg-zinc-900 px-3 py-2 text-xs font-mono text-neutral-900 dark:text-zinc-200 focus:outline-none focus:border-emerald-500"
                 />
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="flex shrink-0 items-center gap-1.5 rounded-lg bg-emerald-500 px-3.5 py-2 text-xs font-semibold text-black transition hover:bg-emerald-400"
+                  className="flex shrink-0 items-center gap-1.5 rounded-full bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-3.5 py-2 text-xs font-semibold text-white dark:text-black transition"
                 >
                   {copied ? <CheckIcon size={14} /> : <LinkIcon size={14} />}
                   <span>{copied ? "Copied!" : "Copy"}</span>
@@ -142,8 +142,8 @@ export default function ShareRoadmapButton({
             </div>
 
             {/* Social Sharing Pills */}
-            <div className="mt-4 pt-3 border-t border-white/10">
-              <span className="text-[11px] font-medium text-zinc-400 uppercase tracking-wider">Share directly to</span>
+            <div className="mt-4 pt-3 border-t border-neutral-200 dark:border-white/10">
+              <span className="text-[11px] font-medium text-neutral-500 dark:text-zinc-400 uppercase tracking-wider">Share directly to</span>
               <div className="mt-2 grid grid-cols-4 gap-2 text-center text-xs">
                 {/* WhatsApp */}
                 <a
@@ -152,7 +152,7 @@ export default function ShareRoadmapButton({
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1 rounded-lg border border-white/5 bg-zinc-900/60 p-2 text-zinc-300 transition hover:bg-[#25D366]/20 hover:text-[#25D366] hover:border-[#25D366]/40"
+                  className="flex flex-col items-center gap-1 rounded-xl border border-neutral-200 dark:border-white/5 bg-neutral-50 dark:bg-zinc-900/60 p-2 text-neutral-700 dark:text-zinc-300 transition hover:bg-[#25D366]/20 hover:text-[#25D366] hover:border-[#25D366]/40"
                 >
                   <span className="text-base">💬</span>
                   <span className="text-[11px]">WhatsApp</span>
@@ -165,7 +165,7 @@ export default function ShareRoadmapButton({
                   )}&url=${encodeURIComponent(publicUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1 rounded-lg border border-white/5 bg-zinc-900/60 p-2 text-zinc-300 transition hover:bg-zinc-800 hover:text-white hover:border-zinc-700"
+                  className="flex flex-col items-center gap-1 rounded-xl border border-neutral-200 dark:border-white/5 bg-neutral-50 dark:bg-zinc-900/60 p-2 text-neutral-700 dark:text-zinc-300 transition hover:bg-neutral-200 dark:hover:bg-zinc-800 hover:text-neutral-900 dark:hover:text-white"
                 >
                   <span className="text-base">𝕏</span>
                   <span className="text-[11px]">Twitter</span>
@@ -178,7 +178,7 @@ export default function ShareRoadmapButton({
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1 rounded-lg border border-white/5 bg-zinc-900/60 p-2 text-zinc-300 transition hover:bg-[#0A66C2]/20 hover:text-[#0A66C2] hover:border-[#0A66C2]/40"
+                  className="flex flex-col items-center gap-1 rounded-xl border border-neutral-200 dark:border-white/5 bg-neutral-50 dark:bg-zinc-900/60 p-2 text-neutral-700 dark:text-zinc-300 transition hover:bg-[#0A66C2]/20 hover:text-[#0A66C2] hover:border-[#0A66C2]/40"
                 >
                   <span className="text-base">💼</span>
                   <span className="text-[11px]">LinkedIn</span>
@@ -191,7 +191,7 @@ export default function ShareRoadmapButton({
                   )}&title=${encodeURIComponent(title)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-1 rounded-lg border border-white/5 bg-zinc-900/60 p-2 text-zinc-300 transition hover:bg-[#FF4500]/20 hover:text-[#FF4500] hover:border-[#FF4500]/40"
+                  className="flex flex-col items-center gap-1 rounded-xl border border-neutral-200 dark:border-white/5 bg-neutral-50 dark:bg-zinc-900/60 p-2 text-neutral-700 dark:text-zinc-300 transition hover:bg-[#FF4500]/20 hover:text-[#FF4500] hover:border-[#FF4500]/40"
                 >
                   <span className="text-base">🤖</span>
                   <span className="text-[11px]">Reddit</span>

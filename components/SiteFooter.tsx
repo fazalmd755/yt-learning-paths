@@ -94,14 +94,14 @@ export default function SiteFooter() {
                 <span>contact.watchlify@gmail.com</span>
               </a>
               <a
-                href="https://instagram.com/watchlify_"
+                href="https://instagram.com/watchlify.online"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="footer-contact-pill"
                 title="Follow Watchlify on Instagram"
               >
                 <InstagramIcon size={15} />
-                <span>@watchlify_</span>
+                <span>@watchlify.online</span>
               </a>
             </div>
           </div>

@@ -7,7 +7,7 @@ import { LifeBuoyIcon, CheckCircleIcon } from "@/components/Icons";
 export const metadata: Metadata = {
   title: "Contact & Support",
   description:
-    "Get in touch with the Watchlify team. Email us at contact.watchlify@gmail.com or connect via Instagram @watchlify_ for help, feedback, and questions.",
+    "Get in touch with the Watchlify team. Email us at contact.watchlify@gmail.com or connect via Instagram @watchlify.online for help, feedback, and questions.",
   alternates: {
     canonical: "/contact",
   },
@@ -32,7 +32,7 @@ const supportFaqs = [
   },
   {
     q: "How quickly do you reply to support emails?",
-    a: "We personally read and respond to emails sent to contact.watchlify@gmail.com typically within 24 to 48 hours. For quick community questions, you can also send a direct message on Instagram @watchlify_.",
+    a: "We personally read and respond to emails sent to contact.watchlify@gmail.com typically within 24 to 48 hours. For quick community questions, you can also send a direct message on Instagram @watchlify.online.",
   },
 ];
 

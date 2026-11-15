@@ -388,14 +388,14 @@ export default function AiStudyAssist({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold tracking-wide text-zinc-100">
+              <h3 className="text-sm font-semibold tracking-wide text-neutral-900 dark:text-zinc-100">
                 AI Study Assistant
               </h3>
-              <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold text-emerald-400">
+              <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-400">
                 AI Powered
               </span>
             </div>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-neutral-600 dark:text-zinc-400">
               Instant video summaries, practice quizzes, and 24/7 doubt resolution
             </p>
           </div>
@@ -552,19 +552,19 @@ export default function AiStudyAssist({
                   {q.options.map((opt, optIdx) => {
                     const isSelected = chosen === optIdx;
                     let optionStyle =
-                      "border-white/5 bg-zinc-900/40 text-zinc-300 hover:border-white/20";
+                      "border-neutral-200 dark:border-white/5 bg-neutral-50 dark:bg-zinc-900/40 text-neutral-800 dark:text-zinc-300 hover:border-neutral-300 dark:hover:border-white/20";
 
                     if (showResults) {
                       if (optIdx === q.correct) {
                         optionStyle =
-                          "border-emerald-500/50 bg-emerald-500/10 text-emerald-300";
+                          "border-emerald-500/50 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300";
                       } else if (isSelected && !isCorrect) {
                         optionStyle =
-                          "border-red-500/50 bg-red-500/10 text-red-300";
+                          "border-red-500/50 bg-red-500/10 text-red-700 dark:text-red-300";
                       }
                     } else if (isSelected) {
                       optionStyle =
-                        "border-emerald-500 bg-emerald-500/10 text-white";
+                        "border-emerald-500 bg-emerald-500/10 text-neutral-900 dark:text-white";
                     }
 
                     return (
@@ -572,11 +572,11 @@ export default function AiStudyAssist({
                         key={optIdx}
                         type="button"
                         onClick={() => handleSelectOption(q.id, optIdx)}
-                        className={`w-full text-left rounded-md border p-2 text-xs transition flex items-center justify-between ${optionStyle}`}
+                        className={`w-full text-left rounded-lg border p-2 text-xs transition flex items-center justify-between ${optionStyle}`}
                       >
                         <span>{opt}</span>
                         {isSelected && !showResults && (
-                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                         )}
                       </button>
                     );
@@ -584,8 +584,8 @@ export default function AiStudyAssist({
                 </div>
 
                 {showResults && (
-                  <p className="mt-2 rounded bg-zinc-900/60 p-2 text-[11px] text-zinc-400">
-                    💡 <strong className="text-zinc-300">Explanation:</strong>{" "}
+                  <p className="mt-2 rounded-lg bg-neutral-100 dark:bg-zinc-900/60 p-2 text-[11px] text-neutral-600 dark:text-zinc-400 border border-neutral-200 dark:border-white/5">
+                    💡 <strong className="text-neutral-900 dark:text-zinc-300">Explanation:</strong>{" "}
                     {q.explanation}
                   </p>
                 )}

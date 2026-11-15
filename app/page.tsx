@@ -318,9 +318,9 @@ export default function Home() {
           {highlights.map((item) => (
             <SkiperCard key={item.number} badge={`Step ${item.number}`} className="feature-card-v2">
               <div className="feature-card-content">
-                <h3 className="text-lg font-semibold text-white mb-1">{item.title}</h3>
-                <small className="feature-subtitle text-emerald-400 font-medium block mb-2">{item.subtitle}</small>
-                <p className="text-sm text-neutral-400 leading-relaxed">{item.description}</p>
+                <h3 className="text-lg font-semibold text-neutral-900 dark:text-white mb-1">{item.title}</h3>
+                <small className="feature-subtitle text-emerald-600 dark:text-emerald-400 font-medium block mb-2">{item.subtitle}</small>
+                <p className="text-sm text-neutral-600 dark:text-neutral-300 leading-relaxed">{item.description}</p>
               </div>
             </SkiperCard>
           ))}

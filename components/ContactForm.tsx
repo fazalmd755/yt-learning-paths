@@ -11,8 +11,8 @@ export default function ContactForm() {
   const [message, setMessage] = useState("");
 
   const supportEmail = "contact.watchlify@gmail.com";
-  const instagramHandle = "watchlify_";
-  const instagramUrl = "https://instagram.com/watchlify_";
+  const instagramHandle = "watchlify.online";
+  const instagramUrl = "https://instagram.com/watchlify.online";
 
   const handleCopyEmail = async () => {
     try {

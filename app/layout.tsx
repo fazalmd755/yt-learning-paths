@@ -208,7 +208,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             "@type": "ImageObject",
             url: `${siteUrl}/icon.svg`,
           },
-          sameAs: ["https://instagram.com/watchlify_"],
+          sameAs: ["https://instagram.com/watchlify.online"],
           contactPoint: {
             "@type": "ContactPoint",
             email: "contact.watchlify@gmail.com",
@@ -246,6 +246,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en" className={`${plusJakarta.variable} ${jetbrainsMono.variable}`}>
       <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <Script
           src="https://www.googletagmanager.com/gtm.js?id=GTM-P767SJF7"
           strategy="afterInteractive"

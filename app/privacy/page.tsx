@@ -233,12 +233,12 @@ export default function PrivacyPolicyPage() {
                 <span>
                   Instagram:{" "}
                   <a
-                    href="https://instagram.com/watchlify_"
+                    href="https://instagram.com/watchlify.online"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="legal-link"
                   >
-                    @watchlify_
+                    @watchlify.online
                   </a>
                 </span>
               </div>

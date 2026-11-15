@@ -101,17 +101,17 @@ function GuestWatchContent() {
   };
 
   return (
-    <main className="min-h-screen bg-transparent text-zinc-100 p-4 md:p-6 max-w-7xl mx-auto">
+    <main className="min-h-screen bg-transparent text-neutral-900 dark:text-zinc-100 p-4 md:p-6 max-w-7xl mx-auto">
       {/* Top Navbar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-white/10 mb-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-neutral-200 dark:border-white/10 mb-6">
         <div className="flex items-center gap-3">
           <Link
             href="/"
-            className="text-xs text-zinc-400 hover:text-white transition flex items-center gap-1.5"
+            className="text-xs text-neutral-600 dark:text-zinc-400 hover:text-neutral-900 dark:hover:text-white transition flex items-center gap-1.5"
           >
             <span>←</span> Exit Guest Mode
           </Link>
-          <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-400">
+          <span className="rounded-full bg-emerald-500/15 border border-emerald-500/30 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-700 dark:text-emerald-400">
             DEMO / GUEST SESSION
           </span>
         </div>
@@ -120,7 +120,7 @@ function GuestWatchContent() {
           <button
             type="button"
             onClick={() => triggerGentlePrompt("streak")}
-            className="flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-300 hover:bg-amber-500/20 transition"
+            className="flex items-center gap-1.5 rounded-full border border-amber-500/30 bg-amber-500/10 px-3 py-1.5 text-xs font-medium text-amber-700 dark:text-amber-300 hover:bg-amber-500/20 transition"
           >
             <FlameIcon size={14} />
             <span>Save Today&apos;s Streak</span>
@@ -131,8 +131,8 @@ function GuestWatchContent() {
 
       {/* Lesson Heading */}
       <div className="mb-4">
-        <span className="text-xs font-mono text-zinc-400">GUEST PREVIEW</span>
-        <h1 className="text-xl md:text-2xl font-bold text-white mt-1">
+        <span className="text-xs font-mono text-neutral-500 dark:text-zinc-400">GUEST PREVIEW</span>
+        <h1 className="text-xl md:text-2xl font-bold text-neutral-900 dark:text-white mt-1">
           {videoTitle}
         </h1>
       </div>
@@ -141,7 +141,7 @@ function GuestWatchContent() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left 2 Cols: Player */}
         <div className="lg:col-span-2 space-y-4">
-          <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-white/10 bg-black shadow-2xl">
+          <div className="relative aspect-video w-full rounded-2xl overflow-hidden border border-neutral-200 dark:border-white/10 bg-black shadow-lg dark:shadow-2xl">
             <iframe
               ref={iframeRef}
               src={`https://www.youtube-nocookie.com/embed/${videoId}?enablejsapi=1&rel=0&modestbranding=1&autoplay=1`}
@@ -153,16 +153,16 @@ function GuestWatchContent() {
           </div>
 
           {/* Quick controls bar */}
-          <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl border border-white/5 bg-zinc-900/60">
-            <div className="flex items-center gap-2 text-xs text-zinc-400">
-              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+          <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl border border-neutral-200 dark:border-white/5 bg-white dark:bg-zinc-900/60 shadow-sm">
+            <div className="flex items-center gap-2 text-xs text-neutral-600 dark:text-zinc-400">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
               <span>Distraction-free environment (zero recommendations, no shorts)</span>
             </div>
 
             <button
               type="button"
               onClick={() => triggerGentlePrompt("next_video")}
-              className="flex items-center gap-1.5 rounded-lg bg-white/10 hover:bg-white/20 px-3 py-1 text-xs font-medium text-white transition"
+              className="flex items-center gap-1.5 rounded-full bg-neutral-900 text-white dark:bg-white/10 hover:bg-neutral-800 dark:hover:bg-white/20 px-3 py-1.5 text-xs font-medium transition"
             >
               <span>Next Lesson</span>
               <ArrowRightIcon size={12} />
@@ -170,14 +170,14 @@ function GuestWatchContent() {
           </div>
 
           {/* Guest AI Quick Assist preview */}
-          <div className="rounded-xl border border-white/10 bg-zinc-900/40 p-4">
+          <div className="rounded-2xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-900/40 p-4 shadow-sm">
             <div className="flex items-center gap-2 mb-2">
-              <SparklesIcon size={16} className="text-emerald-400" />
-              <h3 className="text-xs font-semibold text-zinc-200">
+              <SparklesIcon size={16} className="text-emerald-600 dark:text-emerald-400" />
+              <h3 className="text-xs font-semibold text-neutral-900 dark:text-zinc-200">
                 AI Study Assist
               </h3>
             </div>
-            <p className="text-xs text-zinc-400">
+            <p className="text-xs text-neutral-600 dark:text-zinc-400">
               Watchlify generates 3-bullet core summaries and practice quizzes for every lesson. Sign in to sync your notes to the cloud.
             </p>
           </div>
@@ -185,12 +185,12 @@ function GuestWatchContent() {
 
         {/* Right 1 Col: Notes & Scratchpad */}
         <div className="space-y-4">
-          <div className="rounded-2xl border border-white/10 bg-zinc-900/60 p-4 flex flex-col h-full min-h-[420px]">
-            <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
-              <h3 className="text-xs font-bold text-white uppercase tracking-wider">
+          <div className="rounded-2xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 p-4 flex flex-col h-full min-h-[420px] shadow-sm">
+            <div className="flex items-center justify-between border-b border-neutral-200 dark:border-white/10 pb-3 mb-3">
+              <h3 className="text-xs font-bold text-neutral-900 dark:text-white uppercase tracking-wider">
                 Timestamped Notes (Demo)
               </h3>
-              <span className="text-[11px] text-zinc-400">
+              <span className="text-[11px] text-neutral-500 dark:text-zinc-400">
                 {guestNotes.length} saved locally
               </span>
             </div>
@@ -202,11 +202,11 @@ function GuestWatchContent() {
                 onChange={(e) => setNewNoteText(e.target.value)}
                 placeholder="Take a timestamped note (e.g. key insight, code snippet)..."
                 rows={3}
-                className="w-full rounded-xl border border-white/10 bg-zinc-950/80 p-2.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-emerald-500 resize-none"
+                className="w-full rounded-xl border border-neutral-300 dark:border-white/10 bg-neutral-50 dark:bg-zinc-950/80 p-2.5 text-xs text-neutral-900 dark:text-zinc-200 placeholder-neutral-500 dark:placeholder-zinc-500 focus:outline-none focus:border-emerald-500 resize-none"
               />
               <button
                 type="submit"
-                className="w-full rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black py-2 text-xs font-bold transition flex items-center justify-center gap-1.5"
+                className="w-full rounded-full bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-black py-2 text-xs font-bold transition flex items-center justify-center gap-1.5"
               >
                 <span>Add Note</span>
               </button>
@@ -215,20 +215,20 @@ function GuestWatchContent() {
             {/* Notes list */}
             <div className="flex-1 overflow-y-auto space-y-2 max-h-[300px]">
               {guestNotes.length === 0 ? (
-                <div className="text-center py-8 text-xs text-zinc-400">
+                <div className="text-center py-8 text-xs text-neutral-500 dark:text-zinc-400">
                   No notes yet. Type a note above to test timestamped study notes!
                 </div>
               ) : (
                 guestNotes.map((n) => (
                   <div
                     key={n.id}
-                    className="rounded-lg border border-white/5 bg-zinc-950/50 p-2.5 text-xs"
+                    className="rounded-xl border border-neutral-200 dark:border-white/5 bg-neutral-50 dark:bg-zinc-950/50 p-2.5 text-xs"
                   >
-                    <div className="flex items-center gap-1.5 text-emerald-400 font-mono text-[10px] mb-1">
+                    <div className="flex items-center gap-1.5 text-emerald-600 dark:text-emerald-400 font-mono text-[10px] mb-1">
                       <span>⏱</span>
                       <span>{formatSeconds(n.time)}</span>
                     </div>
-                    <p className="text-zinc-300 whitespace-pre-wrap">{n.text}</p>
+                    <p className="text-neutral-800 dark:text-zinc-300 whitespace-pre-wrap">{n.text}</p>
                   </div>
                 ))
               )}
@@ -242,22 +242,22 @@ function GuestWatchContent() {
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-sm animate-fade-in"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm animate-fade-in"
           onClick={() => setShowGentleModal(false)}
         >
           <div
-            className="w-full max-w-md rounded-2xl border border-white/10 bg-zinc-950 p-6 shadow-2xl text-center"
+            className="w-full max-w-md rounded-2xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-950 p-6 shadow-2xl text-center"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400 mb-4">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 mb-4">
               <SparklesIcon size={24} />
             </div>
 
-            <h3 className="text-lg font-bold text-white">
+            <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
               Save your progress & notes with Google
             </h3>
 
-            <p className="mt-2 text-xs text-zinc-400 leading-relaxed">
+            <p className="mt-2 text-xs text-neutral-600 dark:text-zinc-400 leading-relaxed">
               {gentleTriggerReason === "note"
                 ? "You're taking great notes! Sign in with Google so they never get lost and sync across all your devices."
                 : gentleTriggerReason === "streak"
@@ -289,7 +289,7 @@ export default function GuestWatchPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#090A0E] flex items-center justify-center text-zinc-400 text-sm">
+        <div className="min-h-screen bg-transparent flex items-center justify-center text-neutral-500 dark:text-zinc-400 text-sm">
           Loading guest workspace...
         </div>
       }
