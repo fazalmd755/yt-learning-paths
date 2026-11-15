@@ -14834,4 +14834,157 @@ html.light .watch-next > span:last-child {
   color: #2e7d47 !important;
 }
 
+/* 7. Account & Profile Settings Page (Light Theme) */
+html.light .settings-page-heading h1 {
+  color: #121815 !important;
+}
+
+html.light .settings-page-heading > p {
+  color: #526058 !important;
+}
+
+html.light .profile-settings-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 4px rgba(18, 24, 21, 0.05) !important;
+  border-radius: 22px !important;
+}
+
+html.light .card-kicker {
+  color: #526058 !important;
+}
+
+html.light .profile-settings-heading h2 {
+  color: #121815 !important;
+}
+
+html.light .profile-field-label {
+  color: #121815 !important;
+  font-weight: 650 !important;
+}
+
+html.light .profile-input,
+html.light .profile-textarea,
+html.light .profile-goal-number-input {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.14) !important;
+  color: #121815 !important;
+  box-shadow: 0 1px 2px rgba(18, 24, 21, 0.04) !important;
+}
+
+html.light .profile-input::placeholder,
+html.light .profile-textarea::placeholder {
+  color: #74837a !important;
+}
+
+html.light .profile-input:focus,
+html.light .profile-textarea:focus,
+html.light .profile-goal-number-input:focus {
+  border-color: #2e7d47 !important;
+  box-shadow: 0 0 0 3px rgba(46, 125, 71, 0.12) !important;
+}
+
+html.light .profile-input-readonly {
+  background: #f1f5f9 !important;
+  border: 1px solid rgba(18, 24, 21, 0.1) !important;
+  color: #475569 !important;
+  cursor: not-allowed !important;
+}
+
+html.light .profile-goal-box {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.14) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+}
+
+html.light .profile-goal-unit {
+  background: #f1f5f9 !important;
+  border-left: 1px solid rgba(18, 24, 21, 0.1) !important;
+  color: #334155 !important;
+  font-weight: 600 !important;
+}
+
+html.light .profile-chip-btn {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.12) !important;
+  color: #334155 !important;
+  box-shadow: 0 1px 2px rgba(18, 24, 21, 0.04) !important;
+}
+
+html.light .profile-chip-btn:hover {
+  background: rgba(46, 125, 71, 0.08) !important;
+  border-color: rgba(46, 125, 71, 0.3) !important;
+  color: #1e3f2d !important;
+}
+
+html.light .profile-chips-hint,
+html.light .profile-field-help,
+html.light .profile-char-count {
+  color: #74837a !important;
+}
+
+html.light .profile-settings-divider {
+  color: #74837a !important;
+}
+
+html.light .profile-settings-divider::after {
+  background: rgba(18, 24, 21, 0.1) !important;
+}
+
+html.light .profile-reminder-toggle {
+  background: #f8faf9 !important;
+  border: 1px solid rgba(18, 24, 21, 0.1) !important;
+  border-radius: 12px !important;
+}
+
+html.light .profile-reminder-toggle strong {
+  color: #121815 !important;
+}
+
+html.light .profile-reminder-toggle small {
+  color: #526058 !important;
+}
+
+html.light .profile-save-button {
+  background: #1e3f2d !important;
+  color: #ffffff !important;
+  border: none !important;
+  font-weight: 600 !important;
+  box-shadow: 0 2px 8px rgba(30, 63, 45, 0.2) !important;
+}
+
+html.light .profile-save-button:hover:not(:disabled) {
+  background: #142a1e !important;
+}
+
+/* Incomplete Profile Progress Hero Card */
+html.light .profile-progress-hero-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 4px rgba(18, 24, 21, 0.05) !important;
+  border-radius: 22px !important;
+}
+
+html.light .profile-progress-hero-left h2 {
+  color: #121815 !important;
+}
+
+html.light .profile-progress-hero-left p {
+  color: #526058 !important;
+}
+
+html.light .profile-step-pill {
+  background: #f1f5f9 !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  color: #334155 !important;
+}
+
+html.light .profile-step-pill.is-done {
+  background: rgba(46, 125, 71, 0.1) !important;
+  border-color: rgba(46, 125, 71, 0.25) !important;
+  color: #1e3f2d !important;
+}
+
+
 
