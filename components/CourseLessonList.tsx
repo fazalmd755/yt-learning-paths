@@ -55,7 +55,7 @@ export default function CourseLessonList({
   return (
     <div className="space-y-4">
       {/* Search & Filter Controls */}
-      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-2xl border border-neutral-200 dark:border-white/10 bg-white/80 dark:bg-zinc-900/40 p-3 backdrop-blur-sm shadow-sm">
+      <div className="course-lesson-search-bar flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 rounded-2xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-900/60 p-3 shadow-xs">
         {/* Search input */}
         <div className="relative flex-1">
           <SearchIcon
@@ -67,7 +67,7 @@ export default function CourseLessonList({
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search lessons by topic or keyword..."
-            className="w-full rounded-xl border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-zinc-950/60 pl-9 pr-8 py-2 text-xs md:text-sm text-neutral-900 dark:text-zinc-100 placeholder-neutral-500 dark:placeholder-zinc-500 outline-none transition focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/40"
+            className="w-full rounded-xl border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-zinc-950/60 pl-9 pr-8 py-2 text-xs md:text-sm text-neutral-900 dark:text-zinc-100 placeholder-neutral-500 dark:placeholder-zinc-500 outline-none transition focus:border-emerald-500/60 focus:ring-1 focus:ring-emerald-500/40"
           />
           {query && (
             <button
@@ -86,10 +86,10 @@ export default function CourseLessonList({
           <button
             type="button"
             onClick={() => setStatusFilter("all")}
-            className={`rounded-full px-3 py-1.5 font-medium transition ${
+            className={`rounded-full px-3 py-1.5 font-semibold transition ${
               statusFilter === "all"
-                ? "bg-neutral-900 text-white dark:bg-white/15 dark:text-white shadow-sm"
-                : "text-neutral-600 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
+                ? "bg-neutral-900 text-white dark:bg-emerald-500 dark:text-zinc-950 shadow-sm"
+                : "text-neutral-700 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
             }`}
           >
             All ({lessons.length})
@@ -97,10 +97,10 @@ export default function CourseLessonList({
           <button
             type="button"
             onClick={() => setStatusFilter("pending")}
-            className={`rounded-full px-3 py-1.5 font-medium transition ${
+            className={`rounded-full px-3 py-1.5 font-semibold transition ${
               statusFilter === "pending"
-                ? "bg-amber-500/20 text-amber-700 dark:text-amber-300 border border-amber-500/30"
-                : "text-neutral-600 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
+                ? "bg-amber-100 text-amber-800 dark:bg-amber-500/20 dark:text-amber-300 border border-amber-300 dark:border-amber-500/30"
+                : "text-neutral-700 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
             }`}
           >
             Pending ({pendingCount})
@@ -108,10 +108,10 @@ export default function CourseLessonList({
           <button
             type="button"
             onClick={() => setStatusFilter("completed")}
-            className={`rounded-full px-3 py-1.5 font-medium transition ${
+            className={`rounded-full px-3 py-1.5 font-semibold transition ${
               statusFilter === "completed"
-                ? "bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30"
-                : "text-neutral-600 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
+                ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30"
+                : "text-neutral-700 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
             }`}
           >
             Completed ({completedCount})

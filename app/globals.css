@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 @import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:ital,wght@0,500;0,600;0,700;1,500;1,600;1,700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
@@ -14985,6 +14986,104 @@ html.light .profile-step-pill.is-done {
   border-color: rgba(46, 125, 71, 0.25) !important;
   color: #1e3f2d !important;
 }
+
+/* 8. Study Hub Subject Cards (Light Theme) */
+html.light .subject-playlist-title {
+  color: #121815 !important;
+  font-weight: 700 !important;
+}
+
+html.light .subject-channel-name {
+  color: #526058 !important;
+}
+
+html.light .subject-progress-box {
+  background: #f8faf9 !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  border-radius: 10px !important;
+}
+
+html.light .subject-stats-row span,
+html.light .subject-stats-row strong {
+  color: #121815 !important;
+  font-weight: 600 !important;
+}
+
+html.light .subject-time-row {
+  color: #526058 !important;
+}
+
+html.light .custom-progress-track {
+  background: rgba(18, 24, 21, 0.08) !important;
+}
+
+html.light .subject-bottom-bar,
+html.light .subject-lectures-drawer {
+  background: #ffffff !important;
+  border-top: 1px solid rgba(18, 24, 21, 0.08) !important;
+}
+
+html.light .subject-lectures-toggle,
+html.light .subject-syllabus-link {
+  color: #526058 !important;
+}
+
+html.light .subject-lectures-toggle:hover,
+html.light .subject-syllabus-link:hover {
+  color: #121815 !important;
+}
+
+/* 9. Video Description Card (Light Theme) */
+html.light .video-description-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.08) !important;
+  box-shadow: 0 1px 3px rgba(18, 24, 21, 0.04) !important;
+  border-radius: 16px !important;
+  color: #121815 !important;
+}
+
+html.light .video-description-header {
+  border-bottom: 1px solid rgba(18, 24, 21, 0.06) !important;
+}
+
+html.light .video-description-label {
+  color: #526058 !important;
+  font-weight: 750 !important;
+}
+
+html.light .video-description-channel {
+  color: #2e7d47 !important;
+  font-weight: 600 !important;
+}
+
+html.light .video-description-body {
+  color: #121815 !important;
+  line-height: 1.65 !important;
+}
+
+html.light .video-description-link {
+  color: #0284c7 !important;
+}
+
+html.light .video-description-link:hover {
+  color: #0369a1 !important;
+  text-decoration: underline !important;
+}
+
+html.light .video-description-time-btn {
+  background: rgba(46, 125, 71, 0.1) !important;
+  border: 1px solid rgba(46, 125, 71, 0.25) !important;
+  color: #1e3f2d !important;
+  border-radius: 4px !important;
+  padding: 1px 6px !important;
+  font-weight: 600 !important;
+}
+
+html.light .video-description-toggle {
+  color: #2e7d47 !important;
+  font-weight: 600 !important;
+}
+
 
 
 

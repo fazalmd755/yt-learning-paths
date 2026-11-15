@@ -68,7 +68,7 @@ function renderFormattedParagraph(text: string, pKey: number) {
             return (
               <code
                 key={partIdx}
-                className="rounded bg-zinc-800/90 px-1.5 py-0.5 font-mono text-[11px] text-emerald-300 border border-white/5"
+                className="rounded bg-neutral-100 dark:bg-zinc-800/90 px-1.5 py-0.5 font-mono text-[11px] text-emerald-800 dark:text-emerald-300 border border-neutral-200 dark:border-white/5"
               >
                 {part.slice(1, -1)}
               </code>
@@ -80,14 +80,14 @@ function renderFormattedParagraph(text: string, pKey: number) {
         if (isBullet) {
           return (
             <div key={lIdx} className="flex items-start gap-2 pt-0.5">
-              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-400" />
-              <p className="flex-1 text-xs text-zinc-300 leading-relaxed">{renderedLine}</p>
+              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-600 dark:bg-emerald-400" />
+              <p className="flex-1 text-xs text-neutral-700 dark:text-zinc-300 leading-relaxed">{renderedLine}</p>
             </div>
           );
         }
 
         return (
-          <p key={lIdx} className="text-xs text-zinc-300 leading-relaxed">
+          <p key={lIdx} className="text-xs text-neutral-700 dark:text-zinc-300 leading-relaxed">
             {renderedLine}
           </p>
         );
@@ -379,19 +379,19 @@ export default function AiStudyAssist({
   const correctCount = mcqs.filter((q) => selectedAnswers[q.id] === q.correct).length;
 
   return (
-    <section className="ai-tutor-container mt-4 rounded-xl border border-white/10 bg-zinc-900/70 p-4 md:p-5 backdrop-blur-md">
+    <section className="ai-tutor-container mt-4 rounded-2xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-900/70 p-4 md:p-5 shadow-sm backdrop-blur-md">
       {/* Header bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-3">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 dark:border-white/10 pb-3">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-400">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
             <SparklesIcon size={18} />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-semibold tracking-wide text-neutral-900 dark:text-zinc-100">
+              <h3 className="text-sm font-bold tracking-wide text-neutral-900 dark:text-zinc-100">
                 AI Study Assistant
               </h3>
-              <span className="rounded bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-bold text-emerald-700 dark:text-emerald-400">
+              <span className="rounded-full bg-emerald-100 dark:bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:text-emerald-400">
                 AI Powered
               </span>
             </div>
@@ -405,7 +405,7 @@ export default function AiStudyAssist({
           type="button"
           onClick={handleGenerate}
           disabled={loading}
-          className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-500/15 px-3 py-1.5 text-xs font-semibold text-emerald-300 transition hover:bg-emerald-500/25 disabled:opacity-50"
+          className="flex items-center gap-1.5 rounded-full border border-emerald-600/30 bg-emerald-50 text-emerald-800 dark:bg-emerald-500/15 dark:border-emerald-500/30 dark:text-emerald-300 px-3.5 py-1.5 text-xs font-semibold shadow-xs transition hover:bg-emerald-100 dark:hover:bg-emerald-500/25 disabled:opacity-50"
         >
           <SparklesIcon size={14} className={loading ? "animate-spin" : ""} />
           {loading ? "Analyzing Video..." : hasGenerated ? "Regenerate AI Content" : "Generate with AI"}
@@ -413,14 +413,14 @@ export default function AiStudyAssist({
       </div>
 
       {/* Tabs */}
-      <div className="mt-3 flex items-center gap-2 border-b border-white/5 pb-2">
+      <div className="mt-3 flex items-center gap-1.5 border-b border-neutral-200 dark:border-white/10 pb-2">
         <button
           type="button"
           onClick={() => setActiveTab("summary")}
-          className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
             activeTab === "summary"
-              ? "bg-white/10 text-white"
-              : "text-zinc-400 hover:text-zinc-200"
+              ? "bg-neutral-900 text-white dark:bg-emerald-500 dark:text-zinc-950 shadow-sm"
+              : "text-neutral-600 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
           }`}
         >
           💡 Key Takeaways
@@ -428,10 +428,10 @@ export default function AiStudyAssist({
         <button
           type="button"
           onClick={() => setActiveTab("quiz")}
-          className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
             activeTab === "quiz"
-              ? "bg-white/10 text-white"
-              : "text-zinc-400 hover:text-zinc-200"
+              ? "bg-neutral-900 text-white dark:bg-emerald-500 dark:text-zinc-950 shadow-sm"
+              : "text-neutral-600 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
           }`}
         >
           📝 Practice Quiz ({mcqs.length} MCQs)
@@ -439,10 +439,10 @@ export default function AiStudyAssist({
         <button
           type="button"
           onClick={() => setActiveTab("ask")}
-          className={`rounded-md px-3 py-1 text-xs font-medium transition ${
+          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
             activeTab === "ask"
-              ? "bg-white/10 text-white"
-              : "text-zinc-400 hover:text-zinc-200"
+              ? "bg-neutral-900 text-white dark:bg-emerald-500 dark:text-zinc-950 shadow-sm"
+              : "text-neutral-600 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
           }`}
         >
           💬 Ask AI Tutor
@@ -463,28 +463,28 @@ export default function AiStudyAssist({
             {summaryBullets.map((bullet, idx) => (
               <div
                 key={idx}
-                className="flex items-start gap-2.5 rounded-lg border border-white/5 bg-zinc-950/40 p-3 text-xs text-zinc-300 leading-relaxed"
+                className="flex items-start gap-3 rounded-xl border border-neutral-200/80 dark:border-white/5 bg-neutral-50/70 dark:bg-zinc-950/40 p-3.5 text-xs text-neutral-800 dark:text-zinc-300 leading-relaxed shadow-xs transition hover:border-emerald-500/30"
               >
-                <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-500/20 text-[10px] font-bold text-emerald-400">
+                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-[10px] font-bold text-emerald-800 dark:text-emerald-400">
                   {idx + 1}
                 </span>
-                <p className="flex-1">{bullet}</p>
+                <p className="flex-1 font-medium leading-relaxed">{bullet}</p>
               </div>
             ))}
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-            <span className="text-[11px] text-zinc-400">
+            <span className="text-[11px] text-neutral-500 dark:text-zinc-400">
               Captures key takeaways at the current video segment.
             </span>
             <button
               type="button"
               onClick={() => handleSaveToNotes("summary")}
               disabled={savingNote}
-              className="flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/20 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-neutral-800 dark:text-zinc-200 shadow-xs transition hover:bg-neutral-50 dark:hover:bg-zinc-700 disabled:opacity-50"
             >
-              <CheckCircleIcon size={14} className="text-emerald-400" />
-              {savingNote ? "Saving..." : "Save to My Notes (1-Click)"}
+              <CheckCircleIcon size={14} className="text-emerald-600 dark:text-emerald-400" />
+              <span>{savingNote ? "Saving..." : "Save to My Notes (1-Click)"}</span>
             </button>
           </div>
         </div>
@@ -495,12 +495,12 @@ export default function AiStudyAssist({
         <div className="mt-3 space-y-4">
           {showResults && (
             <div
-              className={`rounded-lg border p-3 flex items-center justify-between gap-3 ${
+              className={`rounded-xl border p-3.5 flex items-center justify-between gap-3 ${
                 correctCount === mcqs.length
-                  ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-300"
+                  ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
                   : correctCount > 0
-                  ? "border-amber-500/40 bg-amber-500/10 text-amber-300"
-                  : "border-red-500/40 bg-red-500/10 text-red-300"
+                  ? "border-amber-500/40 bg-amber-500/10 text-amber-800 dark:text-amber-300"
+                  : "border-red-500/40 bg-red-500/10 text-red-800 dark:text-red-300"
               }`}
             >
               <div className="flex items-center gap-2.5">
@@ -508,7 +508,7 @@ export default function AiStudyAssist({
                   {correctCount === mcqs.length ? "🎉" : correctCount > 0 ? "⚡" : "📚"}
                 </span>
                 <div>
-                  <p className="text-xs font-semibold">
+                  <p className="text-xs font-bold">
                     Score: {correctCount} / {mcqs.length} correct
                   </p>
                   <p className="text-[11px] opacity-80">
@@ -529,21 +529,21 @@ export default function AiStudyAssist({
             return (
               <div
                 key={q.id}
-                className="rounded-lg border border-white/5 bg-zinc-950/40 p-3.5"
+                className="rounded-xl border border-neutral-200 dark:border-white/5 bg-neutral-50/60 dark:bg-zinc-950/40 p-4 shadow-xs"
               >
                 <div className="flex items-start justify-between gap-2">
-                  <span className="text-xs font-semibold text-zinc-200">
+                  <span className="text-xs font-bold text-neutral-900 dark:text-zinc-100">
                     Q{qIndex + 1}: {q.question}
                   </span>
                   {showResults && hasChosen && (
                     <span
-                      className={`shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium ${
+                      className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${
                         isCorrect
-                          ? "bg-emerald-500/20 text-emerald-400"
-                          : "bg-red-500/20 text-red-400"
+                          ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-400"
+                          : "bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-400"
                       }`}
                     >
-                      {isCorrect ? "Correct" : "Incorrect"}
+                      {isCorrect ? "Correct ✓" : "Incorrect ✕"}
                     </span>
                   )}
                 </div>
@@ -552,19 +552,19 @@ export default function AiStudyAssist({
                   {q.options.map((opt, optIdx) => {
                     const isSelected = chosen === optIdx;
                     let optionStyle =
-                      "border-neutral-200 dark:border-white/5 bg-neutral-50 dark:bg-zinc-900/40 text-neutral-800 dark:text-zinc-300 hover:border-neutral-300 dark:hover:border-white/20";
+                      "border-neutral-200 dark:border-white/5 bg-white dark:bg-zinc-900/40 text-neutral-800 dark:text-zinc-300 hover:border-neutral-300 dark:hover:border-white/20";
 
                     if (showResults) {
                       if (optIdx === q.correct) {
                         optionStyle =
-                          "border-emerald-500/50 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300";
+                          "border-emerald-500/60 bg-emerald-50 text-emerald-900 dark:bg-emerald-500/15 dark:text-emerald-300 font-semibold";
                       } else if (isSelected && !isCorrect) {
                         optionStyle =
-                          "border-red-500/50 bg-red-500/10 text-red-700 dark:text-red-300";
+                          "border-red-500/60 bg-red-50 text-red-900 dark:bg-red-500/15 dark:text-red-300";
                       }
                     } else if (isSelected) {
                       optionStyle =
-                        "border-emerald-500 bg-emerald-500/10 text-neutral-900 dark:text-white";
+                        "border-emerald-600 bg-emerald-50 text-emerald-900 dark:bg-emerald-500/15 dark:text-white font-semibold";
                     }
 
                     return (
@@ -572,11 +572,11 @@ export default function AiStudyAssist({
                         key={optIdx}
                         type="button"
                         onClick={() => handleSelectOption(q.id, optIdx)}
-                        className={`w-full text-left rounded-lg border p-2 text-xs transition flex items-center justify-between ${optionStyle}`}
+                        className={`w-full text-left rounded-xl border p-2.5 text-xs transition flex items-center justify-between shadow-2xs ${optionStyle}`}
                       >
                         <span>{opt}</span>
                         {isSelected && !showResults && (
-                          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                          <span className="h-2 w-2 rounded-full bg-emerald-600 dark:bg-emerald-400" />
                         )}
                       </button>
                     );
@@ -584,8 +584,8 @@ export default function AiStudyAssist({
                 </div>
 
                 {showResults && (
-                  <p className="mt-2 rounded-lg bg-neutral-100 dark:bg-zinc-900/60 p-2 text-[11px] text-neutral-600 dark:text-zinc-400 border border-neutral-200 dark:border-white/5">
-                    💡 <strong className="text-neutral-900 dark:text-zinc-300">Explanation:</strong>{" "}
+                  <p className="mt-2.5 rounded-xl bg-neutral-100 dark:bg-zinc-900/60 p-2.5 text-[11px] text-neutral-700 dark:text-zinc-300 border border-neutral-200 dark:border-white/5 leading-relaxed">
+                    💡 <strong className="text-neutral-900 dark:text-zinc-100">Explanation:</strong>{" "}
                     {q.explanation}
                   </p>
                 )}
@@ -593,14 +593,14 @@ export default function AiStudyAssist({
             );
           })}
 
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-white/5">
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-neutral-200 dark:border-white/5">
             <div className="flex items-center gap-2">
               {!showResults ? (
                 <button
                   type="button"
                   onClick={() => setShowResults(true)}
                   disabled={Object.keys(selectedAnswers).length === 0}
-                  className="rounded-md bg-emerald-500 px-3 py-1.5 text-xs font-medium text-black transition hover:bg-emerald-400 disabled:opacity-40"
+                  className="rounded-full bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-4 py-1.5 text-xs font-bold text-white dark:text-black shadow-xs transition disabled:opacity-40"
                 >
                   Check Answers
                 </button>
@@ -611,7 +611,7 @@ export default function AiStudyAssist({
                     setSelectedAnswers({});
                     setShowResults(false);
                   }}
-                  className="rounded-md bg-zinc-800 px-3 py-1.5 text-xs font-medium text-zinc-300 transition hover:bg-zinc-700"
+                  className="rounded-full bg-neutral-200 dark:bg-zinc-800 px-3.5 py-1.5 text-xs font-semibold text-neutral-800 dark:text-zinc-200 transition hover:bg-neutral-300 dark:hover:bg-zinc-700"
                 >
                   Reset Quiz
                 </button>
@@ -622,10 +622,10 @@ export default function AiStudyAssist({
               type="button"
               onClick={() => handleSaveToNotes("quiz")}
               disabled={savingNote}
-              className="flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1.5 text-xs font-medium text-white transition hover:bg-white/20 disabled:opacity-50"
+              className="flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-neutral-800 dark:text-zinc-200 shadow-xs transition hover:bg-neutral-50 dark:hover:bg-zinc-700 disabled:opacity-50"
             >
-              <CheckCircleIcon size={14} className="text-emerald-400" />
-              {savingNote ? "Saving..." : "Save Quiz to Notes (1-Click)"}
+              <CheckCircleIcon size={14} className="text-emerald-600 dark:text-emerald-400" />
+              <span>{savingNote ? "Saving..." : "Save Quiz to Notes (1-Click)"}</span>
             </button>
           </div>
         </div>
@@ -636,7 +636,7 @@ export default function AiStudyAssist({
         <div className="mt-3 space-y-3">
           {/* Quick suggestions */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] text-zinc-500">Quick prompts:</span>
+            <span className="text-[11px] font-medium text-neutral-500 dark:text-zinc-500">Quick prompts:</span>
             {[
               "Explain this simply 💡",
               "Practical code examples 💻",
@@ -651,7 +651,7 @@ export default function AiStudyAssist({
                   handleAskDoubt(chip);
                 }}
                 disabled={askingAi}
-                className="rounded-full border border-white/10 bg-zinc-800/60 px-2.5 py-1 text-[11px] text-zinc-300 transition hover:bg-zinc-700 hover:text-white disabled:opacity-50"
+                className="rounded-full border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800/60 px-2.5 py-1 text-[11px] font-medium text-neutral-700 dark:text-zinc-300 shadow-2xs transition hover:border-emerald-500/40 hover:bg-neutral-50 dark:hover:bg-zinc-700 hover:text-neutral-900 dark:hover:text-white disabled:opacity-50"
               >
                 {chip}
               </button>
@@ -671,12 +671,12 @@ export default function AiStudyAssist({
               placeholder="Ask anything about this video..."
               value={userQuestion}
               onChange={(e) => setUserQuestion(e.target.value)}
-              className="flex-1 rounded-lg border border-white/10 bg-zinc-950 px-3 py-2 text-xs text-zinc-100 placeholder:text-zinc-500 focus:border-emerald-500 focus:outline-none"
+              className="flex-1 rounded-xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-950 px-3.5 py-2 text-xs text-neutral-900 dark:text-zinc-100 placeholder:text-neutral-400 dark:placeholder:text-zinc-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/40 shadow-xs"
             />
             <button
               type="submit"
               disabled={askingAi || !userQuestion.trim()}
-              className="flex items-center gap-1.5 rounded-lg bg-emerald-500 px-4 py-2 text-xs font-bold text-black transition hover:bg-emerald-400 disabled:opacity-40"
+              className="flex items-center gap-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-4 py-2 text-xs font-bold text-white dark:text-black shadow-xs transition disabled:opacity-40"
             >
               {askingAi ? (
                 <>
@@ -695,7 +695,7 @@ export default function AiStudyAssist({
           {/* Chat / Answers Stream */}
           <div className="space-y-3 pt-2">
             {chatMessages.length === 0 && (
-              <div className="rounded-lg border border-dashed border-white/10 p-5 text-center text-xs text-zinc-500">
+              <div className="rounded-xl border border-dashed border-neutral-300 dark:border-white/10 p-5 text-center text-xs text-neutral-500 dark:text-zinc-400 bg-neutral-50/50 dark:bg-transparent">
                 Have a doubt about this lesson? Ask the AI Tutor above or click any quick prompt!
               </div>
             )}
@@ -703,14 +703,14 @@ export default function AiStudyAssist({
             {chatMessages.map((msg) => (
               <div
                 key={msg.id}
-                className="rounded-lg border border-white/5 bg-zinc-950/60 p-3.5 space-y-2"
+                className="rounded-xl border border-neutral-200/80 dark:border-white/5 bg-white dark:bg-zinc-950/60 p-4 space-y-2 shadow-xs"
               >
-                <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                <div className="flex items-center justify-between border-b border-neutral-100 dark:border-white/5 pb-2">
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold text-zinc-200 text-xs">
+                    <span className="font-bold text-neutral-900 dark:text-zinc-200 text-xs">
                       💬 Q: {msg.question}
                     </span>
-                    <span className="rounded bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-400">
+                    <span className="rounded-full bg-neutral-100 dark:bg-zinc-800 px-2 py-0.5 text-[10px] font-semibold text-neutral-600 dark:text-zinc-400">
                       @{msg.timeStr}
                     </span>
                   </div>
@@ -718,9 +718,9 @@ export default function AiStudyAssist({
                     type="button"
                     onClick={() => handleSaveToNotes("chat", msg)}
                     disabled={savingNote}
-                    className="flex items-center gap-1 rounded bg-white/5 px-2 py-1 text-[11px] text-zinc-300 hover:bg-white/10 hover:text-white"
+                    className="flex items-center gap-1 rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-white/5 px-2.5 py-1 text-[11px] font-medium text-neutral-700 dark:text-zinc-300 hover:bg-neutral-100 dark:hover:bg-white/10"
                   >
-                    <CheckCircleIcon size={12} className="text-emerald-400" />
+                    <CheckCircleIcon size={12} className="text-emerald-600 dark:text-emerald-400" />
                     <span>Save to Notes</span>
                   </button>
                 </div>
