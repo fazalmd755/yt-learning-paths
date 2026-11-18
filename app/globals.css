@@ -15479,6 +15479,104 @@ html.light .video-description-toggle {
   font-weight: 600 !important;
 }
 
+/* ==========================================================================
+   Watchlify Logo Loader — Style A: Pulse & Ambient Glow
+   ========================================================================== */
+
+@keyframes logo-loader-breathe {
+  0%, 100% {
+    transform: scale(0.95);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes logo-loader-glow-pulse {
+  0%, 100% {
+    transform: scale(0.88);
+    opacity: 0.45;
+  }
+  50% {
+    transform: scale(1.28);
+    opacity: 0.95;
+  }
+}
+
+@keyframes logo-loader-halo-pulse {
+  0%, 100% {
+    transform: scale(0.92);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 0.7;
+  }
+}
+
+@keyframes logo-loader-beam {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(20%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes logo-loader-fade-pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.logo-loader-icon-wrapper {
+  animation: logo-loader-breathe 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform;
+}
+
+.logo-loader-ambient-glow {
+  animation: logo-loader-glow-pulse 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform, opacity;
+}
+
+.logo-loader-ambient-halo {
+  animation: logo-loader-halo-pulse 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  will-change: transform, opacity;
+}
+
+.logo-loader-caption {
+  animation: logo-loader-fade-pulse 2s ease-in-out infinite;
+}
+
+.logo-loader-beam-bar {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(16, 185, 129, 0.8) 50%,
+    rgba(34, 211, 238, 0.9) 80%,
+    transparent 100%
+  );
+  animation: logo-loader-beam 1.6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-loader-icon-wrapper,
+  .logo-loader-ambient-glow,
+  .logo-loader-ambient-halo,
+  .logo-loader-beam-bar,
+  .logo-loader-caption {
+    animation: none !important;
+  }
+}
+
+
 
 
 
