@@ -4470,6 +4470,160 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   border-color: rgba(255, 255, 255, 0.12);
 }
 
+/* Certificate Theming (Light Ivory & Dark Obsidian) */
+html.light .certificate-frame:not(.theme-dark),
+.certificate-frame.theme-light {
+  background: #fdfbf7 !important;
+  border: 2px solid #b45309 !important;
+  box-shadow: 0 10px 30px rgba(180, 83, 9, 0.12), inset 0 0 0 4px #fef3c7 !important;
+  color: #0f172a !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .certificate-inner-border,
+.certificate-frame.theme-light .certificate-inner-border {
+  border: 1.5px solid rgba(180, 83, 9, 0.35) !important;
+  background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.09), rgba(253, 251, 247, 0.95) 75%) !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-brand-name,
+.certificate-frame.theme-light .cert-brand-name {
+  color: #0f172a !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-pre-title,
+.certificate-frame.theme-light .cert-pre-title {
+  color: #b45309 !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-main-heading,
+.certificate-frame.theme-light .cert-main-heading {
+  color: #0f172a !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-subtext,
+.certificate-frame.theme-light .cert-subtext {
+  color: #475569 !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-recipient-name,
+.certificate-frame.theme-light .cert-recipient-name {
+  color: #0284c7 !important;
+  border-bottom: 2px solid rgba(2, 132, 199, 0.35) !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-congrats-text,
+.certificate-frame.theme-light .cert-congrats-text {
+  color: #475569 !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-congrats-text strong,
+.certificate-frame.theme-light .cert-congrats-text strong {
+  color: #0f172a !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-course-name,
+.certificate-frame.theme-light .cert-course-name {
+  color: #b45309 !important;
+  font-weight: 800 !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-instructor-line,
+.certificate-frame.theme-light .cert-instructor-line {
+  color: #64748b !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-instructor-line strong,
+.certificate-frame.theme-light .cert-instructor-line strong {
+  color: #0f172a !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .certificate-footer-grid,
+.certificate-frame.theme-light .certificate-footer-grid {
+  border-top: 1px solid rgba(180, 83, 9, 0.2) !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-col-val,
+.certificate-frame.theme-light .cert-col-val {
+  color: #0f172a !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-col-lbl,
+.certificate-frame.theme-light .cert-col-lbl {
+  color: #64748b !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-gold-seal,
+.certificate-frame.theme-light .cert-gold-seal {
+  background: radial-gradient(circle, #fde047 25%, #d97706 100%) !important;
+  color: #451a03 !important;
+  border: 2px dashed #b45309 !important;
+  box-shadow: 0 0 16px rgba(245, 158, 11, 0.25) !important;
+}
+
+html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
+.certificate-frame.theme-light .cert-watermark-text {
+  color: #b45309 !important;
+  opacity: 0.12;
+}
+
+/* Explicit Dark Obsidian Theme for Certificate (can be activated in light mode too) */
+.certificate-frame.theme-dark {
+  background: #090b0e !important;
+  border: 2px solid #b45309 !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45), inset 0 0 0 4px #171922 !important;
+  color: #ffffff !important;
+}
+.certificate-frame.theme-dark .certificate-inner-border {
+  border: 1px solid rgba(245, 158, 11, 0.35) !important;
+  background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.06), transparent 70%) !important;
+}
+.certificate-frame.theme-dark .cert-brand-name {
+  color: #f1f5f9 !important;
+}
+.certificate-frame.theme-dark .cert-pre-title {
+  color: #fbbf24 !important;
+}
+.certificate-frame.theme-dark .cert-main-heading {
+  color: #ffffff !important;
+}
+.certificate-frame.theme-dark .cert-subtext {
+  color: #94a3b8 !important;
+}
+.certificate-frame.theme-dark .cert-recipient-name {
+  color: #38bdf8 !important;
+  border-bottom: 2px solid rgba(56, 189, 248, 0.3) !important;
+}
+.certificate-frame.theme-dark .cert-congrats-text {
+  color: #94a3b8 !important;
+}
+.certificate-frame.theme-dark .cert-congrats-text strong {
+  color: #f1f5f9 !important;
+}
+.certificate-frame.theme-dark .cert-course-name {
+  color: #fef08a !important;
+}
+.certificate-frame.theme-dark .cert-instructor-line {
+  color: #64748b !important;
+}
+.certificate-frame.theme-dark .cert-instructor-line strong {
+  color: #e2e8f0 !important;
+}
+.certificate-frame.theme-dark .certificate-footer-grid {
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+.certificate-frame.theme-dark .cert-col-val {
+  color: #f1f5f9 !important;
+}
+.certificate-frame.theme-dark .cert-col-lbl {
+  color: #64748b !important;
+}
+.certificate-frame.theme-dark .cert-gold-seal {
+  background: radial-gradient(circle, #fbbf24 30%, #b45309 100%) !important;
+  color: #451a03 !important;
+  border: 2px dashed #fef08a !important;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.35) !important;
+}
+
 /* 4. Gamification & Achievements Badges */
 .achievements-section-card {
   background: #13161c;
@@ -4837,17 +4991,40 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   .watch-pagination,
   .course-utilities-toolbar,
   .back-link,
-  .pwa-install-banner {
+  .pwa-install-banner,
+  .cert-modal-header,
+  .cert-actions-bar {
     display: none !important;
   }
   body, html {
     background: #ffffff !important;
     color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .certificate-modal-backdrop {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+    display: block !important;
+  }
+  .certificate-modal-content {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    max-height: none !important;
+    overflow: visible !important;
+    width: 100% !important;
   }
   .certificate-frame {
     box-shadow: none !important;
     border: 2px solid #b45309 !important;
-    page-break-inside: avoid;
+    page-break-inside: avoid !important;
+    margin: 20px auto !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   .certificate-frame.locked-preview {
     display: none !important;
@@ -8812,7 +8989,6 @@ textarea::placeholder {
    ========================================================================== */
 .ai-tutor-container,
 .certificate-modal-content,
-.certificate-frame,
 .modal-card {
   background: var(--surface) !important;
   border: 1px solid var(--line) !important;
@@ -8823,7 +8999,6 @@ textarea::placeholder {
 @media (max-width: 640px) {
   .ai-tutor-container,
   .certificate-modal-content,
-  .certificate-frame,
   .modal-card {
     border-radius: 12px !important;
   }

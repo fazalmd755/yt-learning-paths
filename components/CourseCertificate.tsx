@@ -25,6 +25,7 @@ export function CertificateModal({
   isCompleted,
 }: CertificateModalProps) {
   const certRef = useRef<HTMLDivElement>(null);
+  const [certTheme, setCertTheme] = useState<"auto" | "light" | "dark">("auto");
 
   if (!isOpen) return null;
 
@@ -55,34 +56,66 @@ export function CertificateModal({
       >
         <div className="cert-modal-header no-print">
           <div>
-            <div className="flex items-center gap-2">
-              <strong className="text-white text-base">Certificate of Completion</strong>
+            <div className="flex items-center gap-2 flex-wrap">
+              <strong className="text-slate-900 dark:text-white text-base font-bold">Certificate of Completion</strong>
               {isCompleted ? (
                 <span className="cert-unlocked-badge">✓ Verified & Unlocked</span>
               ) : (
                 <span className="cert-locked-badge">🔒 Locked Preview</span>
               )}
             </div>
-            <p className="text-slate-400 text-xs mt-1">
+            <p className="text-slate-600 dark:text-slate-400 text-xs mt-1">
               {isCompleted
                 ? "Congratulations! Your verified certificate is ready to download and share."
                 : `Complete all ${totalLessons} lessons to unlock this verified credential & enable PDF download.`}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="cert-modal-close"
-            aria-label="Close"
-          >
-            ✕
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() =>
+                setCertTheme((prev) => {
+                  if (prev === "dark") return "light";
+                  if (prev === "light") return "dark";
+                  const isCurrentlyLight =
+                    typeof document !== "undefined" &&
+                    document.documentElement.classList.contains("light");
+                  return isCurrentlyLight ? "dark" : "light";
+                })
+              }
+              className="cert-theme-toggle-btn text-xs font-medium px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-1.5"
+              title="Switch between Classic Ivory and Obsidian Dark certificate styles"
+            >
+              <span>🎨</span>
+              <span>
+                {certTheme === "dark"
+                  ? "Obsidian Dark"
+                  : certTheme === "light"
+                  ? "Classic Ivory"
+                  : "Switch Style"}
+              </span>
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="cert-modal-close text-slate-400 hover:text-slate-700 dark:hover:text-white transition-colors"
+              aria-label="Close"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Certificate Canvas */}
         <div
           ref={certRef}
-          className={`certificate-frame relative ${!isCompleted ? "locked-preview" : ""}`}
+          className={`certificate-frame relative ${
+            certTheme === "dark"
+              ? "theme-dark"
+              : certTheme === "light"
+              ? "theme-light"
+              : ""
+          } ${!isCompleted ? "locked-preview" : ""}`}
         >
           {/* Watermark & Lock Overlay for Incomplete Courses */}
           {!isCompleted && (
@@ -201,7 +234,7 @@ export function CertificateModal({
             <div className="cert-locked-action-footer">
               <div className="cert-locked-footer-hint">
                 <span className="cert-locked-hint-icon">🔒</span>
-                <span>
+                <span className="text-slate-600 dark:text-slate-300">
                   Download is locked until all <strong>{totalLessons} lessons</strong> are marked completed.
                 </span>
               </div>
