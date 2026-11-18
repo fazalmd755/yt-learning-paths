@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import AddCourseForm from "@/components/AddCourseForm";
 import CourseLibrary from "@/components/CourseLibrary";
 import StreakCalendar from "@/components/StreakCalendar";
-import AchievementsBadges from "@/components/AchievementsBadges";
+import DashboardCertificates from "@/components/DashboardCertificates";
 import ProfileReminderBanner from "@/components/ProfileReminderBanner";
 import { computeProfileCompletion } from "@/lib/profile";
 import { ArrowRightIcon } from "@/components/Icons";
@@ -180,14 +180,12 @@ export default async function DashboardPage({
         </section>
       )}
 
-      {/* LeetCode-style Row: Badges Widget on Left, Consistency Heatmap on Right */}
+      {/* LeetCode-style Row: Certificates Widget on Left, Consistency Heatmap on Right */}
       <section className="dashboard-leetcode-row relative overflow-hidden rounded-2xl">
         <AnimatedRays className="absolute inset-0 pointer-events-none opacity-20 -z-10" />
-        <AchievementsBadges
-          streak={streak}
-          maxStreak={maxStreak}
-          finishedCourses={finishedCourses}
-          totalSecondsLearned={totalSecondsLearned}
+        <DashboardCertificates
+          courses={courses}
+          userName={displayName || "Learner"}
         />
         <StreakCalendar
           days={days}

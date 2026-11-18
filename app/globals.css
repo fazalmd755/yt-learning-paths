@@ -4136,6 +4136,15 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   background: rgba(16, 185, 129, 0.25);
   color: #34d399;
 }
+.cert-locked-badge {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  font-weight: 700;
+}
 
 .certificate-modal-backdrop {
   position: fixed;
@@ -4327,6 +4336,138 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
+}
+
+/* Locked Certificate Preview Styles */
+.certificate-frame.locked-preview {
+  position: relative;
+  overflow: hidden;
+  border: 2px dashed rgba(180, 83, 9, 0.45);
+}
+.certificate-frame.locked-preview .certificate-inner-border {
+  filter: grayscale(0.2) contrast(0.9);
+  opacity: 0.6;
+}
+.cert-watermark-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  pointer-events: none;
+  z-index: 5;
+  transform: rotate(-18deg) scale(1.1);
+  opacity: 0.07;
+  user-select: none;
+}
+.cert-watermark-text {
+  font-size: 26px;
+  font-weight: 900;
+  letter-spacing: 0.25em;
+  color: #fbbf24;
+  white-space: nowrap;
+}
+.cert-lock-banner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  padding: 20px;
+  background: rgba(9, 11, 14, 0.5);
+  backdrop-filter: blur(2px);
+}
+.cert-lock-card {
+  background: rgba(18, 21, 28, 0.95);
+  border: 1.5px solid rgba(245, 158, 11, 0.45);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.75), 0 0 24px rgba(245, 158, 11, 0.15);
+  border-radius: 14px;
+  padding: 22px 26px;
+  max-width: 440px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.cert-lock-icon-circle {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.25) 0%, rgba(180, 83, 9, 0.1) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+}
+.cert-lock-title {
+  font-size: 14px;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  color: #fbbf24;
+  margin: 0;
+}
+.cert-lock-desc {
+  font-size: 12px;
+  color: #cbd5e1;
+  line-height: 1.45;
+  margin: 0;
+}
+.cert-lock-progress-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+.cert-lock-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #f59e0b, #10b981);
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+.cert-lock-progress-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #fef08a;
+}
+.cert-gold-seal.locked {
+  background: radial-gradient(circle, #334155 30%, #0f172a 100%);
+  border: 2px dashed #64748b;
+  box-shadow: none;
+  color: #94a3b8;
+}
+.cert-locked-action-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.cert-locked-footer-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #cbd5e1;
+}
+.cert-locked-hint-icon {
+  font-size: 14px;
+}
+.cert-print-btn.locked {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+.cert-print-btn.locked:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 /* 4. Gamification & Achievements Badges */
@@ -4707,6 +4848,9 @@ body { background: var(--background); color: var(--foreground); font-size: 17px;
     box-shadow: none !important;
     border: 2px solid #b45309 !important;
     page-break-inside: avoid;
+  }
+  .certificate-frame.locked-preview {
+    display: none !important;
   }
 }
 
@@ -10347,6 +10491,58 @@ textarea::placeholder {
   border-radius: 999px;
 }
 
+/* Dashboard Certificates LeetCode Widget Enhancements */
+.cert-count-earned {
+  color: #10b981 !important;
+  background: rgba(16, 185, 129, 0.15) !important;
+}
+.cert-medallion-circle {
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.28) 0%, rgba(217, 119, 6, 0.08) 100%) !important;
+  border: 1.5px solid rgba(245, 158, 11, 0.5) !important;
+  box-shadow: 0 0 14px rgba(245, 158, 11, 0.25) !important;
+  position: relative;
+}
+.cert-verified-star {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  font-size: 10px;
+  color: #facc15;
+}
+.cert-lock-sub-icon {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  font-size: 9px;
+}
+.cert-item-card {
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: all 0.15s ease;
+}
+.cert-item-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.cert-item-icon-box.unlocked {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+.cert-item-icon-box.locked {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.leetcode-tray-icon.more-btn {
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
 /* ==========================================================================
    Universal Site Footer
    ========================================================================== */
@@ -13783,6 +13979,30 @@ html.light .achievement-badge-card {
 html.light .achievement-badge-card.unlocked {
   background: #f0fdf4 !important;
   border-color: #bbf7d0 !important;
+}
+
+html.light .cert-item-card.unlocked {
+  background: #fefce8 !important;
+  border-color: #fde047 !important;
+}
+html.light .cert-item-card.locked {
+  background: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+}
+html.light .cert-item-icon-box.locked {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+html.light .leetcode-tray-icon.locked {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+html.light .leetcode-featured-badge-row {
+  background: rgba(15, 23, 42, 0.03) !important;
+  border: 1px solid rgba(15, 23, 42, 0.08) !important;
+}
+html.light .leetcode-featured-name {
+  color: #0f172a !important;
 }
 
 /* 8.3 Daily Goal Panel & Header Ring Popover */

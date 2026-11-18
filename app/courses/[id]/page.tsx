@@ -216,6 +216,7 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
               channelTitle={playlist.channel_title}
               userName={user.user_metadata?.display_name || user.email?.split("@")[0] || "Learner"}
               totalLessons={videos.length}
+              completedLessons={done}
               isCompleted={done === videos.length && videos.length > 0}
             />
             <CourseNotesExport
