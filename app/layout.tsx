@@ -6,6 +6,7 @@ import SiteHeader from "@/components/SiteHeader";
 import ThemeToggle from "@/components/ThemeToggle";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
 import AnimatedBackground from "@/components/AnimatedBackground";
+import InitialSplashLoader from "@/components/InitialSplashLoader";
 import { WatchlifyIcon } from "@/components/BrandLogo";
 import { createClient } from "@/lib/supabase/server";
 import { dateInTz } from "@/lib/utils";
@@ -270,6 +271,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         />
       </head>
       <body className="min-h-screen antialiased relative overflow-x-hidden">
+        <InitialSplashLoader />
         <AnimatedBackground />
         <header className="site-header">
           <div className="site-header-inner">
