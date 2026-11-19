@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { WatchlifyIcon } from "@/components/BrandLogo";
 
 export interface CertificateModalProps {
@@ -26,6 +27,20 @@ export function CertificateModal({
 }: CertificateModalProps) {
   const certRef = useRef<HTMLDivElement>(null);
   const [certTheme, setCertTheme] = useState<"auto" | "light" | "dark">("auto");
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("cert-modal-open");
+      return () => {
+        document.body.classList.remove("cert-modal-open");
+      };
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -42,13 +57,91 @@ export function CertificateModal({
     : "LOCKED-PREVIEW";
 
   const handlePrint = () => {
-    if (!isCompleted) return;
-    window.print();
+    if (!isCompleted || !certRef.current) return;
+
+    // Use an isolated hidden iframe so ONLY the certificate prints (NO background webpage or dashboard)
+    const existingIframe = document.getElementById("cert-print-iframe");
+    if (existingIframe) {
+      existingIframe.remove();
+    }
+
+    const iframe = document.createElement("iframe");
+    iframe.id = "cert-print-iframe";
+    iframe.style.position = "fixed";
+    iframe.style.right = "0";
+    iframe.style.bottom = "0";
+    iframe.style.width = "0";
+    iframe.style.height = "0";
+    iframe.style.border = "0";
+    iframe.style.opacity = "0";
+    document.body.appendChild(iframe);
+
+    const doc = iframe.contentWindow?.document;
+    if (!doc) {
+      window.print();
+      return;
+    }
+
+    // Collect all loaded styles from the main document
+    const styles = Array.from(document.querySelectorAll("link[rel='stylesheet'], style"))
+      .map((el) => el.outerHTML)
+      .join("\n");
+
+    const certHtml = certRef.current.outerHTML;
+
+    doc.open();
+    doc.write(`
+      <!DOCTYPE html>
+      <html class="${certTheme === "dark" ? "dark" : certTheme === "light" ? "light" : ""}">
+        <head>
+          <title>${courseTitle} - Certificate of Completion</title>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          ${styles}
+          <style>
+            @page {
+              size: landscape;
+              margin: 8mm;
+            }
+            html, body {
+              margin: 0 !important;
+              padding: 0 !important;
+              background: #ffffff !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              min-height: 100vh !important;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            .certificate-frame {
+              margin: 0 auto !important;
+              box-shadow: none !important;
+              page-break-inside: avoid !important;
+              max-width: 980px !important;
+              width: 100% !important;
+            }
+          </style>
+        </head>
+        <body>
+          ${certHtml}
+        </body>
+      </html>
+    `);
+    doc.close();
+
+    setTimeout(() => {
+      iframe.contentWindow?.focus();
+      iframe.contentWindow?.print();
+      setTimeout(() => {
+        iframe.remove();
+      }, 3000);
+    }, 400);
   };
 
   const progressPercent = totalLessons > 0 ? Math.round((completedLessons / totalLessons) * 100) : 0;
 
-  return (
+  const modalContent = (
     <div className="certificate-modal-backdrop" onClick={onClose} role="dialog" aria-modal="true">
       <div
         className="certificate-modal-content"
@@ -252,6 +345,8 @@ export function CertificateModal({
       </div>
     </div>
   );
+
+  return mounted ? createPortal(modalContent, document.body) : modalContent;
 }
 
 interface Props {

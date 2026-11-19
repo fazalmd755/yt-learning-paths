@@ -4986,8 +4986,25 @@ html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
 
 /* Print Styles */
 @media print {
+  @page {
+    size: landscape;
+    margin: 6mm;
+  }
+  
+  /* Hide whole background webpage when certificate modal is open */
+  body.cert-modal-open > *:not(.certificate-modal-backdrop) {
+    display: none !important;
+  }
+
+  /* Specific element hiding as safety */
   .no-print,
   .site-header,
+  .site-footer,
+  .dashboard-shell,
+  .library-section,
+  .dashboard-welcome-compact,
+  .dashboard-leetcode-row,
+  .add-course-bar-wrap,
   .watch-pagination,
   .course-utilities-toolbar,
   .back-link,
@@ -4996,19 +5013,28 @@ html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
   .cert-actions-bar {
     display: none !important;
   }
+
   body, html {
     background: #ffffff !important;
     color: #000000 !important;
     margin: 0 !important;
     padding: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
   }
+
   .certificate-modal-backdrop {
     position: static !important;
     background: transparent !important;
     padding: 0 !important;
     backdrop-filter: none !important;
-    display: block !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 100vh !important;
   }
+
   .certificate-modal-content {
     background: transparent !important;
     border: none !important;
@@ -5017,15 +5043,24 @@ html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
     max-height: none !important;
     overflow: visible !important;
     width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
   }
+
   .certificate-frame {
     box-shadow: none !important;
     border: 2px solid #b45309 !important;
     page-break-inside: avoid !important;
-    margin: 20px auto !important;
+    page-break-after: avoid !important;
+    page-break-before: avoid !important;
+    margin: 0 auto !important;
+    max-width: 980px !important;
+    width: 100% !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
+
   .certificate-frame.locked-preview {
     display: none !important;
   }
