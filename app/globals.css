@@ -8739,8 +8739,6 @@ main,
 .tracker-add-form,
 .tracker-tip-card,
 .tracker-empty,
-.video-notes-panel,
-.video-note-form,
 .video-row,
 .watch-player,
 .activity-panel,
@@ -10069,6 +10067,24 @@ textarea::placeholder {
   flex: 1;
   overflow-y: auto;
   max-height: 600px;
+}
+.watch-tab-content .video-notes-panel,
+.video-notes-panel {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 16px 18px !important;
+}
+.watch-tab-content .video-note-form,
+.video-note-form {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+  margin-top: 14px !important;
 }
 .watch-tab-ai-wrap,
 .watch-tab-desc-wrap {
@@ -15340,8 +15356,11 @@ html.light .watch-tabs-bar {
   border-bottom: 1px solid rgba(18, 24, 21, 0.06) !important;
 }
 
-html.light .video-notes-panel {
+html.light .video-notes-panel,
+html.light .video-note-form {
   background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 html.light .video-notes-heading h2 {
