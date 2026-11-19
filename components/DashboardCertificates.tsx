@@ -12,13 +12,13 @@ interface Props {
 
 /**
  * Deterministically assigns a sleek metallic theme to a course badge
- * Blue = LeetCode 100 Days signature style
- * Green = LeetCode 50 Days signature style
+ * Blue = Electric Cobalt style
+ * Green = Emerald Lime style
  * Gold = Imperial Gold certificate style
  * Purple = Royal Violet cyberpunk style
  */
 function getCourseBadgeTheme(id: string, index: number): BadgeTheme {
-  const themes: BadgeTheme[] = ["blue", "green", "gold", "purple"];
+  const themes: BadgeTheme[] = ["blue", "purple", "green", "gold"];
   let hash = 0;
   for (let i = 0; i < id.length; i++) {
     hash = (hash << 5) - hash + id.charCodeAt(i);
@@ -92,7 +92,6 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                   percent={100}
                   theme={getCourseBadgeTheme(featuredEarned.id, 0)}
                   size="lg"
-                  label="CERT"
                 />
               </div>
               <div className="leetcode-featured-info min-w-0 flex-1 pl-1">
@@ -132,7 +131,6 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                       percent={pct}
                       theme={getCourseBadgeTheme(c.id, idx)}
                       size="sm"
-                      label={isFinished ? "100" : pct >= 45 ? "50" : undefined}
                       animateHover={false}
                     />
                   </button>
@@ -173,24 +171,14 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                           )
                         : 0
                     }
-                    theme={
-                      (featuredInProgress.completedVideos / featuredInProgress.totalVideos) >= 0.45
-                        ? "green"
-                        : "blue"
-                    }
+                    theme={getCourseBadgeTheme(featuredInProgress.id, 0)}
                     size="lg"
-                    label={
-                      (featuredInProgress.completedVideos / featuredInProgress.totalVideos) >= 0.45
-                        ? "50"
-                        : undefined
-                    }
                   />
                 ) : (
                   <HexagonalCertBadge
                     status="locked"
                     percent={0}
                     size="lg"
-                    label="LOCK"
                   />
                 )}
               </div>
@@ -240,9 +228,8 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                       <HexagonalCertBadge
                         status="in-progress"
                         percent={pct}
-                        theme={pct >= 45 ? "green" : "blue"}
+                        theme={getCourseBadgeTheme(c.id, idx)}
                         size="sm"
-                        label={pct >= 45 ? "50" : undefined}
                         animateHover={false}
                       />
                     </button>
@@ -334,7 +321,6 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                               percent={pct}
                               theme={getCourseBadgeTheme(c.id, idx)}
                               size="md"
-                              label={isFinished ? "CERT" : pct >= 45 ? "50" : `${pct}%`}
                             />
                           </div>
 
