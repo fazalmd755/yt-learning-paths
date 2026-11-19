@@ -1,9 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { CourseSummary } from "@/lib/data";
 import { CertificateModal } from "@/components/CourseCertificate";
 import HexagonalCertBadge, { BadgeTheme } from "@/components/HexagonalCertBadge";
+import CertificateUnlockNotification from "@/components/CertificateUnlockNotification";
 
 interface Props {
   courses: CourseSummary[];
@@ -29,11 +30,53 @@ function getCourseBadgeTheme(id: string, index: number): BadgeTheme {
 export default function DashboardCertificates({ courses, userName = "Learner" }: Props) {
   const [detailsModalOpen, setDetailsModalOpen] = useState(false);
   const [activeCourse, setActiveCourse] = useState<CourseSummary | null>(null);
+  const [unlockedNoticeCourse, setUnlockedNoticeCourse] = useState<CourseSummary | null>(null);
 
   const completedCourses = useMemo(
     () => courses.filter((c) => c.completedVideos === c.totalVideos && c.totalVideos > 0),
     [courses]
   );
+
+  // Check for newly unlocked certificates that have not been acknowledged yet
+  useEffect(() => {
+    if (completedCourses.length === 0) return;
+    try {
+      const stored = localStorage.getItem("watchlify_acknowledged_cert_ids");
+      const acknowledgedIds: string[] = stored ? JSON.parse(stored) : [];
+
+      // Find the first completed course that the user hasn't celebrated/acknowledged yet
+      const newlyCompleted = completedCourses.find((c) => !acknowledgedIds.includes(c.id));
+      if (newlyCompleted) {
+        setUnlockedNoticeCourse(newlyCompleted);
+      }
+    } catch (e) {
+      console.error("Error reading acknowledged certificates:", e);
+    }
+  }, [completedCourses]);
+
+  const handleDismissNotice = () => {
+    if (!unlockedNoticeCourse) return;
+    try {
+      const stored = localStorage.getItem("watchlify_acknowledged_cert_ids");
+      const acknowledgedIds: string[] = stored ? JSON.parse(stored) : [];
+      if (!acknowledgedIds.includes(unlockedNoticeCourse.id)) {
+        localStorage.setItem(
+          "watchlify_acknowledged_cert_ids",
+          JSON.stringify([...acknowledgedIds, unlockedNoticeCourse.id])
+        );
+      }
+    } catch (e) {
+      console.error(e);
+    }
+    setUnlockedNoticeCourse(null);
+  };
+
+  const handleViewFromNotice = () => {
+    if (!unlockedNoticeCourse) return;
+    const courseToView = unlockedNoticeCourse;
+    handleDismissNotice();
+    setActiveCourse(courseToView);
+  };
 
   const inProgressCourses = useMemo(
     () =>
@@ -391,6 +434,16 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
           totalLessons={activeCourse.totalVideos}
           completedLessons={activeCourse.completedVideos}
           isCompleted={activeCourse.completedVideos === activeCourse.totalVideos && activeCourse.totalVideos > 0}
+        />
+      )}
+
+      {/* Celebratory Notification for newly unlocked certificate */}
+      {unlockedNoticeCourse && (
+        <CertificateUnlockNotification
+          course={unlockedNoticeCourse}
+          theme={getCourseBadgeTheme(unlockedNoticeCourse.id, 0)}
+          onViewCertificate={handleViewFromNotice}
+          onDismiss={handleDismissNotice}
         />
       )}
     </>

@@ -10600,6 +10600,18 @@ textarea::placeholder {
   transform: translateY(-2px) scale(1.12);
 }
 
+@keyframes bounceSubtle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+.animate-bounce-subtle {
+  animation: bounceSubtle 2.6s ease-in-out infinite;
+}
+
 /* Modal styles for Badges */
 .modal-overlay {
   position: fixed;
