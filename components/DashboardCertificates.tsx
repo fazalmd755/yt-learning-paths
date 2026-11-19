@@ -3,10 +3,27 @@
 import { useMemo, useState } from "react";
 import type { CourseSummary } from "@/lib/data";
 import { CertificateModal } from "@/components/CourseCertificate";
+import HexagonalCertBadge, { BadgeTheme } from "@/components/HexagonalCertBadge";
 
 interface Props {
   courses: CourseSummary[];
   userName?: string;
+}
+
+/**
+ * Deterministically assigns a sleek metallic theme to a course badge
+ * Blue = LeetCode 100 Days signature style
+ * Green = LeetCode 50 Days signature style
+ * Gold = Imperial Gold certificate style
+ * Purple = Royal Violet cyberpunk style
+ */
+function getCourseBadgeTheme(id: string, index: number): BadgeTheme {
+  const themes: BadgeTheme[] = ["blue", "green", "gold", "purple"];
+  let hash = 0;
+  for (let i = 0; i < id.length; i++) {
+    hash = (hash << 5) - hash + id.charCodeAt(i);
+  }
+  return themes[Math.abs(hash + index) % themes.length];
 }
 
 export default function DashboardCertificates({ courses, userName = "Learner" }: Props) {
@@ -35,8 +52,9 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
 
   return (
     <>
-      {/* LeetCode-style Certificates Card (replaces Badges widget) */}
+      {/* LeetCode-style 3D Hexagonal Certificates Widget */}
       <div className="leetcode-badges-card leetcode-certificates-card">
+        {/* Card Header */}
         <div className="leetcode-badges-header">
           <div className="flex items-center gap-1.5">
             <span className="text-base" aria-hidden="true">🎓</span>
@@ -59,37 +77,43 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
           </button>
         </div>
 
-        {/* LeetCode-style Compact Content */}
+        {/* LeetCode-style 3D Hexagonal Badge Content */}
         {earnedCount > 0 && featuredEarned ? (
           <div className="flex-1 flex flex-col justify-between">
-            {/* Featured Earned Certificate Mini Badge */}
+            {/* Featured Earned Certificate 3D Metallic Hexagonal Badge */}
             <div
               onClick={() => setActiveCourse(featuredEarned)}
               className="leetcode-featured-badge-row cursor-pointer group"
               title={`Click to view & download certificate for "${featuredEarned.title}"`}
             >
-              <div className="leetcode-badge-circle unlocked cert-medallion-circle">
-                <span className="leetcode-badge-emoji">🎓</span>
-                <span className="cert-verified-star" title="Verified Credential">★</span>
+              <div className="shrink-0 flex items-center justify-center">
+                <HexagonalCertBadge
+                  status="completed"
+                  percent={100}
+                  theme={getCourseBadgeTheme(featuredEarned.id, 0)}
+                  size="lg"
+                  label="CERT"
+                />
               </div>
-              <div className="leetcode-featured-info">
-                <div className="flex items-center gap-1">
-                  <span className="leetcode-featured-name" title={featuredEarned.title}>
-                    {featuredEarned.title}
-                  </span>
-                </div>
-                <span className="leetcode-featured-caption text-emerald-400 font-medium">
-                  ✓ Verified Certificate • 100% Completed
+              <div className="leetcode-featured-info min-w-0 flex-1 pl-1">
+                <span
+                  className="leetcode-featured-name group-hover:text-amber-300 transition-colors"
+                  title={featuredEarned.title}
+                >
+                  {featuredEarned.title}
                 </span>
-                <span className="text-[10px] text-slate-400 group-hover:text-amber-300 transition-colors">
+                <span className="leetcode-featured-caption text-emerald-400 font-semibold flex items-center gap-1">
+                  <span>✓</span> Verified Certificate • 100%
+                </span>
+                <span className="text-[10px] text-slate-400 group-hover:text-blue-400 transition-colors mt-0.5">
                   Click to view & download ↗
                 </span>
               </div>
             </div>
 
-            {/* Tray of other certificates / in-progress badges */}
+            {/* Tray of other certificates in 3D metallic hexagonal mini-badges */}
             <div className="leetcode-badges-tray">
-              {courses.slice(0, 5).map((c) => {
+              {courses.slice(0, 5).map((c, idx) => {
                 const isFinished = c.completedVideos === c.totalVideos && c.totalVideos > 0;
                 const pct = c.totalVideos > 0 ? Math.round((c.completedVideos / c.totalVideos) * 100) : 0;
 
@@ -98,14 +122,19 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                     key={c.id}
                     type="button"
                     onClick={() => setActiveCourse(c)}
-                    className={`leetcode-tray-icon ${
-                      isFinished ? "unlocked" : "locked"
-                    }`}
+                    className="leetcode-hex-tray-btn group relative"
                     title={`${c.title} (${
                       isFinished ? "100% Completed - Certificate Unlocked" : `${pct}% completed - Locked`
                     })`}
                   >
-                    <span>{isFinished ? "🎓" : "🔒"}</span>
+                    <HexagonalCertBadge
+                      status={isFinished ? "completed" : pct > 0 ? "in-progress" : "locked"}
+                      percent={pct}
+                      theme={getCourseBadgeTheme(c.id, idx)}
+                      size="sm"
+                      label={isFinished ? "100" : pct >= 45 ? "50" : undefined}
+                      animateHover={false}
+                    />
                   </button>
                 );
               })}
@@ -123,7 +152,7 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
           </div>
         ) : (
           <div className="flex-1 flex flex-col justify-between">
-            {/* Empty / In-Progress State (LeetCode-style locked badge) */}
+            {/* Empty / In-Progress State (3D Hexagonal metallic badge) */}
             <div
               onClick={() => (featuredInProgress ? setActiveCourse(featuredInProgress) : setDetailsModalOpen(true))}
               className="leetcode-featured-badge-row cursor-pointer group"
@@ -133,11 +162,40 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                   : "Complete 100% of any course to earn your verified certificate"
               }
             >
-              <div className="leetcode-badge-circle locked">
-                <span className="leetcode-badge-emoji">📜</span>
-                <span className="cert-lock-sub-icon">🔒</span>
+              <div className="shrink-0 flex items-center justify-center">
+                {featuredInProgress ? (
+                  <HexagonalCertBadge
+                    status="in-progress"
+                    percent={
+                      featuredInProgress.totalVideos > 0
+                        ? Math.round(
+                            (featuredInProgress.completedVideos / featuredInProgress.totalVideos) * 100
+                          )
+                        : 0
+                    }
+                    theme={
+                      (featuredInProgress.completedVideos / featuredInProgress.totalVideos) >= 0.45
+                        ? "green"
+                        : "blue"
+                    }
+                    size="lg"
+                    label={
+                      (featuredInProgress.completedVideos / featuredInProgress.totalVideos) >= 0.45
+                        ? "50"
+                        : undefined
+                    }
+                  />
+                ) : (
+                  <HexagonalCertBadge
+                    status="locked"
+                    percent={0}
+                    size="lg"
+                    label="LOCK"
+                  />
+                )}
               </div>
-              <div className="leetcode-featured-info">
+
+              <div className="leetcode-featured-info min-w-0 flex-1 pl-1">
                 {featuredInProgress ? (
                   <>
                     <span className="leetcode-featured-name" title={featuredInProgress.title}>
@@ -146,7 +204,7 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                     <span className="leetcode-featured-caption text-amber-400/90 font-medium">
                       🔒 In Progress ({featuredInProgress.completedVideos}/{featuredInProgress.totalVideos} lessons)
                     </span>
-                    <span className="text-[10px] text-slate-400 group-hover:text-amber-300 transition-colors">
+                    <span className="text-[10px] text-slate-400 group-hover:text-amber-300 transition-colors mt-0.5">
                       Click to preview locked certificate ↗
                     </span>
                   </>
@@ -158,6 +216,9 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                     <span className="leetcode-featured-caption">
                       Complete 100% of a course to earn
                     </span>
+                    <span className="text-[10px] text-slate-400 group-hover:text-blue-400 transition-colors mt-0.5">
+                      Add a course to start ↗
+                    </span>
                   </>
                 )}
               </div>
@@ -166,17 +227,24 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
             {/* Tray showing in-progress locked badges or helper tip */}
             {inProgressCourses.length > 0 ? (
               <div className="leetcode-badges-tray">
-                {inProgressCourses.slice(0, 5).map((c) => {
+                {inProgressCourses.slice(0, 5).map((c, idx) => {
                   const pct = c.totalVideos > 0 ? Math.round((c.completedVideos / c.totalVideos) * 100) : 0;
                   return (
                     <button
                       key={c.id}
                       type="button"
                       onClick={() => setActiveCourse(c)}
-                      className="leetcode-tray-icon locked"
+                      className="leetcode-hex-tray-btn group relative"
                       title={`${c.title} (${pct}% completed - Locked Preview)`}
                     >
-                      <span>🔒</span>
+                      <HexagonalCertBadge
+                        status="in-progress"
+                        percent={pct}
+                        theme={pct >= 45 ? "green" : "blue"}
+                        size="sm"
+                        label={pct >= 45 ? "50" : undefined}
+                        animateHover={false}
+                      />
                     </button>
                   );
                 })}
@@ -246,7 +314,7 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                   </p>
                 </div>
               ) : (
-                courses.map((c) => {
+                courses.map((c, idx) => {
                   const isFinished = c.completedVideos === c.totalVideos && c.totalVideos > 0;
                   const pct = c.totalVideos > 0 ? Math.round((c.completedVideos / c.totalVideos) * 100) : 0;
 
@@ -258,10 +326,18 @@ export default function DashboardCertificates({ courses, userName = "Learner" }:
                       }`}
                     >
                       <div className="badge-card-top flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2.5 min-w-0">
-                          <div className={`cert-item-icon-box ${isFinished ? "unlocked" : "locked"}`}>
-                            <span>{isFinished ? "🎓" : "🔒"}</span>
+                        <div className="flex items-center gap-3 min-w-0">
+                          {/* 3D Metallic Hexagonal Badge Icon */}
+                          <div className="shrink-0">
+                            <HexagonalCertBadge
+                              status={isFinished ? "completed" : pct > 0 ? "in-progress" : "locked"}
+                              percent={pct}
+                              theme={getCourseBadgeTheme(c.id, idx)}
+                              size="md"
+                              label={isFinished ? "CERT" : pct >= 45 ? "50" : `${pct}%`}
+                            />
                           </div>
+
                           <div className="min-w-0">
                             <strong className="badge-title text-sm text-slate-900 dark:text-white block truncate">
                               {c.title}

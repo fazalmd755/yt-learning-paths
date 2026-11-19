@@ -10539,6 +10539,32 @@ textarea::placeholder {
   filter: grayscale(1);
 }
 
+/* 3D Hexagonal Metallic Badges (LeetCode Style) */
+.hex-badge-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), filter 0.25s ease;
+  will-change: transform, filter;
+}
+.hex-badge-hoverable:hover {
+  transform: translateY(-3px) scale(1.06);
+}
+.leetcode-hex-tray-btn {
+  background: transparent;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: transform 0.18s ease;
+}
+.leetcode-hex-tray-btn:hover {
+  transform: translateY(-2px) scale(1.12);
+}
+
 /* Modal styles for Badges */
 .modal-overlay {
   position: fixed;
