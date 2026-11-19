@@ -6934,9 +6934,9 @@ html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
 .hub-empty-state {
   text-align: center;
   padding: 48px 24px;
-  background: #13161c;
-  border: 1px dashed #262c3b;
-  border-radius: 16px;
+  background: var(--surface-muted);
+  border: 1px dashed var(--line);
+  border-radius: 22px;
 }
 
 .hub-empty-icon {
@@ -6947,12 +6947,12 @@ html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
 .hub-empty-state h2 {
   font-size: 22px;
   font-weight: 700;
-  color: #f8fafc;
+  color: var(--ink);
   margin: 0 0 8px;
 }
 
 .hub-empty-state p {
-  color: #94a3b8;
+  color: var(--ink-soft);
   font-size: 14.5px;
   max-width: 520px;
   margin: 0 auto 28px;
@@ -6963,7 +6963,7 @@ html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.05em;
-  color: #64748b;
+  color: var(--muted);
   text-transform: uppercase;
   margin-bottom: 14px;
 }
@@ -6980,9 +6980,9 @@ html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: #171b23;
-  border: 1px solid #232a38;
-  border-radius: 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
   padding: 14px;
   text-align: left;
   cursor: pointer;
@@ -6990,8 +6990,8 @@ html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
 }
 
 .hub-preset-card:hover {
-  background: #1e2430;
-  border-color: rgba(16, 185, 129, 0.4);
+  background: var(--surface-hover);
+  border-color: var(--lime);
   transform: translateY(-2px);
 }
 
@@ -7002,13 +7002,13 @@ html.light .certificate-frame:not(.theme-dark) .cert-watermark-text,
 .hub-preset-card strong {
   display: block;
   font-size: 13.5px;
-  color: #f1f5f9;
+  color: var(--ink);
   margin-bottom: 3px;
 }
 
 .hub-preset-card p {
   font-size: 11.5px;
-  color: #94a3b8;
+  color: var(--ink-soft);
   margin: 0;
   line-height: 1.35;
 }
@@ -15020,6 +15020,136 @@ html.light .hub-subject-count {
 
 html.light .hub-no-subjects {
   color: #74837a !important;
+}
+
+/* Study Hub Empty State & Presets (Light Theme) */
+html.light .hub-empty-state {
+  background: #f4f6f3 !important;
+  border: 1px dashed rgba(18, 24, 21, 0.16) !important;
+}
+
+html.light .hub-empty-state h2 {
+  color: #121815 !important;
+}
+
+html.light .hub-empty-state p {
+  color: #4a5850 !important;
+}
+
+html.light .hub-presets-heading {
+  color: #526058 !important;
+}
+
+html.light .hub-preset-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.1) !important;
+  box-shadow: 0 1px 4px rgba(18, 24, 21, 0.04) !important;
+}
+
+html.light .hub-preset-card:hover {
+  background: #f8faf9 !important;
+  border-color: rgba(30, 63, 45, 0.3) !important;
+  box-shadow: 0 4px 14px rgba(18, 24, 21, 0.08) !important;
+}
+
+html.light .hub-preset-card strong {
+  color: #121815 !important;
+}
+
+html.light .hub-preset-card p {
+  color: #526058 !important;
+}
+
+/* Study Hub Modals (Light Theme) */
+html.light .hub-modal-content {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 24, 21, 0.12) !important;
+  box-shadow: 0 20px 50px rgba(18, 24, 21, 0.18) !important;
+}
+
+html.light .hub-modal-header {
+  border-bottom: 1px solid rgba(18, 24, 21, 0.08) !important;
+}
+
+html.light .hub-modal-header h2 {
+  color: #121815 !important;
+}
+
+html.light .hub-modal-header p {
+  color: #526058 !important;
+}
+
+html.light .hub-modal-close {
+  color: #74837a !important;
+}
+
+html.light .hub-modal-close:hover {
+  color: #121815 !important;
+}
+
+html.light .hub-modal-footer {
+  border-top: 1px solid rgba(18, 24, 21, 0.08) !important;
+}
+
+html.light .hub-form-field label {
+  color: #121815 !important;
+}
+
+html.light .field-hint {
+  color: #526058 !important;
+}
+
+html.light .hub-input,
+html.light .hub-select {
+  background: #f8faf9 !important;
+  border: 1px solid rgba(18, 24, 21, 0.12) !important;
+  color: #121815 !important;
+}
+
+html.light .type-select-btn {
+  background: #f8faf9 !important;
+  border: 1px solid rgba(18, 24, 21, 0.1) !important;
+  color: #334155 !important;
+}
+
+html.light .type-select-btn:hover {
+  background: #f1f5f9 !important;
+}
+
+html.light .type-select-btn.active {
+  background: #ebf5d5 !important;
+  border-color: rgba(30, 63, 45, 0.35) !important;
+  color: #1e3f2d !important;
+}
+
+html.light .hub-secondary-btn {
+  background: #f1f5f9 !important;
+  border: 1px solid rgba(18, 24, 21, 0.1) !important;
+  color: #334155 !important;
+}
+
+html.light .hub-secondary-btn:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+html.light .source-tabs {
+  border-bottom-color: rgba(18, 24, 21, 0.1) !important;
+}
+
+html.light .source-tab {
+  color: #526058 !important;
+}
+
+html.light .source-tab.active {
+  color: #1e3f2d !important;
+  border-bottom-color: #1e3f2d !important;
+}
+
+html.light .no-courses-notice {
+  background: #f8faf9 !important;
+  border-color: rgba(18, 24, 21, 0.12) !important;
+  color: #526058 !important;
 }
 
 /* 4. Study Hub Workspace (Light Theme) */
