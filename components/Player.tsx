@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { ArrowRightIcon, CalendarIcon, CheckCircleIcon } from "./Icons";
+import { ArrowRightIcon, CalendarIcon, CheckCircleIcon, SparklesIcon } from "./Icons";
 import ScheduleLessonModal from "./ScheduleLessonModal";
 import { createClient } from "@/lib/supabase/client";
 
@@ -69,6 +69,18 @@ export default function Player({
   const lastTickRef = useRef(0);
   const playingRef = useRef(false);
   const [status, setStatus] = useState(initialStatus);
+  const [isPaused, setIsPaused] = useState(false);
+  const [showCompletionCard, setShowCompletionCard] = useState(false);
+
+  const triggerAiTutor = useCallback((action: "quiz" | "ask" | "summary", question?: string) => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("watchlify-open-ai-tutor", {
+          detail: { action, question },
+        })
+      );
+    }
+  }, []);
 
   // Enhancements: Playback speed, autoplay next, shortcuts modal, schedule modal
   const [speed, setSpeed] = useState(1);
@@ -169,7 +181,10 @@ export default function Player({
       },
       { onConflict: "user_id,video_id" }
     );
-    if (!error) setStatus("completed");
+    if (!error) {
+      setStatus("completed");
+      setShowCompletionCard(true);
+    }
   }, [supabase, userId, videoId]);
 
   useEffect(() => {
@@ -198,6 +213,7 @@ export default function Player({
             const S = YT.PlayerState;
             if (e.data === S.PLAYING) {
               playingRef.current = true;
+              setIsPaused(false);
               lastTickRef.current = Date.now();
               if (courseId) {
                 supabase
@@ -209,9 +225,14 @@ export default function Player({
             } else {
               if (playingRef.current) tick();
               playingRef.current = false;
-              if (e.data === S.PAUSED || e.data === S.ENDED) flush(true);
-              if (e.data === S.ENDED) {
+              if (e.data === S.PAUSED) {
+                setIsPaused(true);
+                flush(true);
+              } else if (e.data === S.ENDED) {
+                setIsPaused(false);
+                flush(true);
                 markComplete();
+                setShowCompletionCard(true);
                 if (autoplayNextRef.current && nextHref) {
                   setAutoplayCountdown(5);
                 }
@@ -445,6 +466,93 @@ export default function Player({
           </button>
         </div>
       </div>
+
+      {/* Contextual AI Assistance Bar when video is paused */}
+      {isPaused && (
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2.5 rounded-2xl border border-emerald-500/30 bg-emerald-50/70 dark:bg-emerald-950/20 p-2.5 px-3.5 backdrop-blur-md animate-fade-in text-xs shadow-xs">
+          <div className="flex items-center gap-2">
+            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            <SparklesIcon size={14} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
+            <span className="font-medium text-neutral-800 dark:text-zinc-200">
+              Stuck or need clarification at this timestamp?
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <button
+              type="button"
+              onClick={() => triggerAiTutor("ask", "Explain the concept shown at this timestamp in simple words")}
+              className="rounded-full border border-emerald-600/30 bg-white dark:bg-zinc-800 px-3 py-1 text-[11px] font-semibold text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-zinc-700 transition shadow-2xs"
+            >
+              ⚡ Explain this
+            </button>
+            <button
+              type="button"
+              onClick={() => triggerAiTutor("ask", "Give me a practical real-world example of this concept")}
+              className="rounded-full border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-3 py-1 text-[11px] font-semibold text-neutral-700 dark:text-zinc-300 hover:bg-neutral-100 dark:hover:bg-zinc-700 transition shadow-2xs"
+            >
+              💡 Real example
+            </button>
+            <button
+              type="button"
+              onClick={() => triggerAiTutor("quiz")}
+              className="rounded-full border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-3 py-1 text-[11px] font-semibold text-neutral-700 dark:text-zinc-300 hover:bg-neutral-100 dark:hover:bg-zinc-700 transition shadow-2xs"
+            >
+              📝 Practice Quiz
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Post-Lesson Knowledge Check Card */}
+      {showCompletionCard && (
+        <div className="mt-3.5 rounded-2xl border border-emerald-500/40 bg-white dark:bg-zinc-900/90 p-4 shadow-lg backdrop-blur-md animate-fade-in">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">🎉</span>
+                <h3 className="text-sm font-bold text-neutral-900 dark:text-white">
+                  Lesson Completed! Test what you just learned?
+                </h3>
+              </div>
+              <p className="text-xs text-neutral-600 dark:text-zinc-400">
+                Cement your understanding with a quick 2-minute AI quiz (3 MCQs) before moving to the next lesson.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2 w-full sm:w-auto shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setShowCompletionCard(false);
+                  triggerAiTutor("quiz");
+                }}
+                className="flex-1 sm:flex-none rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2 transition flex items-center justify-center gap-1.5 shadow-sm"
+              >
+                <SparklesIcon size={14} />
+                <span>Take 2-Min AI Quiz</span>
+              </button>
+              {nextHref && (
+                <Link
+                  href={nextHref}
+                  onClick={() => setShowCompletionCard(false)}
+                  className="flex-1 sm:flex-none rounded-full border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-zinc-800 hover:bg-neutral-200 dark:hover:bg-zinc-700 text-neutral-900 dark:text-zinc-100 font-semibold text-xs px-3.5 py-2 transition flex items-center justify-center gap-1"
+                >
+                  <span>Next Lesson</span>
+                  <ArrowRightIcon size={12} />
+                </Link>
+              )}
+              <button
+                type="button"
+                onClick={() => setShowCompletionCard(false)}
+                className="text-neutral-400 hover:text-neutral-600 dark:hover:text-white p-1 text-xs"
+                title="Dismiss"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Keyboard Shortcuts Modal */}
       {showShortcuts && (

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import CourseLessonScheduleButton from "./CourseLessonScheduleButton";
-import { PlayIcon, SearchIcon } from "./Icons";
+import { PlayIcon, SearchIcon, SparklesIcon } from "./Icons";
 import { formatDuration } from "@/lib/utils";
 
 export interface CourseLessonItem {
@@ -119,6 +119,16 @@ export default function CourseLessonList({
         </div>
       </div>
 
+      {/* AI Assistant Banner */}
+      <div className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-500/25 bg-emerald-50/60 dark:bg-emerald-950/20 px-4 py-2.5 text-xs shadow-2xs">
+        <div className="flex items-center gap-2 text-emerald-800 dark:text-emerald-300">
+          <SparklesIcon size={14} className="shrink-0 text-emerald-600 dark:text-emerald-400 animate-pulse" />
+          <span className="font-medium">
+            24/7 AI Tutor, instant lesson takeaways & practice quizzes enabled for all lessons
+          </span>
+        </div>
+      </div>
+
       {/* Lesson List */}
       {filteredLessons.length === 0 ? (
         <div className="rounded-2xl border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-zinc-900/30 p-8 text-center text-neutral-600 dark:text-zinc-400">
@@ -161,9 +171,13 @@ export default function CourseLessonList({
                   )}
                   <div className="video-row-copy">
                     <p>{v.title}</p>
-                    <span>
-                      {formatDuration(v.duration_seconds ?? 0)}
-                      {v.embeddable === false && " · Watch on YouTube"}
+                    <span className="flex items-center gap-2 flex-wrap">
+                      <span>{formatDuration(v.duration_seconds ?? 0)}</span>
+                      {v.embeddable === false && <span>· Watch on YouTube</span>}
+                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-700 dark:text-emerald-300 rounded-full bg-emerald-100 dark:bg-emerald-500/15 px-2 py-0.5">
+                        <SparklesIcon size={10} />
+                        AI Tutor
+                      </span>
                     </span>
                   </div>
                 </Link>

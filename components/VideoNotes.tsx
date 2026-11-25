@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowRightIcon, ClockIcon, DownloadIcon, PlayIcon } from "@/components/Icons";
+import { ArrowRightIcon, ClockIcon, DownloadIcon, PlayIcon, SparklesIcon } from "@/components/Icons";
 import { createClient } from "@/lib/supabase/client";
 
 export type VideoNote = {
@@ -59,6 +59,7 @@ export default function VideoNotes({
   const [timestamp, setTimestamp] = useState("00:00");
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
+  const [draftingAi, setDraftingAi] = useState(false);
   const [deletingId, setDeletingId] = useState("");
   const [message, setMessage] = useState("");
 
@@ -69,6 +70,43 @@ export default function VideoNotes({
         const pos = getTime();
         setTimestamp(formatTime(pos));
       }
+    }
+  }
+
+  async function generateAiNoteDraft() {
+    captureCurrentTime();
+    setDraftingAi(true);
+    setMessage("");
+
+    const seconds = parseTimeToSeconds(timestamp) ?? 0;
+
+    try {
+      const res = await fetch("/api/ai/study-assist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "ask",
+          question: `Provide a concise, 1-2 bullet summary of the key concept taught around timestamp ${timestamp} for my study notes. Keep it clear, direct, and actionable.`,
+          videoId,
+          currentTimestamp: seconds,
+        }),
+      });
+
+      const data = await res.json().catch(() => ({}));
+      if (data?.answer) {
+        const cleanAnswer = data.answer
+          .replace(/^#{1,6}\s+/gm, "")
+          .replace(/^[-*_]{3,}\s*$/gm, "")
+          .trim();
+        setContent((prev) => (prev ? `${prev}\n\n${cleanAnswer}` : cleanAnswer));
+        setMessage("✨ AI note drafted! Review and save.");
+      } else {
+        setMessage("Could not generate AI draft. Please try again.");
+      }
+    } catch (err: any) {
+      setMessage(`AI Draft error: ${err.message || "Failed"}`);
+    } finally {
+      setDraftingAi(false);
     }
   }
 
@@ -182,6 +220,16 @@ export default function VideoNotes({
               <ClockIcon size={14} className="inline-block mr-1" />
               Current time
             </button>
+            <button
+              type="button"
+              className="video-note-capture-btn !bg-emerald-500/15 !text-emerald-700 dark:!text-emerald-300 hover:!bg-emerald-500/25 border !border-emerald-500/30 font-semibold"
+              onClick={generateAiNoteDraft}
+              disabled={draftingAi}
+              title="Ask AI to draft a note for this timestamp"
+            >
+              <SparklesIcon size={13} className={`inline-block mr-1 ${draftingAi ? "animate-spin" : ""}`} />
+              {draftingAi ? "Drafting..." : "AI Draft"}
+            </button>
           </div>
         </div>
 
@@ -210,7 +258,24 @@ export default function VideoNotes({
       {message && <p className="inline-feedback" role="status">{message}</p>}
 
       {notes.length === 0 ? (
-        <div className="notes-empty">Your notes for this lesson will show up here.</div>
+        <div className="notes-empty space-y-2">
+          <p>No notes saved yet for this lesson.</p>
+          <p className="text-[11px] opacity-75">
+            Type your thoughts above, click <strong>AI Draft</strong> to generate a quick bullet point, or view full lesson highlights in the AI tab.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("watchlify-open-ai-tutor", { detail: { action: "summary" } }));
+              }
+            }}
+            className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 hover:bg-emerald-500/20 transition mt-1"
+          >
+            <SparklesIcon size={12} />
+            <span>Generate Full AI Lesson Summary</span>
+          </button>
+        </div>
       ) : (
         <ol className="video-note-list">
           {notes.map((note) => (

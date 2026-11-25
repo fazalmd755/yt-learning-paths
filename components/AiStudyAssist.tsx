@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { SparklesIcon, CheckCircleIcon, CheckIcon, ArrowRightIcon } from "./Icons";
 import { createClient } from "@/lib/supabase/client";
 
@@ -223,7 +223,7 @@ export default function AiStudyAssist({
   };
 
   // Generate dynamic AI Summary & Quiz
-  const handleGenerate = async () => {
+  const handleGenerate = useCallback(async () => {
     setLoading(true);
     setSaveSuccessMessage(null);
 
@@ -263,10 +263,10 @@ export default function AiStudyAssist({
     } finally {
       setLoading(false);
     }
-  };
+  }, [videoId, videoTitle, description]);
 
   // Ask AI Tutor a doubt
-  const handleAskDoubt = async (questionToAsk?: string) => {
+  const handleAskDoubt = useCallback(async (questionToAsk?: string) => {
     const q = (questionToAsk ?? userQuestion).trim();
     if (!q) return;
 
@@ -307,7 +307,37 @@ export default function AiStudyAssist({
     } finally {
       setAskingAi(false);
     }
-  };
+  }, [userQuestion, videoId, videoTitle, description]);
+
+  // Listen for global watchlify-open-ai-tutor trigger
+  useEffect(() => {
+    const handler = (e: any) => {
+      const detail = e.detail || {};
+      if (detail.subTab && ["summary", "quiz", "ask"].includes(detail.subTab)) {
+        setActiveTab(detail.subTab);
+      }
+      if (detail.action === "quiz") {
+        setActiveTab("quiz");
+        if (!hasGenerated && !loading) {
+          handleGenerate();
+        }
+      } else if (detail.action === "ask" || detail.question) {
+        setActiveTab("ask");
+        if (detail.question) {
+          setUserQuestion(detail.question);
+          handleAskDoubt(detail.question);
+        }
+      } else if (detail.action === "summary") {
+        setActiveTab("summary");
+        if (!hasGenerated && !loading) {
+          handleGenerate();
+        }
+      }
+    };
+
+    window.addEventListener("watchlify-open-ai-tutor", handler);
+    return () => window.removeEventListener("watchlify-open-ai-tutor", handler);
+  }, [hasGenerated, loading, handleGenerate, handleAskDoubt]);
 
   // 1-Click Save to Timestamped Notes
   const handleSaveToNotes = async (type: "summary" | "quiz" | "chat", chatItem?: AiChatMessage) => {
@@ -459,6 +489,29 @@ export default function AiStudyAssist({
       {/* Tab 1: Key Takeaways */}
       {activeTab === "summary" && (
         <div className="mt-3 space-y-3">
+          {!hasGenerated && (
+            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                  <SparklesIcon size={14} />
+                  <span>Personalized AI Takeaways</span>
+                </p>
+                <p className="text-[11px] text-neutral-600 dark:text-zinc-400 mt-0.5">
+                  Generate instant, AI-extracted key highlights from this lesson.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleGenerate}
+                disabled={loading}
+                className="shrink-0 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-1.5 transition flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+              >
+                <SparklesIcon size={12} className={loading ? "animate-spin" : ""} />
+                <span>{loading ? "Generating..." : "Generate AI Takeaways"}</span>
+              </button>
+            </div>
+          )}
+
           <div className="space-y-2">
             {summaryBullets.map((bullet, idx) => (
               <div
@@ -493,6 +546,29 @@ export default function AiStudyAssist({
       {/* Tab 2: Practice Quiz */}
       {activeTab === "quiz" && (
         <div className="mt-3 space-y-4">
+          {!hasGenerated && (
+            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <div>
+                <p className="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
+                  <SparklesIcon size={14} />
+                  <span>Lesson Comprehension Quiz</span>
+                </p>
+                <p className="text-[11px] text-neutral-600 dark:text-zinc-400 mt-0.5">
+                  Test your understanding with 3 smart MCQs generated specifically for this lesson.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleGenerate}
+                disabled={loading}
+                className="shrink-0 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-1.5 transition flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+              >
+                <SparklesIcon size={12} className={loading ? "animate-spin" : ""} />
+                <span>{loading ? "Generating Quiz..." : "Generate AI Quiz"}</span>
+              </button>
+            </div>
+          )}
+
           {showResults && (
             <div
               className={`rounded-xl border p-3.5 flex items-center justify-between gap-3 ${
@@ -638,10 +714,11 @@ export default function AiStudyAssist({
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="text-[11px] font-medium text-neutral-500 dark:text-zinc-500">Quick prompts:</span>
             {[
-              "Explain this simply 💡",
-              "Practical code examples 💻",
+              "Explain simply 💡",
+              "Practical code example 💻",
               "Common mistakes to avoid ⚠️",
-              "Interview questions on this 🎯",
+              "Interview questions 🎯",
+              "Explain in Hinglish 🇮🇳",
             ].map((chip) => (
               <button
                 key={chip}
