@@ -10087,9 +10087,27 @@ textarea::placeholder {
   padding: 0 !important;
   margin-top: 14px !important;
 }
+.watch-tab-content .ai-tutor-container,
+.watch-tab-ai-wrap .ai-tutor-container {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.watch-tab-content .video-description-card,
+.watch-tab-desc-wrap .video-description-card {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
 .watch-tab-ai-wrap,
 .watch-tab-desc-wrap {
-  padding: 12px;
+  padding: 16px 20px !important;
 }
 
 @media (max-width: 768px) {

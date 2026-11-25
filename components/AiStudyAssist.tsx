@@ -522,8 +522,8 @@ export default function AiStudyAssist({
               return (
                 <div key={q.id} className="space-y-2">
                   <div className="flex items-start justify-between gap-2">
-                    <p className="text-xs font-medium text-neutral-900 dark:text-zinc-100 leading-snug">
-                      <span className="text-neutral-400 dark:text-zinc-500 mr-1.5 font-mono">{qIndex + 1}.</span>
+                    <p className="text-xs font-medium text-neutral-900 dark:text-zinc-100 leading-relaxed">
+                      <span className="text-neutral-400 dark:text-zinc-500 mr-2 font-mono">{qIndex + 1}.</span>
                       {q.question}
                     </p>
                     {showResults && hasChosen && (
@@ -537,7 +537,7 @@ export default function AiStudyAssist({
                     )}
                   </div>
 
-                  <div className="space-y-1.5">
+                  <div className="space-y-1.5 pt-1">
                     {q.options.map((opt, optIdx) => {
                       const isSelected = chosen === optIdx;
                       let style =
@@ -559,11 +559,11 @@ export default function AiStudyAssist({
                           key={optIdx}
                           type="button"
                           onClick={() => handleSelectOption(q.id, optIdx)}
-                          className={`w-full text-left rounded-lg border px-3 py-2 text-xs transition flex items-center justify-between ${style}`}
+                          className={`w-full text-left rounded-lg border px-3.5 py-2.5 text-xs transition flex items-center justify-between ${style}`}
                         >
-                          <span>{opt}</span>
+                          <span className="leading-relaxed">{opt}</span>
                           {isSelected && !showResults && (
-                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0 ml-2" />
                           )}
                         </button>
                       );

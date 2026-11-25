@@ -123,16 +123,18 @@ export default function WatchStudyPanel({
         )}
       </div>
 
-      {/* Floating Quick AI Tutor Launcher (Sticky at bottom-right) */}
-      <button
-        type="button"
-        onClick={openAiTutor}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white/90 dark:bg-zinc-900/90 px-3.5 py-2 text-xs font-medium text-neutral-800 dark:text-zinc-200 shadow-md backdrop-blur-md transition-all hover:scale-105 hover:border-emerald-500/40 hover:text-emerald-600 dark:hover:text-emerald-400 group"
-        title="Open AI Tutor"
-      >
-        <SparklesIcon size={13} className="text-emerald-500 group-hover:rotate-12 transition-transform" />
-        <span>AI Tutor</span>
-      </button>
+      {/* Floating Quick AI Tutor Launcher (Sticky at bottom-right, only when not already on AI tab) */}
+      {activeTab !== "ai" && (
+        <button
+          type="button"
+          onClick={openAiTutor}
+          className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white/90 dark:bg-zinc-900/90 px-3.5 py-2 text-xs font-medium text-neutral-800 dark:text-zinc-200 shadow-md backdrop-blur-md transition-all hover:scale-105 hover:border-emerald-500/40 hover:text-emerald-600 dark:hover:text-emerald-400 group"
+          title="Open AI Tutor"
+        >
+          <SparklesIcon size={13} className="text-emerald-500 group-hover:rotate-12 transition-transform" />
+          <span>AI Tutor</span>
+        </button>
+      )}
     </div>
   );
 }
