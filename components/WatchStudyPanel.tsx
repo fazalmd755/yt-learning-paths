@@ -75,13 +75,10 @@ export default function WatchStudyPanel({
           role="tab"
           aria-selected={activeTab === "ai"}
           onClick={() => setActiveTab("ai")}
-          className={`watch-tab-btn relative ${activeTab === "ai" ? "active" : ""}`}
+          className={`watch-tab-btn ${activeTab === "ai" ? "active" : ""}`}
         >
-          <span className="flex items-center gap-1.5">
-            <SparklesIcon size={14} className="text-emerald-500 animate-pulse" />
-            <span>AI Tutor</span>
-          </span>
-          <span className="watch-tab-badge">24/7</span>
+          <SparklesIcon size={14} className="text-emerald-500" />
+          <span>AI Tutor</span>
         </button>
 
         <button

@@ -461,14 +461,10 @@ export default function AiStudyAssist({
             type="button"
             onClick={handleGenerate}
             disabled={loading}
-            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition ${
-              hasGenerated
-                ? "text-neutral-600 dark:text-zinc-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-zinc-800"
-                : "bg-emerald-600 dark:bg-emerald-500 text-white dark:text-black font-semibold hover:opacity-90 shadow-xs"
-            } disabled:opacity-50`}
+            className="flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-white/[0.05] hover:bg-neutral-200 dark:hover:bg-white/[0.1] px-2.5 py-1 text-xs font-medium text-neutral-800 dark:text-zinc-200 transition disabled:opacity-50"
             title={hasGenerated ? "Regenerate based on current timestamp" : "Generate with AI"}
           >
-            <SparklesIcon size={13} className={loading ? "animate-spin" : ""} />
+            <SparklesIcon size={12} className={loading ? "animate-spin text-emerald-500" : "text-emerald-500"} />
             <span>{loading ? "Analyzing..." : hasGenerated ? "Regenerate" : "Generate"}</span>
           </button>
         </div>
@@ -477,32 +473,10 @@ export default function AiStudyAssist({
       {/* Tab 1: Key Takeaways */}
       {activeTab === "summary" && (
         <div className="space-y-4 pt-1">
-          {!hasGenerated && (
-            <div className="rounded-xl border border-dashed border-neutral-200 dark:border-white/10 p-5 text-center space-y-2.5 bg-neutral-50/50 dark:bg-zinc-900/20">
-              <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mx-auto">
-                <SparklesIcon size={16} />
-              </div>
-              <div>
-                <p className="text-xs font-semibold text-neutral-900 dark:text-zinc-100">AI Lesson Summary</p>
-                <p className="text-[11px] text-neutral-500 dark:text-zinc-400 max-w-xs mx-auto mt-0.5">
-                  Generate key highlights, architecture notes, and core principles from this video.
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={handleGenerate}
-                disabled={loading}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-3.5 py-1.5 text-xs font-semibold text-white dark:text-black transition"
-              >
-                {loading ? "Analyzing..." : "Generate Summary"}
-              </button>
-            </div>
-          )}
-
           <div className="space-y-3">
             {summaryBullets.map((bullet, idx) => (
               <div key={idx} className="flex items-start gap-2.5 text-xs leading-relaxed text-neutral-700 dark:text-zinc-300">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500/70" />
                 <p className="flex-1 font-normal">{bullet}</p>
               </div>
             ))}
@@ -528,23 +502,6 @@ export default function AiStudyAssist({
       {/* Tab 2: Practice Quiz */}
       {activeTab === "quiz" && (
         <div className="space-y-4 pt-1">
-          {!hasGenerated && (
-            <div className="rounded-xl border border-dashed border-neutral-200 dark:border-white/10 p-5 text-center space-y-2.5 bg-neutral-50/50 dark:bg-zinc-900/20">
-              <p className="text-xs font-semibold text-neutral-900 dark:text-zinc-100">Practice Quiz Ready</p>
-              <p className="text-[11px] text-neutral-500 dark:text-zinc-400 max-w-xs mx-auto">
-                Test your understanding with 3 quick MCQs on the concepts demonstrated in this lesson.
-              </p>
-              <button
-                type="button"
-                onClick={handleGenerate}
-                disabled={loading}
-                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-3.5 py-1.5 text-xs font-semibold text-white dark:text-black transition"
-              >
-                {loading ? "Generating Quiz..." : "Generate AI Quiz"}
-              </button>
-            </div>
-          )}
-
           {showResults && (
             <div className="flex items-center justify-between rounded-xl border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-zinc-800/40 px-3.5 py-2.5 text-xs">
               <span className="font-semibold text-neutral-900 dark:text-zinc-100">
@@ -630,7 +587,7 @@ export default function AiStudyAssist({
                   type="button"
                   onClick={() => setShowResults(true)}
                   disabled={Object.keys(selectedAnswers).length === 0}
-                  className="rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-3.5 py-1.5 text-xs font-semibold text-white dark:text-black transition disabled:opacity-40"
+                  className="rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-zinc-900 hover:opacity-90 px-3.5 py-1.5 text-xs font-medium transition disabled:opacity-30"
                 >
                   Submit Answers
                 </button>
@@ -706,7 +663,7 @@ export default function AiStudyAssist({
             <button
               type="submit"
               disabled={askingAi || !userQuestion.trim()}
-              className="flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-3.5 py-2 text-xs font-semibold text-white dark:text-black transition disabled:opacity-40"
+              className="flex items-center justify-center rounded-lg bg-neutral-900 text-white dark:bg-white dark:text-zinc-900 hover:opacity-90 px-3.5 py-2 text-xs font-medium transition disabled:opacity-30"
               title="Send question"
             >
               {askingAi ? (
