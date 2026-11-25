@@ -130,15 +130,11 @@ export default function WatchStudyPanel({
       <button
         type="button"
         onClick={openAiTutor}
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full border border-emerald-500/40 bg-neutral-900/90 dark:bg-zinc-900/90 px-4 py-2.5 text-xs font-semibold text-white shadow-xl backdrop-blur-md transition-all hover:scale-105 hover:border-emerald-400 hover:shadow-emerald-500/20 active:scale-95 group"
-        title="Open 24/7 AI Tutor & Practice Quiz"
+        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full border border-neutral-200/80 dark:border-white/10 bg-white/90 dark:bg-zinc-900/90 px-3.5 py-2 text-xs font-medium text-neutral-800 dark:text-zinc-200 shadow-md backdrop-blur-md transition-all hover:scale-105 hover:border-emerald-500/40 hover:text-emerald-600 dark:hover:text-emerald-400 group"
+        title="Open AI Tutor"
       >
-        <span className="relative flex h-2 w-2">
-          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-        </span>
-        <SparklesIcon size={14} className="text-emerald-400 group-hover:rotate-12 transition-transform" />
-        <span>Ask AI Tutor</span>
+        <SparklesIcon size={13} className="text-emerald-500 group-hover:rotate-12 transition-transform" />
+        <span>AI Tutor</span>
       </button>
     </div>
   );

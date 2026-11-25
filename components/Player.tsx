@@ -469,35 +469,34 @@ export default function Player({
 
       {/* Contextual AI Assistance Bar when video is paused */}
       {isPaused && (
-        <div className="mt-3 flex flex-wrap items-center justify-between gap-2.5 rounded-2xl border border-emerald-500/30 bg-emerald-50/70 dark:bg-emerald-950/20 p-2.5 px-3.5 backdrop-blur-md animate-fade-in text-xs shadow-xs">
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-2.5 rounded-xl border border-neutral-200/80 dark:border-white/[0.08] bg-neutral-50/80 dark:bg-zinc-900/60 p-2.5 px-3.5 backdrop-blur-md animate-fade-in text-xs shadow-xs">
           <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-            <SparklesIcon size={14} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
-            <span className="font-medium text-neutral-800 dark:text-zinc-200">
-              Stuck or need clarification at this timestamp?
+            <SparklesIcon size={13} className="text-emerald-500 shrink-0" />
+            <span className="font-medium text-neutral-800 dark:text-zinc-300">
+              Need clarification at this timestamp?
             </span>
           </div>
           <div className="flex items-center gap-1.5 flex-wrap">
             <button
               type="button"
               onClick={() => triggerAiTutor("ask", "Explain the concept shown at this timestamp in simple words")}
-              className="rounded-full border border-emerald-600/30 bg-white dark:bg-zinc-800 px-3 py-1 text-[11px] font-semibold text-emerald-800 dark:text-emerald-300 hover:bg-emerald-100 dark:hover:bg-zinc-700 transition shadow-2xs"
+              className="rounded-md border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-2.5 py-1 text-[11px] font-medium text-neutral-700 dark:text-zinc-300 hover:text-neutral-900 dark:hover:text-white transition"
             >
-              ⚡ Explain this
+              Explain this
             </button>
             <button
               type="button"
               onClick={() => triggerAiTutor("ask", "Give me a practical real-world example of this concept")}
-              className="rounded-full border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-3 py-1 text-[11px] font-semibold text-neutral-700 dark:text-zinc-300 hover:bg-neutral-100 dark:hover:bg-zinc-700 transition shadow-2xs"
+              className="rounded-md border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-2.5 py-1 text-[11px] font-medium text-neutral-700 dark:text-zinc-300 hover:text-neutral-900 dark:hover:text-white transition"
             >
-              💡 Real example
+              Real example
             </button>
             <button
               type="button"
               onClick={() => triggerAiTutor("quiz")}
-              className="rounded-full border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-3 py-1 text-[11px] font-semibold text-neutral-700 dark:text-zinc-300 hover:bg-neutral-100 dark:hover:bg-zinc-700 transition shadow-2xs"
+              className="rounded-md border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-2.5 py-1 text-[11px] font-medium text-neutral-700 dark:text-zinc-300 hover:text-neutral-900 dark:hover:text-white transition"
             >
-              📝 Practice Quiz
+              Quick Quiz
             </button>
           </div>
         </div>
@@ -505,17 +504,15 @@ export default function Player({
 
       {/* Post-Lesson Knowledge Check Card */}
       {showCompletionCard && (
-        <div className="mt-3.5 rounded-2xl border border-emerald-500/40 bg-white dark:bg-zinc-900/90 p-4 shadow-lg backdrop-blur-md animate-fade-in">
+        <div className="mt-3.5 rounded-xl border border-neutral-200/80 dark:border-white/[0.08] bg-white dark:bg-zinc-900/90 p-4 shadow-sm backdrop-blur-md animate-fade-in">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <span className="text-lg">🎉</span>
-                <h3 className="text-sm font-bold text-neutral-900 dark:text-white">
-                  Lesson Completed! Test what you just learned?
-                </h3>
-              </div>
-              <p className="text-xs text-neutral-600 dark:text-zinc-400">
-                Cement your understanding with a quick 2-minute AI quiz (3 MCQs) before moving to the next lesson.
+            <div className="space-y-0.5">
+              <h3 className="text-xs font-semibold text-neutral-900 dark:text-zinc-100 flex items-center gap-1.5">
+                <SparklesIcon size={13} className="text-emerald-500" />
+                <span>Lesson Completed — Check your understanding?</span>
+              </h3>
+              <p className="text-[11px] text-neutral-500 dark:text-zinc-400">
+                Reinforce key concepts with 3 quick MCQs before moving to the next lesson.
               </p>
             </div>
 
@@ -526,16 +523,15 @@ export default function Player({
                   setShowCompletionCard(false);
                   triggerAiTutor("quiz");
                 }}
-                className="flex-1 sm:flex-none rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-4 py-2 transition flex items-center justify-center gap-1.5 shadow-sm"
+                className="flex-1 sm:flex-none rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-black font-semibold text-xs px-3.5 py-1.5 transition flex items-center justify-center gap-1.5"
               >
-                <SparklesIcon size={14} />
-                <span>Take 2-Min AI Quiz</span>
+                <span>Take AI Quiz</span>
               </button>
               {nextHref && (
                 <Link
                   href={nextHref}
                   onClick={() => setShowCompletionCard(false)}
-                  className="flex-1 sm:flex-none rounded-full border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-zinc-800 hover:bg-neutral-200 dark:hover:bg-zinc-700 text-neutral-900 dark:text-zinc-100 font-semibold text-xs px-3.5 py-2 transition flex items-center justify-center gap-1"
+                  className="flex-1 sm:flex-none rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-100 dark:bg-zinc-800 hover:bg-neutral-200 dark:hover:bg-zinc-700 text-neutral-800 dark:text-zinc-200 font-medium text-xs px-3 py-1.5 transition flex items-center justify-center gap-1"
                 >
                   <span>Next Lesson</span>
                   <ArrowRightIcon size={12} />

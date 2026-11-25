@@ -409,135 +409,117 @@ export default function AiStudyAssist({
   const correctCount = mcqs.filter((q) => selectedAnswers[q.id] === q.correct).length;
 
   return (
-    <section className="ai-tutor-container mt-4 rounded-2xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-900/70 p-4 md:p-5 shadow-sm backdrop-blur-md">
-      {/* Header bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-neutral-200 dark:border-white/10 pb-3">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
-            <SparklesIcon size={18} />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold tracking-wide text-neutral-900 dark:text-zinc-100">
-                AI Study Assistant
-              </h3>
-              <span className="rounded-full bg-emerald-100 dark:bg-emerald-500/15 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:text-emerald-400">
-                AI Powered
-              </span>
-            </div>
-            <p className="text-xs text-neutral-600 dark:text-zinc-400">
-              Instant video summaries, practice quizzes, and 24/7 doubt resolution
-            </p>
-          </div>
+    <div className="ai-tutor-container space-y-4 pt-1">
+      {/* Top Segmented Navigation & Action Bar */}
+      <div className="flex items-center justify-between gap-2 pb-2.5 border-b border-neutral-200/80 dark:border-white/[0.08]">
+        {/* Sleek Segmented Control */}
+        <div className="flex items-center rounded-lg bg-neutral-100 dark:bg-zinc-800/80 p-0.5 text-xs font-medium">
+          <button
+            type="button"
+            onClick={() => setActiveTab("summary")}
+            className={`px-3 py-1.5 rounded-md transition-all ${
+              activeTab === "summary"
+                ? "bg-white dark:bg-zinc-900 text-neutral-900 dark:text-zinc-100 shadow-xs font-semibold"
+                : "text-neutral-500 dark:text-zinc-400 hover:text-neutral-900 dark:hover:text-zinc-200"
+            }`}
+          >
+            Summary
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("quiz")}
+            className={`px-3 py-1.5 rounded-md transition-all ${
+              activeTab === "quiz"
+                ? "bg-white dark:bg-zinc-900 text-neutral-900 dark:text-zinc-100 shadow-xs font-semibold"
+                : "text-neutral-500 dark:text-zinc-400 hover:text-neutral-900 dark:hover:text-zinc-200"
+            }`}
+          >
+            Quiz ({mcqs.length})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("ask")}
+            className={`px-3 py-1.5 rounded-md transition-all ${
+              activeTab === "ask"
+                ? "bg-white dark:bg-zinc-900 text-neutral-900 dark:text-zinc-100 shadow-xs font-semibold"
+                : "text-neutral-500 dark:text-zinc-400 hover:text-neutral-900 dark:hover:text-zinc-200"
+            }`}
+          >
+            Ask Doubt
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={handleGenerate}
-          disabled={loading}
-          className="flex items-center gap-1.5 rounded-full border border-emerald-600/30 bg-emerald-50 text-emerald-800 dark:bg-emerald-500/15 dark:border-emerald-500/30 dark:text-emerald-300 px-3.5 py-1.5 text-xs font-semibold shadow-xs transition hover:bg-emerald-100 dark:hover:bg-emerald-500/25 disabled:opacity-50"
-        >
-          <SparklesIcon size={14} className={loading ? "animate-spin" : ""} />
-          {loading ? "Analyzing Video..." : hasGenerated ? "Regenerate AI Content" : "Generate with AI"}
-        </button>
-      </div>
-
-      {/* Tabs */}
-      <div className="mt-3 flex items-center gap-1.5 border-b border-neutral-200 dark:border-white/10 pb-2">
-        <button
-          type="button"
-          onClick={() => setActiveTab("summary")}
-          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-            activeTab === "summary"
-              ? "bg-neutral-900 text-white dark:bg-emerald-500 dark:text-zinc-950 shadow-sm"
-              : "text-neutral-600 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
-          }`}
-        >
-          💡 Key Takeaways
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab("quiz")}
-          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-            activeTab === "quiz"
-              ? "bg-neutral-900 text-white dark:bg-emerald-500 dark:text-zinc-950 shadow-sm"
-              : "text-neutral-600 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
-          }`}
-        >
-          📝 Practice Quiz ({mcqs.length} MCQs)
-        </button>
-        <button
-          type="button"
-          onClick={() => setActiveTab("ask")}
-          className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
-            activeTab === "ask"
-              ? "bg-neutral-900 text-white dark:bg-emerald-500 dark:text-zinc-950 shadow-sm"
-              : "text-neutral-600 dark:text-zinc-400 hover:bg-neutral-100 dark:hover:bg-white/5 hover:text-neutral-900 dark:hover:text-zinc-200"
-          }`}
-        >
-          💬 Ask AI Tutor
-        </button>
-
-        {saveSuccessMessage && (
-          <span className="ml-auto inline-flex items-center gap-1 rounded bg-emerald-500/20 px-2 py-0.5 text-xs font-medium text-emerald-300 animate-fade-in">
-            <CheckIcon size={12} />
-            {saveSuccessMessage}
-          </span>
-        )}
+        {/* Status / Quick Action */}
+        <div className="flex items-center gap-2">
+          {saveSuccessMessage && (
+            <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium animate-fade-in flex items-center gap-1">
+              <CheckIcon size={12} />
+              {saveSuccessMessage}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={handleGenerate}
+            disabled={loading}
+            className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-medium transition ${
+              hasGenerated
+                ? "text-neutral-600 dark:text-zinc-400 hover:text-neutral-900 dark:hover:text-white hover:bg-neutral-100 dark:hover:bg-zinc-800"
+                : "bg-emerald-600 dark:bg-emerald-500 text-white dark:text-black font-semibold hover:opacity-90 shadow-xs"
+            } disabled:opacity-50`}
+            title={hasGenerated ? "Regenerate based on current timestamp" : "Generate with AI"}
+          >
+            <SparklesIcon size={13} className={loading ? "animate-spin" : ""} />
+            <span>{loading ? "Analyzing..." : hasGenerated ? "Regenerate" : "Generate"}</span>
+          </button>
+        </div>
       </div>
 
       {/* Tab 1: Key Takeaways */}
       {activeTab === "summary" && (
-        <div className="mt-3 space-y-3">
+        <div className="space-y-4 pt-1">
           {!hasGenerated && (
-            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="rounded-xl border border-dashed border-neutral-200 dark:border-white/10 p-5 text-center space-y-2.5 bg-neutral-50/50 dark:bg-zinc-900/20">
+              <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mx-auto">
+                <SparklesIcon size={16} />
+              </div>
               <div>
-                <p className="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
-                  <SparklesIcon size={14} />
-                  <span>Personalized AI Takeaways</span>
-                </p>
-                <p className="text-[11px] text-neutral-600 dark:text-zinc-400 mt-0.5">
-                  Generate instant, AI-extracted key highlights from this lesson.
+                <p className="text-xs font-semibold text-neutral-900 dark:text-zinc-100">AI Lesson Summary</p>
+                <p className="text-[11px] text-neutral-500 dark:text-zinc-400 max-w-xs mx-auto mt-0.5">
+                  Generate key highlights, architecture notes, and core principles from this video.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={handleGenerate}
                 disabled={loading}
-                className="shrink-0 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-1.5 transition flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-3.5 py-1.5 text-xs font-semibold text-white dark:text-black transition"
               >
-                <SparklesIcon size={12} className={loading ? "animate-spin" : ""} />
-                <span>{loading ? "Generating..." : "Generate AI Takeaways"}</span>
+                {loading ? "Analyzing..." : "Generate Summary"}
               </button>
             </div>
           )}
 
-          <div className="space-y-2">
+          <div className="space-y-3">
             {summaryBullets.map((bullet, idx) => (
-              <div
-                key={idx}
-                className="flex items-start gap-3 rounded-xl border border-neutral-200/80 dark:border-white/5 bg-neutral-50/70 dark:bg-zinc-950/40 p-3.5 text-xs text-neutral-800 dark:text-zinc-300 leading-relaxed shadow-xs transition hover:border-emerald-500/30"
-              >
-                <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-[10px] font-bold text-emerald-800 dark:text-emerald-400">
-                  {idx + 1}
-                </span>
-                <p className="flex-1 font-medium leading-relaxed">{bullet}</p>
+              <div key={idx} className="flex items-start gap-2.5 text-xs leading-relaxed text-neutral-700 dark:text-zinc-300">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
+                <p className="flex-1 font-normal">{bullet}</p>
               </div>
             ))}
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-1">
-            <span className="text-[11px] text-neutral-500 dark:text-zinc-400">
-              Captures key takeaways at the current video segment.
+          <div className="pt-3 flex items-center justify-between border-t border-neutral-100 dark:border-white/5">
+            <span className="text-[11px] text-neutral-400 dark:text-zinc-500">
+              {hasGenerated ? "Synthesized from video" : "Standard lecture overview"}
             </span>
             <button
               type="button"
               onClick={() => handleSaveToNotes("summary")}
               disabled={savingNote}
-              className="flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-neutral-800 dark:text-zinc-200 shadow-xs transition hover:bg-neutral-50 dark:hover:bg-zinc-700 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:text-zinc-300 hover:bg-neutral-100 dark:hover:bg-zinc-800 rounded-lg transition"
             >
-              <CheckCircleIcon size={14} className="text-emerald-600 dark:text-emerald-400" />
-              <span>{savingNote ? "Saving..." : "Save to My Notes (1-Click)"}</span>
+              <CheckCircleIcon size={13} className="text-emerald-500" />
+              <span>{savingNote ? "Saving..." : "Save to Notes"}</span>
             </button>
           </div>
         </div>
@@ -545,140 +527,112 @@ export default function AiStudyAssist({
 
       {/* Tab 2: Practice Quiz */}
       {activeTab === "quiz" && (
-        <div className="mt-3 space-y-4">
+        <div className="space-y-4 pt-1">
           {!hasGenerated && (
-            <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-bold text-emerald-800 dark:text-emerald-300 flex items-center gap-1.5">
-                  <SparklesIcon size={14} />
-                  <span>Lesson Comprehension Quiz</span>
-                </p>
-                <p className="text-[11px] text-neutral-600 dark:text-zinc-400 mt-0.5">
-                  Test your understanding with 3 smart MCQs generated specifically for this lesson.
-                </p>
-              </div>
+            <div className="rounded-xl border border-dashed border-neutral-200 dark:border-white/10 p-5 text-center space-y-2.5 bg-neutral-50/50 dark:bg-zinc-900/20">
+              <p className="text-xs font-semibold text-neutral-900 dark:text-zinc-100">Practice Quiz Ready</p>
+              <p className="text-[11px] text-neutral-500 dark:text-zinc-400 max-w-xs mx-auto">
+                Test your understanding with 3 quick MCQs on the concepts demonstrated in this lesson.
+              </p>
               <button
                 type="button"
                 onClick={handleGenerate}
                 disabled={loading}
-                className="shrink-0 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs px-3.5 py-1.5 transition flex items-center gap-1.5 shadow-sm disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-3.5 py-1.5 text-xs font-semibold text-white dark:text-black transition"
               >
-                <SparklesIcon size={12} className={loading ? "animate-spin" : ""} />
-                <span>{loading ? "Generating Quiz..." : "Generate AI Quiz"}</span>
+                {loading ? "Generating Quiz..." : "Generate AI Quiz"}
               </button>
             </div>
           )}
 
           {showResults && (
-            <div
-              className={`rounded-xl border p-3.5 flex items-center justify-between gap-3 ${
-                correctCount === mcqs.length
-                  ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-800 dark:text-emerald-300"
-                  : correctCount > 0
-                  ? "border-amber-500/40 bg-amber-500/10 text-amber-800 dark:text-amber-300"
-                  : "border-red-500/40 bg-red-500/10 text-red-800 dark:text-red-300"
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <span className="text-xl">
-                  {correctCount === mcqs.length ? "🎉" : correctCount > 0 ? "⚡" : "📚"}
-                </span>
-                <div>
-                  <p className="text-xs font-bold">
-                    Score: {correctCount} / {mcqs.length} correct
-                  </p>
-                  <p className="text-[11px] opacity-80">
-                    {correctCount === mcqs.length
-                      ? "Awesome job! You completely mastered the concepts in this lesson."
-                      : "Review the explanations below to reinforce your understanding."}
-                  </p>
-                </div>
-              </div>
+            <div className="flex items-center justify-between rounded-xl border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-zinc-800/40 px-3.5 py-2.5 text-xs">
+              <span className="font-semibold text-neutral-900 dark:text-zinc-100">
+                Score: {correctCount} of {mcqs.length} correct
+              </span>
+              <span className="text-[11px] text-neutral-500 dark:text-zinc-400">
+                {correctCount === mcqs.length ? "Great job!" : "Review explanations below"}
+              </span>
             </div>
           )}
 
-          {mcqs.map((q, qIndex) => {
-            const chosen = selectedAnswers[q.id];
-            const hasChosen = chosen !== undefined;
-            const isCorrect = chosen === q.correct;
+          <div className="space-y-4">
+            {mcqs.map((q, qIndex) => {
+              const chosen = selectedAnswers[q.id];
+              const hasChosen = chosen !== undefined;
+              const isCorrect = chosen === q.correct;
 
-            return (
-              <div
-                key={q.id}
-                className="rounded-xl border border-neutral-200 dark:border-white/5 bg-neutral-50/60 dark:bg-zinc-950/40 p-4 shadow-xs"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <span className="text-xs font-bold text-neutral-900 dark:text-zinc-100">
-                    Q{qIndex + 1}: {q.question}
-                  </span>
-                  {showResults && hasChosen && (
-                    <span
-                      className={`shrink-0 rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                        isCorrect
-                          ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-500/20 dark:text-emerald-400"
-                          : "bg-red-100 text-red-800 dark:bg-red-500/20 dark:text-red-400"
-                      }`}
-                    >
-                      {isCorrect ? "Correct ✓" : "Incorrect ✕"}
-                    </span>
+              return (
+                <div key={q.id} className="space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="text-xs font-medium text-neutral-900 dark:text-zinc-100 leading-snug">
+                      <span className="text-neutral-400 dark:text-zinc-500 mr-1.5 font-mono">{qIndex + 1}.</span>
+                      {q.question}
+                    </p>
+                    {showResults && hasChosen && (
+                      <span
+                        className={`text-[10px] font-semibold shrink-0 ${
+                          isCorrect ? "text-emerald-500" : "text-red-400"
+                        }`}
+                      >
+                        {isCorrect ? "Correct ✓" : "Incorrect ✕"}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="space-y-1.5">
+                    {q.options.map((opt, optIdx) => {
+                      const isSelected = chosen === optIdx;
+                      let style =
+                        "border-neutral-200/80 dark:border-white/[0.06] bg-transparent text-neutral-700 dark:text-zinc-300 hover:bg-neutral-50 dark:hover:bg-white/[0.03]";
+
+                      if (showResults) {
+                        if (optIdx === q.correct) {
+                          style =
+                            "border-emerald-500/50 bg-emerald-500/10 text-emerald-900 dark:text-emerald-300 font-medium";
+                        } else if (isSelected && !isCorrect) {
+                          style = "border-red-500/50 bg-red-500/10 text-red-900 dark:text-red-300";
+                        }
+                      } else if (isSelected) {
+                        style = "border-emerald-500/60 bg-emerald-500/10 text-neutral-900 dark:text-white font-medium";
+                      }
+
+                      return (
+                        <button
+                          key={optIdx}
+                          type="button"
+                          onClick={() => handleSelectOption(q.id, optIdx)}
+                          className={`w-full text-left rounded-lg border px-3 py-2 text-xs transition flex items-center justify-between ${style}`}
+                        >
+                          <span>{opt}</span>
+                          {isSelected && !showResults && (
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 shrink-0" />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {showResults && (
+                    <p className="text-[11px] text-neutral-600 dark:text-zinc-400 bg-neutral-50 dark:bg-white/[0.02] p-2.5 rounded-lg border border-neutral-200/60 dark:border-white/[0.05] leading-relaxed">
+                      <strong className="text-neutral-900 dark:text-zinc-200 font-medium">Why:</strong> {q.explanation}
+                    </p>
                   )}
                 </div>
+              );
+            })}
+          </div>
 
-                <div className="mt-2.5 space-y-1.5">
-                  {q.options.map((opt, optIdx) => {
-                    const isSelected = chosen === optIdx;
-                    let optionStyle =
-                      "border-neutral-200 dark:border-white/5 bg-white dark:bg-zinc-900/40 text-neutral-800 dark:text-zinc-300 hover:border-neutral-300 dark:hover:border-white/20";
-
-                    if (showResults) {
-                      if (optIdx === q.correct) {
-                        optionStyle =
-                          "border-emerald-500/60 bg-emerald-50 text-emerald-900 dark:bg-emerald-500/15 dark:text-emerald-300 font-semibold";
-                      } else if (isSelected && !isCorrect) {
-                        optionStyle =
-                          "border-red-500/60 bg-red-50 text-red-900 dark:bg-red-500/15 dark:text-red-300";
-                      }
-                    } else if (isSelected) {
-                      optionStyle =
-                        "border-emerald-600 bg-emerald-50 text-emerald-900 dark:bg-emerald-500/15 dark:text-white font-semibold";
-                    }
-
-                    return (
-                      <button
-                        key={optIdx}
-                        type="button"
-                        onClick={() => handleSelectOption(q.id, optIdx)}
-                        className={`w-full text-left rounded-xl border p-2.5 text-xs transition flex items-center justify-between shadow-2xs ${optionStyle}`}
-                      >
-                        <span>{opt}</span>
-                        {isSelected && !showResults && (
-                          <span className="h-2 w-2 rounded-full bg-emerald-600 dark:bg-emerald-400" />
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {showResults && (
-                  <p className="mt-2.5 rounded-xl bg-neutral-100 dark:bg-zinc-900/60 p-2.5 text-[11px] text-neutral-700 dark:text-zinc-300 border border-neutral-200 dark:border-white/5 leading-relaxed">
-                    💡 <strong className="text-neutral-900 dark:text-zinc-100">Explanation:</strong>{" "}
-                    {q.explanation}
-                  </p>
-                )}
-              </div>
-            );
-          })}
-
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-neutral-200 dark:border-white/5">
-            <div className="flex items-center gap-2">
+          <div className="pt-2 flex items-center justify-between border-t border-neutral-100 dark:border-white/5">
+            <div>
               {!showResults ? (
                 <button
                   type="button"
                   onClick={() => setShowResults(true)}
                   disabled={Object.keys(selectedAnswers).length === 0}
-                  className="rounded-full bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-4 py-1.5 text-xs font-bold text-white dark:text-black shadow-xs transition disabled:opacity-40"
+                  className="rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-3.5 py-1.5 text-xs font-semibold text-white dark:text-black transition disabled:opacity-40"
                 >
-                  Check Answers
+                  Submit Answers
                 </button>
               ) : (
                 <button
@@ -687,7 +641,7 @@ export default function AiStudyAssist({
                     setSelectedAnswers({});
                     setShowResults(false);
                   }}
-                  className="rounded-full bg-neutral-200 dark:bg-zinc-800 px-3.5 py-1.5 text-xs font-semibold text-neutral-800 dark:text-zinc-200 transition hover:bg-neutral-300 dark:hover:bg-zinc-700"
+                  className="rounded-lg px-3 py-1.5 text-xs font-medium text-neutral-600 dark:text-zinc-400 hover:text-neutral-900 dark:hover:text-white transition"
                 >
                   Reset Quiz
                 </button>
@@ -698,10 +652,10 @@ export default function AiStudyAssist({
               type="button"
               onClick={() => handleSaveToNotes("quiz")}
               disabled={savingNote}
-              className="flex items-center gap-1.5 rounded-lg border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800 px-3 py-1.5 text-xs font-semibold text-neutral-800 dark:text-zinc-200 shadow-xs transition hover:bg-neutral-50 dark:hover:bg-zinc-700 disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-neutral-600 dark:text-zinc-300 hover:bg-neutral-100 dark:hover:bg-zinc-800 rounded-lg transition"
             >
-              <CheckCircleIcon size={14} className="text-emerald-600 dark:text-emerald-400" />
-              <span>{savingNote ? "Saving..." : "Save Quiz to Notes (1-Click)"}</span>
+              <CheckCircleIcon size={13} className="text-emerald-500" />
+              <span>{savingNote ? "Saving..." : "Save to Notes"}</span>
             </button>
           </div>
         </div>
@@ -709,16 +663,15 @@ export default function AiStudyAssist({
 
       {/* Tab 3: Ask AI Tutor (Doubt Solver) */}
       {activeTab === "ask" && (
-        <div className="mt-3 space-y-3">
+        <div className="space-y-3 pt-1">
           {/* Quick suggestions */}
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[11px] font-medium text-neutral-500 dark:text-zinc-500">Quick prompts:</span>
             {[
-              "Explain simply 💡",
-              "Practical code example 💻",
-              "Common mistakes to avoid ⚠️",
-              "Interview questions 🎯",
-              "Explain in Hinglish 🇮🇳",
+              "Explain simply",
+              "Code example",
+              "Common mistakes",
+              "Interview prep",
+              "Explain in Hinglish",
             ].map((chip) => (
               <button
                 key={chip}
@@ -728,7 +681,7 @@ export default function AiStudyAssist({
                   handleAskDoubt(chip);
                 }}
                 disabled={askingAi}
-                className="rounded-full border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-800/60 px-2.5 py-1 text-[11px] font-medium text-neutral-700 dark:text-zinc-300 shadow-2xs transition hover:border-emerald-500/40 hover:bg-neutral-50 dark:hover:bg-zinc-700 hover:text-neutral-900 dark:hover:text-white disabled:opacity-50"
+                className="rounded-md border border-neutral-200/80 dark:border-white/[0.08] px-2.5 py-1 text-[11px] font-medium text-neutral-600 dark:text-zinc-400 hover:text-neutral-900 dark:hover:text-zinc-200 hover:bg-neutral-100 dark:hover:bg-white/[0.04] transition disabled:opacity-50"
               >
                 {chip}
               </button>
@@ -745,49 +698,44 @@ export default function AiStudyAssist({
           >
             <input
               type="text"
-              placeholder="Ask anything about this video..."
+              placeholder="Ask a doubt about this lesson..."
               value={userQuestion}
               onChange={(e) => setUserQuestion(e.target.value)}
-              className="flex-1 rounded-xl border border-neutral-200 dark:border-white/10 bg-white dark:bg-zinc-950 px-3.5 py-2 text-xs text-neutral-900 dark:text-zinc-100 placeholder:text-neutral-400 dark:placeholder:text-zinc-500 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500/40 shadow-xs"
+              className="flex-1 rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-zinc-950 px-3 py-2 text-xs text-neutral-900 dark:text-zinc-100 placeholder:text-neutral-400 dark:placeholder:text-zinc-600 focus:border-emerald-500 focus:outline-none transition"
             />
             <button
               type="submit"
               disabled={askingAi || !userQuestion.trim()}
-              className="flex items-center gap-1.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-4 py-2 text-xs font-bold text-white dark:text-black shadow-xs transition disabled:opacity-40"
+              className="flex items-center justify-center rounded-lg bg-emerald-600 hover:bg-emerald-500 dark:bg-emerald-500 dark:hover:bg-emerald-400 px-3.5 py-2 text-xs font-semibold text-white dark:text-black transition disabled:opacity-40"
+              title="Send question"
             >
               {askingAi ? (
-                <>
-                  <SparklesIcon size={13} className="animate-spin" />
-                  <span>Thinking...</span>
-                </>
+                <SparklesIcon size={13} className="animate-spin" />
               ) : (
-                <>
-                  <span>Ask</span>
-                  <ArrowRightIcon size={12} />
-                </>
+                <ArrowRightIcon size={13} />
               )}
             </button>
           </form>
 
           {/* Chat / Answers Stream */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-3 pt-1">
             {chatMessages.length === 0 && (
-              <div className="rounded-xl border border-dashed border-neutral-300 dark:border-white/10 p-5 text-center text-xs text-neutral-500 dark:text-zinc-400 bg-neutral-50/50 dark:bg-transparent">
-                Have a doubt about this lesson? Ask the AI Tutor above or click any quick prompt!
+              <div className="rounded-xl border border-dashed border-neutral-200 dark:border-white/10 p-5 text-center text-xs text-neutral-500 dark:text-zinc-400">
+                Type your question or click a prompt above to get instant explanations.
               </div>
             )}
 
             {chatMessages.map((msg) => (
               <div
                 key={msg.id}
-                className="rounded-xl border border-neutral-200/80 dark:border-white/5 bg-white dark:bg-zinc-950/60 p-4 space-y-2 shadow-xs"
+                className="rounded-xl border border-neutral-200/70 dark:border-white/[0.06] bg-neutral-50/60 dark:bg-zinc-900/30 p-3.5 space-y-2 text-xs"
               >
-                <div className="flex items-center justify-between border-b border-neutral-100 dark:border-white/5 pb-2">
+                <div className="flex items-center justify-between pb-1.5 border-b border-neutral-200/50 dark:border-white/[0.04]">
                   <div className="flex items-center gap-2">
-                    <span className="font-bold text-neutral-900 dark:text-zinc-200 text-xs">
-                      💬 Q: {msg.question}
+                    <span className="font-semibold text-neutral-900 dark:text-zinc-200">
+                      Q: {msg.question}
                     </span>
-                    <span className="rounded-full bg-neutral-100 dark:bg-zinc-800 px-2 py-0.5 text-[10px] font-semibold text-neutral-600 dark:text-zinc-400">
+                    <span className="text-[10px] text-neutral-400 dark:text-zinc-500 font-mono">
                       @{msg.timeStr}
                     </span>
                   </div>
@@ -795,13 +743,13 @@ export default function AiStudyAssist({
                     type="button"
                     onClick={() => handleSaveToNotes("chat", msg)}
                     disabled={savingNote}
-                    className="flex items-center gap-1 rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-white/5 px-2.5 py-1 text-[11px] font-medium text-neutral-700 dark:text-zinc-300 hover:bg-neutral-100 dark:hover:bg-white/10"
+                    className="inline-flex items-center gap-1 text-[11px] text-neutral-500 dark:text-zinc-400 hover:text-neutral-800 dark:hover:text-zinc-200"
                   >
-                    <CheckCircleIcon size={12} className="text-emerald-600 dark:text-emerald-400" />
-                    <span>Save to Notes</span>
+                    <CheckCircleIcon size={12} className="text-emerald-500" />
+                    <span>Save</span>
                   </button>
                 </div>
-                <div className="pt-1">
+                <div className="pt-0.5">
                   <CleanAiMessageView text={msg.answer} />
                 </div>
               </div>
@@ -809,6 +757,6 @@ export default function AiStudyAssist({
           </div>
         </div>
       )}
-    </section>
+    </div>
   );
 }
